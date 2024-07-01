@@ -51,7 +51,7 @@
 			<div class="row page-titles mx-0">
 				<div class="col p-md-0">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="/">Main</a></li>
+						<li class="breadcrumb-item"><a href="/m">Main</a></li>
 						<th:block th:if="${source eq 'branch'}">
 							<li class="breadcrumb-item active"><a href="/m_companyList?source=branch">Branch List</a></li>
 						</th:block>
@@ -70,19 +70,37 @@
 					<div class="col">
 						<div class="card">
 							<div class="card-body">
+								<div class="card-title">
+									<h4>사업장 리스트</h4>
+								</div>
+								<div class="table-responsive">
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Name</th>
+												<th>#</th>
+												<th>#</th>
+												<th>#</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>#</td>
+												<td>Name</td>
+												<td>#</td>
+												<td>#</th>
+												<td>#</td>
+											</tr>
+										</tbody>
+									</table>
 								
-								리스트
-							</div>
-						</div>
-					</div>
-					<div th:if="${condition}">
-						<div class="col">
-							<div class="card">
-								<div class="card-body">
-									<p>여기에 내용 추가</p>
 								</div>
 							</div>
 						</div>
+					</div>
+					<div>
+						<th:block th:insert="~{m_comInsert::insertcom}"></th:block>
 					</div>
 				</div>	
 			</div>
