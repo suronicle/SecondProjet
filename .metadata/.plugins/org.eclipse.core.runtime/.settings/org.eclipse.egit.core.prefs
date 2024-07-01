@@ -1,4 +1,4 @@
-GitRepositoriesView.GitDirectories=C\:\\workspace4\\SecondProject\\.git;C\:\\workspace4\\.git;
-GitRepositoriesView.GitDirectories.relative=SecondProject\\.git;.git;
+GitRepositoriesView.GitDirectories=C\:\\project2\\project\\.git;
+GitRepositoriesView.GitDirectories.relative=.git;
 core_autoIgnoreDerivedResources=false
 eclipse.preferences.version=1
