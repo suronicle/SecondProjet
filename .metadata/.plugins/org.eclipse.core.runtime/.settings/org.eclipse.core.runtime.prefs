@@ -1,2 +1,6 @@
+<<<<<<< HEAD
+content-types/org.eclipse.core.runtime.text/charset=UTF-8
+=======
 content-types/org.eclipse.core.runtime.text/charset=utf-8
+>>>>>>> d352e725271621c0de3678735a14ccaea210ea6d
 eclipse.preferences.version=1

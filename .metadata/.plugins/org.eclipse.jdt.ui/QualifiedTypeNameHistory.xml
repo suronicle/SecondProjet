@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
+<<<<<<< HEAD
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
+=======
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
+>>>>>>> d352e725271621c0de3678735a14ccaea210ea6d
 </qualifiedTypeNameHistroy>
