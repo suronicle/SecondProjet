@@ -8,7 +8,7 @@ public class ErpController {
 
 	@GetMapping("/m")
 	public String m_main() {
-		return "m_main";
+		return "e_login";
 	}
 	@GetMapping("/one")
 	public String m_one() {
