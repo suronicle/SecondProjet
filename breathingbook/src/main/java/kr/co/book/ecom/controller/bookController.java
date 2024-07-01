@@ -7,9 +7,51 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class bookController {
 
 
+
+	
 	@GetMapping("/eMain")
     public String eMain(){
         
         return "eMain";
     }
+	
+	
+	@GetMapping("/eCart")
+    public String eCart(){
+        
+        return "eCart";
+    }
+	
+	
+	@GetMapping("/eBuy")
+    public String eBuy(){
+        
+        return "eBuy";
+    }
+	
+
+	
+	@GetMapping("/eBookstoreList")
+    public String eBookstoreList(){
+        
+        return "eBookstoreList";
+    }
+	
+	
+	@GetMapping("/eBookDetail")
+    public String eBookDetail(){
+        
+        return "eBookDetail";
+    }
+	
+	
+	@GetMapping("/eRequest")
+    public String eRequest(){
+        
+        return "eRequest";
+    }
+		
+	
+	
+	
 }
