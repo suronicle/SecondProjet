@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class jeoncontroller {
 
 
+	@GetMapping("/login")
+	   public String login(){
+	      return "e_login";
+	   }
+	
 	@GetMapping("/join")
 	   public String join(){
 	      return "e_join";
