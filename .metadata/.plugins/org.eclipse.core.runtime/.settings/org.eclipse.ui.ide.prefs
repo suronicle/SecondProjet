@@ -11,6 +11,10 @@ IDE_ENCODINGS_PREFERENCE=utf-8
 >>>>>>> 46621fc31a45334aae3845df2574e0a64f6cf8ef
 >>>>>>> parent of 397a776 (Merge branch 'main' of https://github.com/suronicle/SecondProjet)
 eclipse.preferences.version=1
+<<<<<<< HEAD
+platformState=1021266289121280
+=======
 platformState=1265416626767733
+>>>>>>> d6c9890bfd04622b2c85f3899a43222121eb704b
 quickStart=false
 tipsAndTricks=true
