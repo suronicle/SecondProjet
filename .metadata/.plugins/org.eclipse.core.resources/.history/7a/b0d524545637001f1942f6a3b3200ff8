@@ -1,0 +1,13 @@
+package kr.co.book.ecom.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+
+public class bookController {
+
+
+	@GetMapping("/eMain")
+    public String eMain(){
+        
+        return "eMain";
+    }
+}
