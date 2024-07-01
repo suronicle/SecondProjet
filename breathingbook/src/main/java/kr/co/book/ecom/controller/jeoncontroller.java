@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class jeoncontroller {
 
-	@GetMapping("/")
+	@GetMapping("/login")
 	   public String elogin(){
 	      return "e_login";
 	   }
