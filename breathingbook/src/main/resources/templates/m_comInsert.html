@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+    <link href="erp/css/style.css" rel="stylesheet">
+	<!-- Color picker plugins css -->
+	<link href="./erp/plugins/jquery-asColorPicker-master/css/asColorPicker.css" rel="stylesheet">
+	<!-- Date picker plugins css -->
+	<link href="./erp/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet">
+	<!-- Daterange picker plugins css -->
+	<link href="./erp/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
+	<link href="./erp/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+	<style>
+		.right-align {
+			padding: 0rem 1.875rem;
+			text-align: right; /* 텍스트를 우측으로 정렬 */
+		}
+	</style>
+</head>
+
+<body>
+
+	<div th:fragment="insertcom">
+		<div class="card">
+			<div class="card-body">
+				<div th:if="${source == 'branch'}" class="card-title">신규 사업장 등록</div>
+				<div th:if="${source == 'vendor'}" class="card-title">신규 거래처 등록</div>
+				
+				<div class="form-validation">
+					<form class="form-valide" action="#" method="post">
+						<th:block th:if="${source == 'branch'}"><input type="hidden" name="#" value="0"></th:block>
+						<th:block th:if="${source == 'vendor'}"><input type="hidden" name="#" value="1"></th:block>						
+						
+						<div class="form-group row">
+							<label class="col-lg-4 col-form-label" for="업체명">업체 명 <span class="text-danger">*</span>
+							</label>
+							<div class="col-lg-6">
+								<input type="text" class="form-control" id="업체명" name="업체명" placeholder="업체명..">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-4 col-form-label" for="대표자명">대표자 명 <span class="text-danger">*</span>
+							</label>
+							<div class="col-lg-6">
+								<input type="text" class="form-control" id="대표자명" name="대표자명" placeholder="대표자명..">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-4 col-form-label" for="사업자등록번호">사업자 등록번호 <span class="text-danger">*</span>
+							</label>
+							<div class="col-lg-6">
+								<input type="text" class="form-control" id="사업자등록번호" name="사업자등록번호" placeholder="사업자등록번호..">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-4 col-form-label" for="우편번호">우편번호 <span class="text-danger">*</span>
+							</label>
+							<div class="col-lg-6 input-group">
+								<input type="text" class="form-control" id="우편번호" name="우편번호" placeholder="우편번호..">
+								<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-4 col-form-label" for="주소">주소 <span class="text-danger">*</span>
+							</label>
+							<div class="col-lg-6">
+								<input type="text" class="form-control" id="주소" name="주소" placeholder="주소..">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-4 col-form-label" for="상세주소">상세주소 <span class="text-danger">*</span>
+							</label>
+							<div class="col-lg-6">
+								<input type="text" class="form-control" id="상세주소" name="상세주소" placeholder="상세주소..">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-4 col-form-label" for="전화번호">전화번호 <span class="text-danger">*</span>
+							</label>
+							<div class="col-lg-6">
+								<input type="text" class="form-control" id="전화번호" name="전화번호" placeholder="전화번호..">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-4 col-form-label" for="fax번호">fax번호 <span class="text-danger">*</span>
+							</label>
+							<div class="col-lg-6">
+								<input type="text" class="form-control" id="fax번호" name="fax번호" placeholder="fax번호..">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-4 col-form-label" for="bank">은행 <span class="text-danger">*</span>
+							</label>
+							<div class="col-lg-6 input-group">
+								<input type="text" class="form-control" id="etcBankid" name="bank">
+								<select class="form-control" id="bank" onchange="checkBank(this)">
+									<option value="">Please select</option>
+									<option value="신한">신한</option>
+									<option value="우리">우리</option>
+									<option value="농협">농협</option>
+									<option value="국민">국민</option>
+									<option value="카카오">카카오</option>
+									<option value="기타">기타</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-4 col-form-label" for="예금주">예금주 <span class="text-danger">*</span>
+							</label>
+							<div class="col-lg-6">
+								<input type="text" class="form-control" id="예금주" name="예금주" placeholder="예금주..">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-4 col-form-label" for="계좌번호">계좌번호 <span class="text-danger">*</span>
+							</label>
+							<div class="col-lg-6">
+								<input type="text" class="form-control" id="계좌번호" name="계좌번호" placeholder="계좌번호..">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-lg-8 ml-auto">
+								<button type="submit" class="btn btn-primary">Submit</button>
+								<button type="button" class="btn btn-primary" onclick="hideSecondColumn()">Close</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+	    function checkBank(select) {
+	        var inputField = document.getElementById('etcBankid');
+	        var selectedValue = select.value;
+
+	        if (selectedValue === '기타') {
+	            inputField.disabled = false;
+	            inputField.value = ''; // 입력 필드 초기화
+	            inputField.focus(); // 입력 필드에 포커스
+	        } else {
+	            inputField.disabled = true;
+	            inputField.value = selectedValue; // 선택된 은행 값을 입력 필드에 설정
+	        }
+	    }
+	</script>
+</body>
+
+</html>

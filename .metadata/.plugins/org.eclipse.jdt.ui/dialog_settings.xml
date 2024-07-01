@@ -9,10 +9,17 @@
 	</section>
 	<section name="JavaElementSearchActions">
 	</section>
+<<<<<<< HEAD
+=======
+	<section name="BuildPathsPropertyPage">
+		<item key="pageIndex" value="3"/>
+	</section>
+>>>>>>> d352e725271621c0de3678735a14ccaea210ea6d
 	<section name="completion_proposal_size">
 	</section>
 	<section name="quick_assist_proposal_size">
 	</section>
+<<<<<<< HEAD
 	<section name="NewClassCreationWizard.dialogBounds">
 		<item key="DIALOG_X_ORIGIN" value="650"/>
 		<item key="DIALOG_Y_ORIGIN" value="109"/>
@@ -27,4 +34,6 @@
 		<item key="create_constructor" value="false"/>
 		<item key="create_unimplemented" value="true"/>
 	</section>
+=======
+>>>>>>> d352e725271621c0de3678735a14ccaea210ea6d
 </section>
