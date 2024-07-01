@@ -62,26 +62,25 @@
 				</div>
 			</div>
 			<div class="right-align">
-				<button type="button" class="btn mb-1 btn-success ">신규 등록</button>
+				<button type="button" class="btn mb-1 btn-success" onclick="showSecondColumn()">신규 등록</button>
 			</div>
 			<!-- div row -->
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col">
+					<div id="firstColumn" class="col">
 						<div class="card">
 							<div class="card-body">
-								<div class="card-title">
-									<h4>사업장 리스트</h4>
-								</div>
+								<div th:if="${source == 'branch'}" class="card-title">사업장 리스트</div>
+								<div th:if="${source == 'vendor'}" class="card-title">거래처 리스트</div>
 								<div class="table-responsive">
 									<table class="table table-hover">
 										<thead>
 											<tr>
-												<th>#</th>
-												<th>Name</th>
-												<th>#</th>
-												<th>#</th>
-												<th>#</th>
+												<th>관리번호</th>
+												<th>업체명</th>
+												<th>대표명</th>
+												<th>사업자등록번호</th>
+												<th>주소</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -99,7 +98,7 @@
 							</div>
 						</div>
 					</div>
-					<div>
+					<div class="col-md-6" id="secondColumn" style="display: none;">
 						<th:block th:insert="~{m_comInsert::insertcom}"></th:block>
 					</div>
 				</div>	
@@ -112,7 +111,21 @@
     </div>
     <!-- Main wrapper end -->
 	<th:block th:insert="~{m_fragments::script}"></th:block>
-	
+	<script>
+		function showSecondColumn() {
+			var secondColumn = document.getElementById('secondColumn');
+			if (secondColumn.style.display === 'none') {
+				secondColumn.style.display = 'block';
+			} else {
+				secondColumn.style.display = 'none';
+			}
+		}
+		function hideSecondColumn() {
+		    var secondColumn = document.getElementById('secondColumn');
+		    secondColumn.style.display = 'none';
+		}
+	</script>
+
 </body>
 
 </html>
