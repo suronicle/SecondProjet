@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>숨쉬는 서재 | 상세보기</title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="e-comm/image/x-icon" href="e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="e-comm/css/style.css">
+
+<style>   
+          .menu {
+              margin-top: -90px; 
+              padding-top: 0;
+          }
+
+		
+		  .call-to-action.section {
+		      margin-top: -40px;
+		  }
+		
+</style>
+  
+  
+</head>
+
+
+<body id="body">
+
+<!-- Start Top Header Bar -->
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+
+<th:block th:insert="~{ecom_fragments::search}"></th:block>
+
+
+<!-- menu -->
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+
+<section class="single-product">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<ol class="breadcrumb">
+					<li><a href="/">Home</a></li>
+					<li><a href="shop.html">book</a></li>
+					<li class="active">상세보기</li>
+				</ol>
+			</div>
+			<div class="col-md-6">
+				<ol class="product-pagination text-right">
+					<li><a href="blog-left-sidebar.html"><i class="tf-ion-ios-arrow-left"></i> Next </a></li>
+					<li><a href="blog-left-sidebar.html">Preview <i class="tf-ion-ios-arrow-right"></i></a></li>
+				</ol>
+			</div>
+		</div>
+		<div class="row mt-20">
+			<div class="col-md-5">
+				
+				<div class="single-product-slider">
+					
+					<div id='carousel-custom' class='carousel slide' data-ride='carousel'>
+						
+						<div class='carousel-outer'>
+							<!-- me art lab slider -->
+							<div class='carousel-inner '>
+							
+								<div class='item active'>
+									
+								<img src="e-comm/images/book/bookad2.jpg" alt="" data-zoom-image="e-comm/images/book/bookad2.jpg" style="width: 470px; height: 600px;" />
+								
+								</div>
+								<div class='item'>
+									<img src='e-comm/images/book/bookad3.jpg' alt='' data-zoom-image="e-comm/images/book/bookad3.jpg" style="width: 470px; height: 600px;"  />
+								</div>
+								
+								<div class='item'>
+										<img src='e-comm/images/book/bookad3.jpg' alt='' data-zoom-image="e-comm/images/book/bookad3.jpg" style="width: 470px; height: 600px;"  />
+								</div>
+								<div class='item'>
+									<img src='e-comm/images/book/bookad3.jpg' alt='' data-zoom-image="e-comm/images/book/bookad3.jpg" style="width: 470px; height: 600px;"  />
+								</div>
+								<div class='item'>
+									<img src="e-comm/images/book/bookad2.jpg" alt="" data-zoom-image="e-comm/images/book/bookad2.jpg" style="width: 470px; height: 600px;" />
+								</div>
+								<div class='item'>
+									<img src="e-comm/images/book/bookad2.jpg" alt="" data-zoom-image="e-comm/images/book/bookad2.jpg" style="width: 470px; height: 600px;" />
+								</div>
+								
+							</div>
+							
+							
+							
+							<!-- sag sol -->
+							<a class='left carousel-control' href='#carousel-custom' data-slide='prev'>
+								<i class="tf-ion-ios-arrow-left"></i>
+							</a>
+							<a class='right carousel-control' href='#carousel-custom' data-slide='next'>
+								<i class="tf-ion-ios-arrow-right"></i>
+							</a>
+						</div>
+						
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-7">
+				<form action ="/notmembuy" method="get">
+				<div class="single-product-details">
+					
+					<h2 th:text="${book.boname}" th:if="${book.bostock != 0}"></h2>
+					<h2 th:if="${book.bostock == 0}" th:text="${'[품절]'+book.boname}" ></h2>
+					<p class="product-price" th:text="${book.bowriter + ' / ' + book.bocompany}"></p> 
+
+					<input type="hidden" name="bono" th:value="${book.bono}">
+					
+					<br>
+					<h4 class="product-description mt-20"  th:text="${#strings.length(book.bocontent) &lt;= 30 ? book.bocontent : #strings.substring(book.bocontent, 0, 30) + '...'}">
+					</h4>
+					<br>
+					<br>
+					<div class="color-swatches">
+						
+						<span>가격</span>
+						<ul  th:text="${book.boprice} + 원">				
+						</ul>
+					</div>
+			
+					<div class="product-size">
+										<span>배송비</span>
+										<ul th:if="${book.boshipping == 0}">
+										무료
+										</ul>
+										<ul th:if="${book.boshipping != 0}" th:text="${book.boshipping+'원'}">
+										
+										</ul>										
+
+									</div>
+					<div class="product-quantity">
+						<span th:if="${book.bostock != 0}">수량</span>
+						<div class="product-quantity-slider" th:if="${book.bostock != 0}">
+							<input id="buynum" type="text" value="1" name="product-quantity">
+						</div>
+					</div>
+					<div class="product-category">
+						<span>카테고리</span>
+						<ul>
+							<li><a href="product-single.html">Products</a></li>
+							<li><a href="product-single.html">Soap</a></li>
+						</ul>
+					</div>
+					<a href="/eCart" class="btn btn-main mt-20" style="background-color:#A1DD70;" th:if="${book.bostock != 0}" >장바구니에 담기</a>
+					<input type="submit" class="btn btn-main mt-20" style="background-color:#EF3C97;" th:if="${book.bostock != 0}" value="구매하기">
+					<input type="submit" class="btn btn-main mt-20" style="background-color: white; border: 2px solid #EF3C97; color: #EF3C97; display: inline-block;" th:if="${book.bostock != 0}" value="비회원 주문">
+					<button class="btn btn-main mt-20" th:if="${book.bostock != 0}" 
+					   style="background-color: white; border: 2px solid #A1DD70; color: #A1DD70; display: inline-block;"
+					   onclick="alert('공유되었습니다.')" >공유하기</button>
+					
+					<a href="/eRequestS" class="btn btn-main mt-20" th:if="${book.bostock == 0}" 
+					      style="background-color: white; border: 2px solid #EF3C97; color: #EF3C97; display: inline-block;">
+					      요청하기
+					   </a>
+					   <button class="btn btn-main mt-20" th:if="${book.bostock == 0}" 
+					      style="background-color: white; border: 2px solid #A1DD70; color: #A1DD70; display: inline-block;"
+					      onclick="alert('공유되었습니다.')">공유하기</button>
+				</div>
+			</div>
+		
+			</form>
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="tabCommon mt-20">
+					<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#details" aria-expanded="true" >책 소개</a></li>
+						<li class=""><a data-toggle="tab" href="#reviews" aria-expanded="false">리뷰</a></li>
+					</ul>
+					<div class="tab-content patternbg">
+						<div id="details" class="tab-pane fade active in" th:text="${book.bocontent}">
+
+							
+						</div>
+						<div id="reviews" class="tab-pane fade">
+							<div class="post-comments">
+						    	<ul class="media-list comments-list m-bot-50 clearlist">
+								    <!-- Comment Item start-->
+								    <li class="media">
+
+								        <a class="pull-left" href="#!">
+								            <img class="media-object comment-avatar" src="images/blog/avater-1.jpg" alt="" width="50" height="50" />
+								        </a>
+
+								        <div class="media-body">
+								            <div class="comment-info">
+								                <h4 class="comment-author">
+								                    <a href="#!">리뷰1</a>
+								                	
+								                </h4>
+								                <time datetime="2013-04-06T13:53">날짜</time>
+								                <a class="comment-button" href="#!"><i class="tf-ion-chatbubbles"></i>댓글</a>
+								            </div>
+
+								            <p>
+								               메롱이다잉
+								            </p>
+								        </div>
+
+								    </li>
+								    <!-- End Comment Item -->
+
+								    <!-- Comment Item start-->
+								    <li class="media">
+
+								        <a class="pull-left" href="#!">
+								            <img class="media-object comment-avatar" src="images/blog/avater-4.jpg" alt="" width="50" height="50" />
+								        </a>
+
+								        <div class="media-body">
+
+								            <div class="comment-info">
+								                <div class="comment-author">
+								                    <a href="#!">Jonathon Andrew</a>
+								                </div>
+								                <time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
+								                <a class="comment-button" href="#!"><i class="tf-ion-chatbubbles"></i>Reply</a>
+								            </div>
+
+								            <p>
+								                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni natus, nostrum iste non delectus atque ab a accusantium optio, dolor!
+								            </p>
+
+								        </div>
+
+								    </li>
+								    <!-- End Comment Item -->
+
+								    <!-- Comment Item start-->
+								    <li class="media">
+
+								        <a class="pull-left" href="#!">
+								            <img class="media-object comment-avatar" src="images/blog/avater-1.jpg" alt="" width="50" height="50">
+								        </a>
+
+								        <div class="media-body">
+
+								            <div class="comment-info">
+								                <div class="comment-author">
+								                    <a href="#!">Jonathon Andrew</a>
+								                </div>
+								                <time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
+								                <a class="comment-button" href="#!"><i class="tf-ion-chatbubbles"></i>Reply</a>
+								            </div>
+
+								            <p>
+								                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend.
+								            </p>
+
+								        </div>
+
+								    </li>
+							</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="products related-products section">
+	<div class="container">
+		<div class="row">
+			<div class="title text-center">
+				<h2>추천 상품</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3" th:each="rbook : ${randbook}">
+				<div class="product-item">
+					<div class="product-thumb">
+						<span class="bage" th:if="${rbook.boshipping == 0}" style="display: inline-block;">무료배송</span>
+						<span class="bage" th:if="${rbook.bostock == 0}" style="background-color:#FF0000 ;padding: 4px ; display: inline-block;  margin-right: 200px;">품절</span>
+						
+						<img class="img-responsive" src="e-comm/images/book/bookad2.jpg" alt="product-img" style="width: 300px; height: 200px;" />
+						<div class="preview-meta">
+							<ul>
+								<li>
+									 <span data-toggle="modal" data-target="#product-modal" th:data-bono="${rbook.bono}"  th:data-boname="${rbook.boname}" th:data-bowriter="${rbook.bowriter}" th:data-bocontent="${rbook.bocontent}">
+										<i class="tf-ion-ios-search"></i>
+									</span>
+								</li>
+								<li>
+			                        <a href="#" ><i class="tf-ion-ios-heart"></i></a>
+								</li>
+								<li>
+									<a href="#!"><i class="tf-ion-android-cart"></i></a>
+								</li>
+							</ul>
+                      	</div>
+					</div>
+					<div class="product-content">
+						<h4><a th:href="@{/eBookDetail(bono=${rbook.bono})}"  th:text="${#strings.length(rbook.boname) &lt;= 10 ? rbook.boname : #strings.substring(rbook.boname, 0, 10) + '...'}"></a></h4>
+						<p class="price" th:text="${rbook.boprice} + 원"></p>
+					</div>
+				</div>
+			</div>
+
+
+
+			
+		</div>
+	</div>
+</section>
+
+			
+			
+
+
+<th:block th:insert="~{eBookModal::modal}"></th:block>
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="e-comm/plugins/slick/slick.min.js"></script>
+    <script src="e-comm/plugins/slick/slick-animation.min.js"></script>
+
+    <!-- Google Mapl -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script type="text/javascript" src="e-comm/plugins/google-map/gmap.js"></script>
+
+    <!-- Main Js File -->
+    <script src="e-comm/js/script.js"></script>
+	<script src="e-comm/js/modal.js"></script>
+
+	<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	    var quantityInput = document.getElementById('product-quantity'); // 수량 입력란 요소 가져오기
+
+	    // 비회원 주문 버튼 클릭 시 이벤트 처리
+	    document.getElementById('nonMemberOrderBtn').addEventListener('click', function(event) {
+	        event.preventDefault(); // 기본 동작 방지
+
+	        var quantity = quantityInput.value; // 수량 입력란의 값 가져오기
+
+	        // 여기서 quantity 변수에 수량 값이 들어 있습니다.
+	        console.log('입력된 수량:', quantity);
+
+
+	    });
+	});
+	</script>
+  </body>
+  </html>
