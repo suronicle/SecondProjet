@@ -1,6 +1,0 @@
-package templates;
-
-public class Snippet {
-	<th:block th:insert="~{ecom_fragments::header}"></th:block>
-}
-
