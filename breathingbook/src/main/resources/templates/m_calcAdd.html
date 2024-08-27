@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="purAdd">
+	<form class="form-valide" action="m_calcAdd" method="post" onsubmit="return validateForm()">
+		<table class="table table-bordered">
+			<thead>
+				<tr style="text-align : center">
+					<th>기간</th>
+					<th>구분</th>
+					<th>업체</th>
+					<th>도서</th>
+					<th>단가</th>
+					<th>판매가</th>
+					<th>수량</th>
+					<th>금액</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr align="center">
+					<td>
+						<input type="date" class="hb-form" id="dateInput" name="pdate" required>
+					</td>
+					<td><select name="pclass" class="hb-form">
+							<option value="0">선택</option>
+							<option value="1">매입</option>
+							<option value="2">매출</option>
+							<option value="3">취소</option>
+						</select>
+					</td>
+					<td>
+						<div class="hb-group">
+							<input type="text" class="hb-form" id="brnoInput" name="brno" placeholder="업체 관리코드" required>
+							<input type="text" class="hb-form" id="brnameInput" placeholder="업체 명" readonly>
+							<button type="button" class="btn btn-sm btnbrno" data-toggle="modal" data-target=".searchCom">
+								<i class="mdi mdi-magnify"></i>검색
+							</button>
+							<input type="hidden" id="selectedBrno">
+							<input type="hidden" id="selectedBrname">
+						</div>
+					</td>
+					<td>
+						<div class="hb-group">
+							<input type="text" name="pbookno" id="bonoInput" class="hb-form" placeholder="책 관리코드" required>
+							<input type="text" class="hb-form" id="bonameInput" placeholder="도서 명" readonly>
+							<button type="button" class="btn btn-sm btnbook" data-toggle="modal" data-target=".searchBook">
+								<i class="mdi mdi-magnify"></i>검색
+							</button>
+							<input type="hidden" id="selectedBono">
+							<input type="hidden" id="selectedBoname">
+						</div>
+					</td>
+					<td>-</td>
+					<td>-</td>
+					<td><input type="text" class="hb-form" name="brreqnum" placeholder="수량" required></td>
+					<td>-</td>
+					<td>
+						<!-- 신규 등록 form -->
+						<button type="submit" class="btn mb-1 btn-rounded btn-success btn-sm">
+							<span class="btn-icon-left"><i class="fa fa-plus color-info"></i></span>Add
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+	<div class="col right-align">
+		<button type="button" class="btn btn-info btn-xs" onclick="hideEdit()">닫기</button>
+	</div>
+</div>

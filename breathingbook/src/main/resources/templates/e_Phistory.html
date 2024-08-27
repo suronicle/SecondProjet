@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title> 숨쉬는서재 | 구매/배송내역 </title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="./e-comm/image/x-icon" href="./e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="./e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="./e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="./e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="./e-comm/css/style.css">
+  
+  <style type="text/css">
+  	th {
+  	text-align: center
+  	}
+  
+  </style>
+
+</head>
+
+<body id="body">
+
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+<section class="page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name">주문내역</h1>
+					<ol class="breadcrumb">
+						<li><a href="/">Home</a></li>
+						<li class="active">주문내역</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="pricing-table"> 
+	<div class="page-wrapper">
+	  <div class="cart shopping">
+	    <div class="container">
+	      <div class="row">
+	        
+	          <div class="block">
+	            <div class="product-list">
+	            <p style="float: right;">*클릭 시 상세 페이지로 이동합니다.</p>
+	              <form method="post">
+	                <table class="table">
+	                  <thead>
+	                    <tr>
+	                      <th style="width: 20%;">구매날짜</th>
+	                      <th style="width: 15%;">주문번호</th>
+	                      <th style="width: 40%;">구매내역</th>
+	                      <th style="width: 15%;">구매금액</th>
+	                      <th style="width: 10%;">상태</th>
+	                    </tr>
+	                  </thead>
+	                  <tbody class=""  th:if="${dto !=null}" th:each="dto:${dto}" th:onclick="location.href='/eDhistory?date='+[[${dto.buydate}]]">
+	                    <tr th:if="${dto.buyno != 0}">
+	                      <td class="">
+	                        <p style="text-align: center;" th:text="${dto.buydate}"></p>
+	                      </td>
+	                      <td class="">
+	                        <div class="product-info" style="text-align: center;">
+	                          <p th:text="${dto.buyno}" />
+	                        </div>
+	                      </td>
+	                      
+	                      <td class="">
+	                      <p th:text="${dto.boname} + '(' + ${dto.buynum} + '권)'" style="display: inline-block;"></p>
+	                      <p th:if="${dto.booknum != 0}" th:text="' 외 ' + ${dto.booknum} + '건'" style="display: inline-block;"></p>
+	                      </td>
+	                      <td style="text-align: right;" th:text="${#numbers.formatInteger(dto.buyprice, 3, 'COMMA')}+ '원'"></td>
+	                      <td class="">
+	                        <p class="product-remove" style="text-align:center;" th:text="${dto.codename}"></p>
+	                      </td>
+	                      
+	                    </tr>
+	                   
+	                  </tbody>
+	                </table>
+	                <tbody th:if="${#lists.size(dto) == 0}">
+                		<tr>
+	                	<td colspan="5">
+	                	 주문 내역 없음
+	                	</td>
+               			 </tr>
+              		</tbody>
+	              </form>
+	            </div>
+	          </div>
+	        
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</section>
+
+
+
+
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="./e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="./e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="./e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="./e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="./e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="./e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="./e-comm/plugins/slick/slick.min.js"></script>
+    <script src="./e-comm/plugins/slick/slick-animation.min.js"></script>
+
+    <!-- Google Mapl -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script type="text/javascript" src="./e-comm/plugins/google-map/gmap.js"></script>
+
+    <!-- Main Js File -->
+    <script src="js/script.js"></script>
+    
+
+
+  </body>
+  </html>

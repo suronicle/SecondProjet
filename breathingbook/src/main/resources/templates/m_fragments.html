@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="header(title)" class="top-bar">
+   <div class="nav-header">
+      <div class="brand-logo">
+         <a href="/m">
+            <b class="logo-abbr"><img src="./e-comm/images/titlelogo.png" alt=""> </b>
+            <span class="logo-compact"><img src="./e-comm/images/titlelogo.png" alt=""></span>
+            <div>
+               <span class="brand-title">
+                  <table>
+                     <tr style="margin: 0;">
+                        <td>
+                           <img src="./e-comm/images/titlelogo.png" alt="로고" style="width:40px; height:40px;">
+                        </td>
+                        <td>
+                           <h1 style="color: #A1DD70; font-size:20px; margin: 0;">Breathing Books
+                           <br> <h6 style="float: right; margin: 0; color:white">숨쉬는 서재</h6></h1>
+                        </td>
+                     </tr>
+                  </table>
+               </span>
+            </div>
+         </a>
+      </div>
+   </div>
+</div>
+<div th:fragment="topbar" class="top-bar">
+   <div class="header">
+      <div class="header-content clearfix">
+          
+          <div class="nav-control">
+              <div class="hamburger">
+                  <span class="toggle-icon"><i class="icon-menu"></i></span>
+              </div>
+          </div>
+          <div class="header-right">
+              <ul class="clearfix">
+               <li class="icons dropdown">
+                  <div class="c-pointer position-relative input-group icons" data-toggle="dropdown">
+                     <i class="icon-briefcase" style="font-size: 30px;"></i>
+                  </div>
+                  <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
+                     <div class="dropdown-content-body">
+                        <ul>
+                           <li>
+                              <a href="/m_myinfo"><i class="icon-user"></i> <span>내정보</span></a>
+                           </li>
+                           <hr class="my-2">
+                           <li><a href="/eLogout"><i class="icon-key"></i> <span>Logout</span></a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>
+<div th:fragment="sidebar" class="side-bar">
+   <div class="nk-sidebar">
+      <div class="nk-nav-scroll">
+         <ul class="metismenu" id="menu">
+            <th:block th:if="${session.login.brno eq 'admin'}">
+               <li class="nav-label">본사</li>
+               <li>
+                  <a href="/m_myinfo" aria-expanded="false">
+                     <i class="icon-user menu-icon"></i><span class="nav-text">본사 정보</span>
+                  </a>
+               </li>
+               <li>
+                  <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                     <i class="icon-briefcase menu-icon"></i><span class="nav-text">업체 관리</span>
+                  </a>
+                  <ul aria-expanded="false">
+                     <li><a href="/m_comList?source=branch">가맹점 관리</a></li>
+                     <li><a href="/m_comList?source=vendor">출판사 관리</a></li>
+                  </ul>
+               </li>
+               <li>
+                  <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                     <i class="icon-book-open menu-icon"></i><span class="nav-text">도서 관리</span>
+                  </a>
+                  <ul aria-expanded="false">
+                     <li><a href="/m_bookList">도서 목록</a></li>
+                     <li><a href="/m_requestBook">가맹점 요청 처리</a></li>
+                     <li><a href="/m_bookStock">재고 관리</a></li>
+                  </ul>
+               </li>
+               <li>
+                  <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                     <i class="icon-bag menu-icon"></i><span class="nav-text">주문 관리</span>
+                  </a>
+                  <ul aria-expanded="false">
+                     <li><a href="/m_orderList">주문 목록</a></li>
+                     <li><a href="/m_delivery">배송 관리</a></li>
+                     <li><a href="/m_returnManage">반품 관리</a></li>
+                     <li><a href="/m_refund">환불 관리</a></li>
+                     <li><a href="/m_exchange">교환 관리</a></li>
+                  </ul>
+               </li>
+               <li>
+                  <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                     <i class="icon-chart"></i><span class="nav-text">매입/매출</span>
+                  </a>
+                  <ul aria-expanded="false">
+                     <li><a href="/m_calculation">거래 내역</a></li>
+                     <li><a th:href="@{/m_memSales}">회원 매출 관리</a></li>
+                  </ul>
+               </li>
+			   <li>
+			      <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+			         <i class="icon-note"></i><span class="nav-text">고객 관리</span>
+			      </a>
+			      <ul aria-expanded="false">
+			         <li><a href="/m_customerList">회원 정보 조회</a></li>
+			         <li><a href="/m_notice">공지사항 관리</a></li>
+			         <li><a href="/m_popup">팝업 관리</a></li>
+			         <li><a href="/m_QNA">QNA 관리</a></li>
+			      </ul>
+			   </li>
+            </th:block>
+            <th:block th:if="${session.login.brno ne 'admin'}">
+               <li class="nav-label">가맹점</li>
+               <li>
+                  <a href="/m_myinfo" aria-expanded="false">
+                     <i class="icon-user menu-icon"></i><span class="nav-text">내 정보</span>
+                  </a>
+               </li>
+               <li>
+                  <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                     <i class="icon-book-open menu-icon"></i><span class="nav-text">도서 관리</span>
+                  </a>
+                  <ul aria-expanded="false">
+                     <li><a href="/m_bookList">도서 목록</a></li>
+                     <li><a href="/m_bookStock">재고 관리</a></li>
+                  </ul>
+               </li>
+			   <li>
+			      <a href="/m_calculation" aria-expanded="false">
+			         <i class="icon-chart menu-icon"></i><span class="nav-text">매입/매출</span>
+			      </a>
+			   </li>
+            </th:block>
+          </ul>
+      </div>
+   </div>
+</div>
+
+<div th:fragment="footer" class="footer-bar">
+   <div class="footer">
+       <div class="copyright">
+			<p class="copyright-text">Copyright &copy;2024, Designed &amp; Developed by <a href="https://naver.com/">Breathing Books</a></p>
+       </div>
+   </div>
+</div>
+
+<div th:fragment="scList" class="script-bar">
+   <script>
+      // list 페이지
+
+      function showSecondColumn() {
+         var secondColumn = document.getElementById('secondColumn');
+         var comView = document.getElementById('comView');
+         var comEdit = document.getElementById('comEdit');
+         if (secondColumn.style.display === 'none') {
+            if (comEdit.style.display === 'block') {
+               sweetAlert("알림", "정보 수정창을 닫아주세요.", "error");
+               return;
+            } else {
+               secondColumn.style.display = 'block';
+               comView.style.display = 'none';
+               return;
+            }
+         }
+      }
+	  document.addEventListener('DOMContentLoaded', function() {
+	          const params = new URLSearchParams(window.location.search);
+	          if (params.has('autoShowSecondColumn')) {
+	              showSecondColumn();
+	          }
+	      });
+      
+      function showComView(brno, source) {
+         var comView = document.getElementById('comView');
+         var secondColumn = document.getElementById('secondColumn');
+         var comEdit = document.getElementById('comEdit');
+         if (comView.style.display === 'none') {
+            if (secondColumn.style.display === 'block') {
+               sweetAlert("알림", "신규 등록창을 닫아주세요.", "error");
+               return;
+            } else if (comEdit.style.display === 'block') {
+               sweetAlert("알림", "정보 수정창을 닫아주세요.", "error");
+               return;
+            }
+         }
+         
+         $.ajax({
+               type: "GET",
+               url: "/m_View?brno="+brno,
+               data: { "source": source },
+               success: function(response) {
+                  comView.style.display = 'block';
+                  $('#comView').html(response);
+               },
+               error: function(xhr, status, error) {
+                  console.error(error);
+               }
+            });
+      }
+      
+      function showEditCom(brno, source){
+         var comEdit = document.getElementById('comEdit');
+         var comView = document.getElementById('comView');
+         $.ajax({
+               type: "GET",
+               url: "/m_comUpdate?brno="+brno,
+               data: {
+                  "source": source
+               },
+               success: function(response) {
+                  comEdit.style.display = 'block';
+                  comView.style.display = 'none';
+                  $('#comEdit').html(response);
+               },
+               error: function(xhr, status, error) {
+                  console.error(error);
+               }
+            });
+      }
+      
+      function hideColumn() {
+          var secondColumn = document.getElementById('secondColumn');
+         var comView = document.getElementById('comView');
+         var comEdit = document.getElementById('comEdit');
+          secondColumn.style.display = 'none';
+         comView.style.display = 'none';
+         comEdit.style.display = 'none';
+      }
+   </script>
+   
+<div th:fragment="scInsert" class="script-bar">
+   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+   <script>
+      // insert 페이지
+      function insert_execDaumPostcode() {
+          new daum.Postcode({
+              oncomplete: function(data) {
+                  // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                  // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                  // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                  let addr = ''; // 주소 변수
+                  let extraAddr = ''; // 참고항목 변수
+
+                  //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                  if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                      addr = data.roadAddress;
+                  } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                      addr = data.jibunAddress;
+                  }
+
+                  // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                  if(data.userSelectedType === 'R'){
+                      // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                      // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                      if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                          extraAddr += data.bname;
+                      }
+                      // 건물명이 있고, 공동주택일 경우 추가한다.
+                      if(data.buildingName !== '' && data.apartment === 'Y'){
+                          extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                      }
+                      // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                      if(extraAddr !== ''){
+                          extraAddr = ' (' + extraAddr + ')';
+                      }
+                      
+                      // 조합된 참고항목을 해당 필드에 넣는다.
+                      document.getElementById("insert_extraAddress").value = extraAddr;
+                  
+                  } else {
+                      document.getElementById("insert_extraAddress").value = '';
+                  }
+
+                  // 우편번호와 주소 정보를 해당 필드에 넣는다.
+               document.getElementById('insert_postcode').setAttribute('readonly', true);
+               document.getElementById('insert_address').setAttribute('readonly', true);
+                  document.getElementById("insert_postcode").value = data.zonecode;
+                  document.getElementById("insert_address").value = addr;
+              }
+          }).open();
+      }
+      
+      function bankselect() {
+          var select = document.getElementById('bank2');
+          var option = select.options[select.selectedIndex];
+
+         if(option.value == '직접입력'){
+            document.getElementById('bank').removeAttribute('readonly');
+            document.getElementById('bank').value = "";
+         } else {
+            document.getElementById('bank').setAttribute('readonly', true);
+            document.getElementById('bank').value = option.value;
+         }
+      }
+      
+      function validation() {
+          var regNum = /^[0-9]*$/;
+          var braccount = document.getElementById('braccount').value;
+         var brfax = document.getElementById('brfax').value;
+         var brphone = document.getElementById('brphone').value;
+         var brbusinessno = document.getElementById('brbusinessno').value;
+         var postcode = document.getElementById('insert_postcode').value;            
+
+         // 각 입력 필드에 대해 숫자가 아닌 경우를 체크
+         if (!regNum.test(brbusinessno)) {
+            sweetAlert("알림", "사업자 등록번호는 숫자만 입력해주세요.", "error");
+            return false;
+         }      
+         if (!regNum.test(postcode)) {
+            sweetAlert("알림", "우편 번호는 숫자만 입력해주세요.", "error");
+            return false;
+         }
+         if (!regNum.test(brphone)) {
+            sweetAlert("알림", "회사 번호는 숫자만 입력해주세요.", "error");
+            return false;
+         }
+         if (!regNum.test(brfax)) {
+            sweetAlert("알림", "팩스 번호는 숫자만 입력해주세요.", "error");
+            return false;
+         }
+         if (!regNum.test(braccount)) {
+            sweetAlert("알림", "계좌 번호는 숫자만 입력해주세요.", "error");
+            return false;
+         }
+
+         // insert_address, insert_extraAddress 값을 조합하여 brdetailaddress 값 생성
+         var insert_address = document.getElementById('insert_address').value;
+         var insert_extraAddress = document.getElementById('insert_extraAddress').value;
+         if (insert_extraAddress !== "") {
+            var braddress = insert_address + ", " + insert_extraAddress;
+         } else if(insert_extraAddress == "") {
+            var braddress = insert_address;
+         }
+         // 생성된 ADR 값을 hidden 필드에 설정
+         document.getElementById('braddress').value = braddress;
+         return true;
+      }
+
+   </script>
+   
+<div th:fragment="scUpdate" class="script-bar">
+   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+   <script>
+      // update 페이지
+      function sample6_execDaumPostcode() {
+          new daum.Postcode({
+              oncomplete: function(data) {
+                  // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                  // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                  // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                  let addr = ''; // 주소 변수
+                  let extraAddr = ''; // 참고항목 변수
+
+                  //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                  if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                      addr = data.roadAddress;
+                  } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                      addr = data.jibunAddress;
+                  }
+
+                  // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                  if(data.userSelectedType === 'R'){
+                      // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                      // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                      if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                          extraAddr += data.bname;
+                      }
+                      // 건물명이 있고, 공동주택일 경우 추가한다.
+                      if(data.buildingName !== '' && data.apartment === 'Y'){
+                          extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                      }
+                      // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                      if(extraAddr !== ''){
+                          extraAddr = ' (' + extraAddr + ')';
+                      }
+                      
+                      // 조합된 참고항목을 해당 필드에 넣는다.
+                      document.getElementById("sample6_extraAddress").value = extraAddr;
+                  
+                  } else {
+                      document.getElementById("sample6_extraAddress").value = '';
+                  }
+
+                  // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                  document.getElementById("sample6_postcode").value = data.zonecode;
+                  document.getElementById("sample6_address").value = addr;
+              }
+          }).open();
+      }
+      
+      function bankselect2() {
+          var reselect = document.getElementById('rebank2');
+          var reoption = reselect.options[reselect.selectedIndex];
+
+         if(reoption.value == '직접입력'){
+            document.getElementById('rebank').removeAttribute('readonly');
+            document.getElementById('rebank').value = "";
+         } else {
+            document.getElementById('rebank').setAttribute('readonly', true);
+            document.getElementById('rebank').value = reoption.value;
+         }
+      }
+      
+      function validation2() {
+          var regNum = /^[0-9]*$/;
+          var braccount = document.getElementById('rebraccount').value;
+         var brfax = document.getElementById('rebrfax').value;
+         var brphone = document.getElementById('rebrphone').value;
+         var brbusinessno = document.getElementById('rebrbusinessno').value;
+         var postcode = document.getElementById('sample6_postcode').value;   
+
+         // 각 입력 필드에 대해 숫자가 아닌 경우를 체크
+         if (!regNum.test(brbusinessno)) {
+            sweetAlert("알림", "사업자 등록번호는 숫자만 입력해주세요.", "error");
+            return false;
+         }      
+         if (!regNum.test(postcode)) {
+            sweetAlert("알림", "우편 번호는 숫자만 입력해주세요.", "error");
+            return false;
+         }
+         if (!regNum.test(brphone)) {
+            sweetAlert("알림", "회사 번호는 숫자만 입력해주세요.", "error");
+            return false;
+         }
+         if (!regNum.test(brfax)) {
+            sweetAlert("알림", "팩스 번호는 숫자만 입력해주세요.", "error");
+            return false;
+         }
+         if (!regNum.test(braccount)) {
+            sweetAlert("알림", "계좌 번호는 숫자만 입력해주세요.", "error");
+            return false;
+         }
+         
+          // sample6_address, sample6_extraAddress 값을 조합하여 braddress 값 생성
+          var sample6_address = document.getElementById('sample6_address').value;
+          var sample6_extraAddress = document.getElementById('sample6_extraAddress').value;
+         if (sample6_extraAddress !== "") {
+            var rebraddress = sample6_address + ", " + sample6_extraAddress;
+         } else if(sample6_extraAddress == "") {
+            var rebraddress = sample6_address;
+         }
+
+          // 생성된 ADR 값을 hidden 필드에 설정
+          document.getElementById('rebraddress').value = rebraddress;
+      }
+      
+   </script>
+   
+</div>
+
+<div th:fragment="purList" class="script-bar">
+   <script>
+      //insert창 활성화
+      function showAddFn() {
+         var showAdd = document.getElementById('showAdd');
+         var showEdit = document.getElementById('showEdit');
+         if (showAdd.style.display === 'none') {
+            if (showEdit.style.display === 'block') {
+               sweetAlert("알림", "수정창을 닫아주세요.", "error");
+               return;
+            } else {
+               showAdd.style.display = 'block';
+               showEdit.style.display = 'none';
+               return;
+            }
+         }
+      }
+	  document.addEventListener('DOMContentLoaded', function() {
+	          const params = new URLSearchParams(window.location.search);
+	          if (params.has('autoshowAddFn')) {
+	              showAddFn();
+	          }
+	      });
+
+      //update창 활성화
+      function showEditFn(pno, source) {
+         var showEdit = document.getElementById('showEdit');
+         var showAdd = document.getElementById('showAdd');
+         if (showEdit.style.display === 'none') {
+            if (showAdd.style.display === 'block') {
+               sweetAlert("알림", "등록창을 닫아주세요.", "error");
+               return;
+            }
+         }
+          // AJAX 요청
+          $.ajax({
+              type: "GET",
+              url: "/m_calcEdit?pno=" + pno,
+              data: { "source": source },
+              success: function(response) {
+               showEdit.style.display = 'block';
+               showAdd.style.display = 'none';
+                  $('#showEdit').html(response);
+            },
+              error: function(xhr, status, error) {
+                  console.error(error);
+              }
+          });
+      }
+      
+      // 창 닫기
+      function hideEdit(){
+         var showAdd = document.getElementById('showAdd');
+         var showEdit = document.getElementById('showEdit');
+         showAdd.style.display = 'none';
+         showEdit.style.display = 'none';
+      }
+      
+      // 현재 날짜를 가져오는 함수
+      function getCurrentDate() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; // January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+
+        return yyyy + '-' + mm + '-' + dd;
+      }
+      
+      // 오늘 날짜까지만 선택 가능하도록 설정
+      document.getElementById('dateInput').setAttribute('max', getCurrentDate());
+      
+      function validateForm() {
+         var selectElement = document.querySelector('select[name="pclass"]');
+         var selectedValue = selectElement.value;
+         
+         // 선택된 값이 "선택"일 경우 폼 제출을 막음
+         if (selectedValue == 0) {
+         sweetAlert("알림", "옵션을 선택해주세요.", "error");
+         return false; // 폼 제출 막기
+         }
+         
+         // 선택된 값이 유효할 경우 폼 제출을 허용
+         return true;
+      }
+      
+      function validateForm2() {
+         
+          var selectElement2 = document.querySelector('select[#pclass2]');
+          var selectedValue2 = selectElement2.value;
+
+          // 선택된 값이 "선택"일 경우 폼 제출을 막음
+          if (selectedValue2 == 0) {
+            sweetAlert("알림", "옵션을 선택해주세요.", "error");
+              return false; // 폼 제출 막기
+          }
+
+          // 선택된 값이 유효할 경우 폼 제출을 허용
+          return true;
+         
+      }
+      
+	  //검색 업체
+	  function updateSelectedValues(brno, brname) {
+	      $('#selectedBrno').val(brno); // 선택된 brno 값을 hidden input에 할당
+	      $('#selectedBrname').val(brname); // 선택된 brname 값을 hidden input에 할당
+	      $('#brnoInput').val(brno); // 선택된 brno 값을 main 페이지의 input에 할당
+	      $('#brnameInput').val(brname); // 선택된 brname 값을 main 페이지의 input에 할당
+	  }
+
+	  function updateSelectedValues2(brno, brname) {
+	      $('#selectedBrno2').val(brno); // 선택된 brno 값을 hidden input에 할당
+	      $('#selectedBrname2').val(brname); // 선택된 brname 값을 hidden input에 할당
+	      $('#brnoInput2').val(brno); // 선택된 brno 값을 main 페이지의 input에 할당
+	      $('#brnameInput2').val(brname); // 선택된 brname 값을 main 페이지의 input에 할당
+	  }
+	  function updatebook(bono, boname) {
+	      $('#selectedBono').val(bono); // 선택된 bono 값을 hidden input에 할당
+	      $('#selectedBoname').val(boname); // 선택된 boname 값을 hidden input에 할당
+	      $('#bonoInput').val(bono); // 선택된 bono 값을 main 페이지의 input에 할당
+	      $('#bonameInput').val(boname); // 선택된 boname 값을 main 페이지의 input에 할당
+	  }
+	  function updatebook2(bono, boname) {
+	      $('#selectedBono2').val(bono); // 선택된 bono 값을 hidden input에 할당
+	      $('#selectedBoname2').val(boname); // 선택된 boname 값을 hidden input에 할당
+	      $('#bonoInput2').val(bono); // 선택된 bono 값을 main 페이지의 input에 할당
+	      $('#bonameInput2').val(boname); // 선택된 boname 값을 main 페이지의 input에 할당
+	  }
+	  $(document).ready(function() {
+	     
+	     // 추가 시 업체검색
+	     //datatable 초기화
+	     function initializeDataTable() {
+	         if ($.fn.DataTable.isDataTable('#searchComTable')) {
+	             $('#searchComTable').DataTable().destroy();
+	         }
+	         $('#searchComTable').DataTable({
+	             // DataTable 설정 옵션
+	         });
+	     }
+	     function updateTable(brclass) {
+	         $.ajax({
+	             url: "/m_searchCom",
+	             method: 'GET',
+	             data: { brclass: brclass },
+	             success: function(data) {
+	                 // Ajax 요청 성공 시 테이블 내용 업데이트
+	                 $('#searchComTable').html(data);
+	              initializeDataTable();
+	             },
+	             error: function(jqXHR, textStatus, errorThrown) {
+	                 console.error("Ajax 요청 실패: ", textStatus, errorThrown);
+	             }
+	         });
+	     }
+	     // 검색 버튼 클릭 시 데이터 업데이트
+	     $('.btnbrno').on('click', function(event) {
+	         updateTable(0);
+	        initializeDataTable();
+	     });
+	     
+	     
+	     // 수정 시 업체검색
+	     function initializeDataTable2() {
+	         if ($.fn.DataTable.isDataTable('#searchComTable2')) {
+	             $('#searchComTable2').DataTable().destroy();
+	         }
+	         $('#searchComTable2').DataTable({
+	             // DataTable 설정 옵션
+	         });
+	     }
+
+	     function updateTable2(brclass2) {
+	         $.ajax({
+	             url: "/m_searchCom2",
+	             method: 'GET',
+	             data: { brclass2: brclass2 },
+	             success: function(data) {
+	                 // Ajax 요청 성공 시 테이블 내용 업데이트
+	                 $('#searchComTable2').html(data);
+	              initializeDataTable2();
+	             },
+	             error: function(jqXHR, textStatus, errorThrown) {
+	                 console.error("Ajax 요청 실패: ", textStatus, errorThrown);
+	             }
+	         });
+	     }
+
+	     // 검색 버튼 클릭 시 데이터 업데이트
+	     $(document).on('click', '.btnbrno2', function(event) {
+	         updateTable2(0);
+			 initializeDataTable2();
+	     });
+
+
+	     // 추가 시 도서검색
+	     function initializeDataTable3() {
+	         if ($.fn.DataTable.isDataTable('#searchBookTable')) {
+	             $('#searchBookTable').DataTable().destroy();
+	         }
+	         $('#searchBookTable').DataTable({
+	             // DataTable 설정 옵션
+	         });
+	     }
+
+	     function bookTable() {
+	         $.ajax({
+	             url: "/m_searchBook",
+	             method: 'GET',
+	             success: function(data) {
+	                 // Ajax 요청 성공 시 테이블 내용 업데이트
+	                 $('#searchBookTable').html(data);
+	                 initializeDataTable3();
+	             },
+	             error: function(jqXHR, textStatus, errorThrown) {
+	                 console.error("Ajax 요청 실패: ", textStatus, errorThrown);
+	             }
+	         });
+	     }
+
+	     // 검색 버튼 클릭 시 데이터 업데이트
+	     $('.btnbook').on('click', function(event) {
+	        console.log("클릭 ");
+	         bookTable();
+	     });
+	     
+	     //수정 시 도서검색
+	     function initializeDataTable4() {
+	         if ($.fn.DataTable.isDataTable('#searchBookTable2')) {
+	             $('#searchBookTable2').DataTable().destroy();
+	         }
+	         $('#searchBookTable2').DataTable({
+	             // DataTable 설정 옵션
+	         });
+	     }
+
+	     function bookTable2() {
+	         $.ajax({
+	             url: "/m_searchBook2",
+	             method: 'GET',
+	             success: function(data) {
+	                console.log("Ajax 요청 성공");
+	                 // Ajax 요청 성공 시 테이블 내용 업데이트
+	                 $('#searchBookTable2').html(data);
+	                 initializeDataTable4();
+	             },
+	             error: function(jqXHR, textStatus, errorThrown) {
+	                 console.error("Ajax 요청 실패: ", textStatus, errorThrown);
+	             }
+	         });
+	     }
+
+	     // 검색 버튼 클릭 시 데이터 업데이트
+	     $(document).on('click', '.btnbook2', function(event) {
+	        console.log("클릭 ");
+	         bookTable2();
+	     });
+
+
+	  });
+   </script>
+</div>
+
+<div th:fragment="printSc" class="script-bar">
+	<script>
+		// 현재 열린 인쇄 창을 저장할 변수
+		let printWindow = null;
+		let isPrinting = false;
+
+		document.addEventListener('DOMContentLoaded', function() {
+		    // 버튼 클릭 이벤트 리스너 추가
+		    document.querySelector('#printButton').addEventListener('click', function() {
+		        if (!isPrinting) {
+		            isPrinting = true;
+		            printPage();
+		        }
+		    });
+		});
+
+		function printPage() {
+		    // 현재 날짜와 시간 구하기
+		    var now = new Date();
+		    var dateString = now.toLocaleDateString('ko-KR');
+		    var timeString = now.toLocaleTimeString('ko-KR');
+		    var dateTimeString = dateString + ' ' + timeString;
+
+		    // 테이블 요소 선택
+		    var tableElement = document.querySelector('#calcTable');
+			var headerDiv = document.querySelector('.table-responsive.hbtable');
+		    if (!tableElement || !headerDiv) {
+		        alert('테이블을 찾을 수 없습니다.');
+		        isPrinting = false; // 인쇄 작업 실패 시 상태 초기화
+		        return;
+		    }
+
+			// DataTables API를 통해 원시 HTML 가져오기
+			var tableData = $(tableElement).DataTable().table().container();
+			var clonedTable = tableData.cloneNode(true);
+		    // 테이블 헤더와 바디 선택
+		    var tableHeader = clonedTable.querySelector('thead');
+		    var tableBody = clonedTable.querySelector('tbody');
+
+		    if (!tableHeader || !tableBody) {
+		        alert('테이블 헤더 또는 바디를 찾을 수 없습니다.');
+		        isPrinting = false; // 인쇄 작업 실패 시 상태 초기화
+		        return;
+		    }
+			// 테이블 헤더에서 마지막 <th> 요소 제거
+			var headerRow = tableHeader.querySelector('tr');
+			var headerColumns = headerRow.querySelectorAll('th');
+			if (headerColumns.length > 0) {
+			    headerColumns[headerColumns.length - 1].remove(); // 마지막 <th> 제거
+			}
+
+		    // 액션 열의 데이터 셀 제거
+		    var rows = tableBody.querySelectorAll('tr');
+		    var cleanTableBody = '';
+
+		    rows.forEach(row => {
+		        var actionCell = row.querySelector('td:last-child'); // 마지막 td 요소
+		        var cells = row.querySelectorAll('td');
+		        var rowHtml = '<tr>' + Array.from(cells).slice(0, -1).map(cell => cell.outerHTML).join('') + '</tr>';
+		        cleanTableBody += rowHtml; // 액션 열을 제외한 데이터만 추가
+		    });
+
+		    // 새로운 HTML 문서 작성
+		    printWindow = window.open('', '_blank', 'width=1500,height=1000');
+
+		    printWindow.document.open();
+		    printWindow.document.write('<html><head><title>전표 인쇄</title>');
+		    printWindow.document.write('<style>');
+		    printWindow.document.write('@media print {');
+			printWindow.document.write('    body { font-size: 12pt; margin: 0; padding: 0; }');
+			printWindow.document.write('    .invoice-header h2 {text-align: center;}');
+			printWindow.document.write('    .invoice-header p {text-align: right;}');
+			printWindow.document.write('    .invoice-header p {text-align: right;}');
+			printWindow.document.write('    .invoice-details { border-collapse: collapse; width: 100%; }');
+			printWindow.document.write('    .invoice-details th, .invoice-details td { border: 1px solid #ddd; padding: 8px; text-align: center; }'); // 기본 텍스트 정렬
+			printWindow.document.write('    .invoice-details th { background-color: #f2f2f2; text-align: center; }'); // 헤더 가운데 정렬
+			printWindow.document.write('    .invoice-details td.right-align { text-align: right; }'); // 우측 정렬 클래스
+			printWindow.document.write('    .additional-table { float: right; border-collapse: collapse; }'); // 우측 배치 및 스타일
+			printWindow.document.write('    .additional-table th, .additional-table td { text-align: center; border: 1px solid #ddd; padding: 8px; }'); // 추가 테이블의 가운데 정렬
+			printWindow.document.write('    .invoice-header, .invoice-footer { margin-bottom: 20px; }');
+			printWindow.document.write('    .invoice { margin: 0 auto; }');
+		    printWindow.document.write('}');
+		    printWindow.document.write('</style>');
+		    printWindow.document.write('</head><body>');
+		    
+		    // 인쇄할 내용 작성
+		    printWindow.document.write('<div class="invoice-header">');
+		    printWindow.document.write('    <h2>매입 매출 전표</h2>');
+		    printWindow.document.write('    <p>전표 발행일자: ' + dateTimeString + '</p>');
+		    printWindow.document.write('</div>');
+			printWindow.document.write('<div class="additional-table">');
+			printWindow.document.write('<p>'+headerDiv.innerHTML+'</p>');
+			printWindow.document.write('</div>');
+		    printWindow.document.write('<div class="invoice">');
+		    printWindow.document.write('<table class="invoice-details">');
+		    printWindow.document.write('<thead>' + tableHeader.innerHTML + '</thead>');
+		    printWindow.document.write('<tbody>' + cleanTableBody + '</tbody>');
+		    printWindow.document.write('</table>');
+		    printWindow.document.write('</div>');
+		    printWindow.document.write('<div class="invoice-footer">');
+		    printWindow.document.write('    <h4>전표 발행자: (주)숨쉬는 서재</h4>');
+		    printWindow.document.write('    <p>문의전화: 000-0000-0000 / 이메일: info@yourcompany.com</p>');
+		    printWindow.document.write('</div>');
+		    
+		    printWindow.document.write('</body></html>');
+		    printWindow.document.close();
+		    
+		    // 인쇄 작업 중 인쇄 버튼이 여러 번 클릭되면 안 되도록 막기
+		    printWindow.onbeforeunload = function() {
+		        isPrinting = false;
+		    };
+
+		    // 인쇄 작업 시작
+		    printWindow.print();
+		}
+	</script>
+</div>
+	
+
+</body>
+</html>

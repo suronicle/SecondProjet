@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+  
+    <title>Management - Breathing Books</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+	
+    <!-- Custom Stylesheet -->
+    <link href="erp/css/style.css" rel="stylesheet">
+
+	<style>
+	    .hbmain {
+	        display: flex;
+	        align-items: center; /* Align items vertically centered */
+	        gap: 10px; /* Space between the items */
+	    }
+
+	</style>
+</head>
+
+<body>
+
+    <!-- Preloader start -->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!-- Preloader end -->
+
+    
+    <!-- Main wrapper start -->
+    <div id="main-wrapper">
+
+		<th:block th:insert="~{m_fragments::header('erp Main')}"></th:block>
+ 		<th:block th:insert="~{m_fragments::topbar}"></th:block>
+		<th:block th:insert="~{m_fragments::sidebar}"></th:block>
+
+        <!-- Content body start -->
+        <div class="content-body">
+
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-1">
+                            <div class="card-body">
+								<div class="hbmain">
+								    <h3 class="card-title text-white" th:text="'지난 달 총 매출'"></h3>
+									<h th:text="'/ 이번 달(전날기준)'"></h>
+								</div>
+                                <div class="d-inline-block">
+								    <h2 class="text-white" th:text="${lastsales.fomatsales}+'만 원 ('+${lastsales.total_pstock}+'건)'"></h2>
+									<h3 class="card-title text-white" th:text="' / '+${cursales.fomatsales != null ? cursales.fomatsales : '0' }+'만 원 ('+${cursales.total_pstock}+'건)'"></h3>
+                                    <p class="text-white mb-0" th:text="${braBest.start_date}+' ~ '+${braBest.end_date}"></p>
+                                </div>
+					            <span class="float-right display-5 opacity-5"><i class="fa fa-money"></i></span>
+					        </div>
+					    </div>
+					</div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-2">
+                            <div class="card-body">
+								<div class="hbmain">
+								    <h3 class="card-title text-white" th:text="'베스트 도서'"></h3>
+									<h th:text="'/ 총 '+${bookcnt}+'권 中'"></h>
+								</div>
+					            <div class="d-inline-block">
+								    <h2 class="text-white" th:text="${bookBest.cutboname}+'...'"></h2>
+									<h3 class="card-title text-white" th:text="'('+${bookBest.fomattotalsales}+'원 / '+${bookBest.total_pstock}+'권)'"></h3>
+					                <p class="text-white mb-0" th:text="${braBest.start_date}+' ~ '+${braBest.end_date}"></p>
+					            </div>
+					            <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
+					        </div>
+					    </div>
+					</div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-3">
+							<div class="card-body">
+								<div class="hbmain">
+								    <h3 class="card-title text-white" th:text="'이 달의 가맹점'"></h3>
+									<h th:text="'/ 총 '+${bracnt}+'개 지점 中'"></h>
+								</div>
+							    <div class="d-inline-block">
+							        <h2 class="text-white" th:text="${braBest.cutbrname}"></h2>
+									<h3 class="card-title text-white" th:text="'('+${braBest.fomattotalsales}+'원 / '+${braBest.total_pstock}+'권)'"></h3>
+							        <p class="text-white mb-0" th:text="${braBest.start_date}+' ~ '+${braBest.end_date}"></p>
+							    </div>
+							    <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+							</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-4">
+							<div class="card-body">
+								<div class="hbmain">
+							    	<h3 class="card-title text-white" th:text="'이 달의 출판사'"></h3>
+									<h th:text="'/ 총 '+${vencnt}+'개 업체 中'"></h>
+								</div>
+							    <div class="d-inline-block">
+									<h2 class="text-white" th:text="${venbest.brname}"></h2>
+									<h3 class="card-title text-white" th:text="'('+${venbest.total_pstock}+'권)'"></h3>
+							        <p class="text-white mb-0" th:text="${braBest.start_date}+' ~ '+${braBest.end_date}"></p>
+							    </div>
+							    <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+							</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">월별 현황</h4>
+									<canvas id="combinedChart" width="800" height="400"></canvas>
+                                </div>
+                            </div>
+                            
+                        </div>    
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card card-widget">
+                                <div class="card-body">
+                                    <h5 class="text-muted">간편 메뉴</h5>
+									<div class="mt-4">
+									</div>
+									<div class="mt-4" th:if="${bdto.brno=='admin'}">
+										<h6>업체 관리</h6>
+										<a href="m_comList?source=branch&autoShowSecondColumn=true"><button type="button" class="btn mb-1 btn-success">가맹점 등록</button></a>&nbsp;&nbsp;
+										<a href="m_comList?source=vendor&autoShowSecondColumn=true"><button type="button" class="btn mb-1 btn-success">출판사 등록</button></a>
+									</div>
+									<div class="mt-4">
+									</div>
+									<div class="mt-4">
+										<h6>매입 / 매출</h6>
+										<p th:if="${bdto.brno=='admin'}"><a href="m_calculation?autoshowAddFn=true"><button type="button" class="btn mb-1">
+											누락 매입 / 매출 등록&nbsp;<i class="fa fa-plus color-muted m-r-5"></i></button></a></p>
+										<a href="/m_comPurchase"><button type="button" class="btn mb-1 btn-info">전체 매입</button></a>&nbsp;&nbsp;
+										<a href="/m_comSales"><button type="button" th:if="${bdto.brno=='admin'}" class="btn mb-1 btn-danger">가맹점 매출</button>
+										<button type="button" th:if="${bdto.brno!='admin'}" class="btn mb-1 btn-danger">전체 매출</button></a>&nbsp;&nbsp;
+										<a href="/m_memSales" th:if="${bdto.brno=='admin'}"><button type="button" class="btn mb-1 btn-danger">회원 매출</button></a>
+									</div>
+                                </div>
+                            </div>
+                            
+                        </div>
+						<div class="col-lg-3 col-md-6">
+						    <div class="card card-widget">
+						        <div class="card-body">
+						            <h5 class="text-muted"> Login Info </h5>
+						            <h2 style="text-align: center;" th:text="${bdto?.brno}+'_'+${bdto?.brname}"></h2>
+									<div class="form-group row">
+										<label class="col-lg-5 col-form-label" style="font-weight: bold; font-size: medium;" for="대표자명">대표자 명</label>
+										<div class="col col-form-label" th:text="${bdto?.brdelegate}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-5 col-form-label" style="font-weight: bold; font-size: medium;" for="사업자등록번호">사업자 등록번호</label>
+										<div class="col col-form-label" th:text="${bdto?.formatbno}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-5 col-form-label" style="font-weight: bold; font-size: medium;" for="업체번호">회사번호</label>
+										<div class="col col-form-label" th:text="${bdto?.formatphone}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-5 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">팩스번호</label>
+										<div class="col col-form-label" th:text="${bdto?.formatfax}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-5 col-form-label" style="font-weight: bold; font-size: medium;" for="주소">주소</label>
+										<div class="col col-form-label" style="padding-left: 15px;" th:text="'('+${bdto?.brpostal}+') '+${bdto?.braddress}"></div>
+									</div>
+						        </div>
+						    </div>
+						    
+						</div>
+
+                    </div>
+            
+                </div>
+
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!-- Content body end -->
+        
+        
+		<th:block th:insert="~{m_fragments::footer}"></th:block>
+
+    </div>
+    <!-- Main wrapper end -->
+	<th:block th:insert="~{m_fragments::purList}"></th:block>
+	<script src="erp/plugins/common/common.min.js"></script>
+	<script src="erp/js/custom.min.js"></script>
+	<script src="erp/js/settings.js"></script>
+	<script src="erp/js/gleek.js"></script>
+	<script src="erp/js/styleSwitcher.js"></script>
+	
+	<!-- Chartjs -->
+	<script src="./erp/plugins/chart.js/Chart.bundle.min.js"></script>
+	<!-- Circle progress -->
+	<script src="./erp/plugins/circle-progress/circle-progress.min.js"></script>
+	<!-- Datamap -->
+	<script src="./erp/plugins/d3v3/index.js"></script>
+	<script src="./erp/plugins/topojson/topojson.min.js"></script>
+	<script src="./erp/plugins/datamaps/datamaps.world.min.js"></script>
+	<!-- Morrisjs -->
+	<script src="./erp/plugins/raphael/raphael.min.js"></script>
+	<script src="./erp/plugins/morris/morris.min.js"></script>
+	<!-- Pignose Calender -->
+	<script src="./erp/plugins/moment/moment.min.js"></script>
+	<script src="./erp/plugins/pg-calendar/js/pignose.calendar.min.js"></script>
+	<!-- ChartistJS -->
+	<script src="./erp/plugins/chartist/js/chartist.min.js"></script>
+	<script src="./erp/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js"></script>
+
+
+	<script src="./erp/js/dashboard/dashboard-1.js"></script>
+	<script th:inline="javascript">
+	    /*<![CDATA[*/
+	    var salesData = /*[[${salesData}]]*/ [];
+	    var buyData = /*[[${buyData}]]*/ [];
+
+	    var salesLabels = salesData.map(data => data.month);
+	    var salesValues = salesData.map(data => data.totalsales || 0);
+
+	    var buyLabels = buyData.map(data => data.month);
+	    var buyValues = buyData.map(data => data.totalpurchase || 0);
+
+	    // Merge the labels
+	    var labels = Array.from(new Set([...salesLabels, ...buyLabels])).sort();
+
+	    // Create a map for data values to ensure alignment of the merged labels
+	    var salesMap = new Map(salesData.map(item => [item.month, item.totalsales || 0]));
+	    var buyMap = new Map(buyData.map(item => [item.month, item.totalpurchase || 0]));
+
+	    // Map merged labels to their values
+	    var salesDataset = labels.map(label => salesMap.get(label) || 0);
+	    var buyDataset = labels.map(label => buyMap.get(label) || 0);
+	    var profitDataset = labels.map((label, index) => salesDataset[index] - buyDataset[index]);
+
+	    var ctx = document.getElementById('combinedChart').getContext('2d');
+	    var combinedChart = new Chart(ctx, {
+	        type: 'bar',
+	        data: {
+	            labels: labels,
+	            datasets: [
+	                {
+	                    label: '매입',
+	                    data: buyDataset,
+	                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+	                    borderColor: 'rgba(75, 192, 192, 1)',
+	                    borderWidth: 1
+	                },
+	                {
+	                    label: '매출',
+	                    data: salesDataset,
+	                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+	                    borderColor: 'rgba(255, 99, 132, 1)',
+	                    borderWidth: 1
+	                },
+	                {
+	                    label: '실수익',
+	                    data: profitDataset,
+	                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+	                    borderColor: 'rgba(153, 102, 255, 1)',
+	                    borderWidth: 1
+	                }
+	            ]
+	        },
+	        options: {
+	            scales: {
+	                x: {
+	                    beginAtZero: true,
+	                    title: {
+	                        display: true,
+	                        text: 'Month'
+	                    }
+	                },
+	                y: {
+	                    beginAtZero: true,
+	                    title: {
+	                        display: true,
+	                        text: 'Amount'
+	                    },
+	                    ticks: {
+	                        callback: function(value, index, values) {
+	                            return value / 1000 + 'K'; // Adjust the format here
+	                        }
+	                    }
+	                }
+	            },
+	            plugins: {
+	                legend: {
+	                    display: true,
+	                    position: 'top'
+	                }
+	            }
+	        }
+	    });
+	    /*]]>*/
+	</script>
+
+
+
+
+</body>
+
+</html>

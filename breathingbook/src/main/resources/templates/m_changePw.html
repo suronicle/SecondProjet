@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+  
+    <title>Password Change</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+	<link href="./erp/plugins/sweetalert/css/sweetalert.css" rel="stylesheet">
+	<link href="./erp/plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="erp/css/style.css" rel="stylesheet">
+
+
+    
+	<style>
+		.right-align {
+			padding: 0rem 1.875rem;
+			text-align: right; /* 텍스트를 우측으로 정렬 */
+		}
+		.msgbt {
+			margin: 30px 0 0 30px;
+		}
+	</style>
+</head>
+
+<body>
+
+    <!-- Preloader start -->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!-- Preloader end -->
+    
+    <!-- Main wrapper start -->
+    <div id="main-wrapper">
+		<th:block th:insert="~{m_fragments::header('erp Main')}"></th:block>
+ 		<th:block th:insert="~{m_fragments::topbar}"></th:block>
+		<th:block th:insert="~{m_fragments::sidebar}"></th:block>
+		<!-- Content body start -->
+		<div class="content-body">
+			
+			<div class="row">
+				<div class="col">
+				    <div th:if="${msg}" class="alert alert-success alert-dismissible fade show msgbt">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<th:block th:text="${msg}"></th:block>
+				    </div>
+				</div>
+				<div class="col-md-2">
+					<div class="row page-titles mx-0">
+						<div class="col p-md-0">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="/m">Main</a></li>
+								<li class="breadcrumb-item active"><a href="/m_myinfo?brno=B00001">내 정보</a></li>
+							</ol>
+						</div>
+					</div>
+			    </div>
+			</div>
+			<!-- div row -->
+			<div class="container-fluid">
+				<div class="row">
+					<div id="firstColumn" class="col">
+						<div class="card">
+							<div class="card-body">
+								<h4 class="card-title">My Info</h4>
+								<div class="form-view">
+									<div class="form-group row">
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">관리 번호</label>
+										<div class="col col-form-label" th:text="${bdto?.brno}"></div>
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">업체 명</label>
+										<div class="col col-form-label" th:text="${bdto?.brname}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="대표자명">대표자 명</label>
+										<div class="col col-form-label" th:text="${bdto?.brdelegate}"></div>
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="사업자등록번호">사업자 등록번호</label>
+										<div class="col col-form-label" th:text="${bdto?.formatbno}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체번호">회사번호</label>
+										<div class="col col-form-label" th:text="${bdto?.formatphone}"></div>
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">팩스번호</label>
+										<div class="col col-form-label" th:text="${bdto?.formatfax}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="계좌">은행 정보</label>
+										<div class="col col-form-label" th:text="${bdto?.brbank}"></div>
+										<div class="col col-form-label" th:text="${bdto?.formataccount}"></div>
+										<div class="col col-form-label" th:text="${bdto?.braccountholder}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="주소">주소</label>
+										<div class="col-form-label d-inline-block" style="padding-left: 15px;">(</div>
+										<div class="col-form-label d-inline-block" th:text="${bdto?.brpostal}"></div>
+										<div class="col-form-label d-inline-block">)</div>&nbsp;
+										<div class="col-form-label d-inline-block" th:text="${bdto?.braddress}"></div>
+									</div>
+									<div class="form-group">
+										<div align="center">
+											<button type="button" class="btn btn-warning" th:brno="${bdto?.brno}" th:source="${source}"
+													onclick="showEditCom(this.getAttribute('brno'), this.getAttribute('source'))">수정</button>
+											<button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#changePwModal">비밀번호 변경</button>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- first column end -->
+					<div class="col-md-6" id="comEdit" style="display: none;">
+						<th:block th:insert="~{m_comUpdate::editcom}"></th:block>
+					</div>
+				</div>
+				<!-- row end -->
+			</div>
+			<!-- #/ container -->   
+		</div>
+		<th:block th:insert="~{m_fragments::pwModal}"></th:block>
+		<!-- Content body end -->
+		<th:block th:insert="~{m_fragments::footer}"></th:block>
+    </div>
+
+	
+    <!-- Main wrapper end -->
+	<script src="./erp/plugins/sweetalert/js/sweetalert.min.js"></script>
+	<script src="./erp/plugins/sweetalert/js/sweetalert.init.js"></script>
+	<script src="erp/plugins/common/common.min.js"></script>
+    <script src="erp/js/custom.min.js"></script>
+    <script src="erp/js/settings.js"></script>
+    <script src="erp/js/gleek.js"></script>
+    <script src="erp/js/styleSwitcher.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="./erp/plugins/tables/js/jquery.dataTables.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+
+
+	<th:block th:insert="~{m_fragments::scUpdate}"></th:block>
+	<th:block th:insert="~{m_fragments::pwModalSc}"></th:block>
+	<script>
+		
+		$(document).ready(function() {
+	    
+		    function showEditCom(brno, source){
+		        var comEdit = document.getElementById('comEdit');
+		        $.ajax({
+		            type: "GET",
+		            url: "/m_comUpdate?brno="+brno,
+		            data: {
+		                "source": source
+		            },
+		            success: function(response) {
+		                comEdit.style.display = 'block';
+		                $('#comEdit').html(response);
+		            },
+		            error: function(xhr, status, error) {
+		                console.error(error);
+		            }
+		        });
+		    }
+		    
+		    function hideColumn() {
+		        var comEdit = document.getElementById('comEdit');
+		        comEdit.style.display = 'none';
+		    }
+			
+
+		});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>숨쉬는 서재 | 요청</title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="e-comm/image/x-icon" href="e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="e-comm/css/style.css">
+
+<style>
+	
+	.page-header{
+		margin-top:-20px;
+	}
+	
+	.page-wrapper{
+		margin-top:-60px;
+	}
+	
+</style>
+  
+  
+</head>
+
+
+<body id="body">
+
+<!-- Start Top Header Bar -->
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+
+<!-- menu -->
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+
+<section class="page-header" style="background-color:#ffffff;">
+	<div class="container" >
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name" >요청</h1>
+					<ol class="breadcrumb">
+						<li><a href="/">Home</a></li>
+						<li class="active">list</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="user-dashboard page-wrapper">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="list-inline dashboard-menu text-center">
+					<li><a href="/eRequestS">품절 / 판매중지</a></li>
+					<li><a href="/eRequestN">신작</a></li>
+					<li><a class="active" href="/eRequestList">요청된 책</a></li>
+				</ul>
+				<div class="dashboard-wrapper user-dashboard">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>책 번호</th>
+									<th>책 이름</th>
+									<th>작가</th>
+									<th>출판사</th>
+									<th>가격</th>
+									<th>상태</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="book : ${reqbook}">
+									<td th:text="${'#'+book.bono}"></td>
+									<td th:text="${book.boname}"></td>
+									<td th:text="${book.bowriter}"></td>
+									<td th:text="${book.bocompany}"></td>
+									<td th:text="${#strings.length(book.boprice.toString()) > 3 ? (#strings.substring(book.boprice.toString(), 0, #strings.length(book.boprice.toString()) - 3) + ',' + #strings.substring(book.boprice.toString(), #strings.length(book.boprice.toString()) - 3)) : book.boprice.toString()} + ' 원'"></td>
+									<td><span class="label label-primary">진행중</span></td>
+									<td><span data-toggle="modal" data-target="#product-modal" th:data-bono="${book.bono}"  th:data-boname="${book.boname}" th:data-bowriter="${book.bowriter}" th:data-bocontent="${book.bocontent}">
+									<i class="tf-ion-ios-search-strong"></i>
+									</span></td>
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<th:block th:insert="~{eBookModal::modal}"></th:block>
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="e-comm/plugins/slick/slick.min.js"></script>
+    <script src="e-comm/plugins/slick/slick-animation.min.js"></script>
+
+
+    <!-- Main Js File -->
+    <script src="e-comm/js/script.js"></script>
+	<script src="e-comm/js/modal.js"></script>
+
+  </body>
+  </html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="viewmem">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+					<div class="card-title">회원 <tblock th:text="${mem?.mid}"></tblock>님 상세보기</div>
+				</div>
+				<div class="col right-align">
+					<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+				</div>
+			</div>
+			<div class="form-view">
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="mname">회원 이름</label>
+					<div class="col col-form-label" th:text="${mem?.mname}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="mstate">상태</label>
+					<div class="col col-form-label" th:text="${mem?.cstate}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="mjoindate">가입일</label>
+					<div class="col col-form-label" th:text="${mem?.mjoindate}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="msecessiondate">탈퇴일</label>
+					<div class="col col-form-label" th:text="${mem?.msecessiondate==null ? '-' : mem?.msecessiondate}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체번호">이용약관 동의 여부</label>
+					<div class="col col-form-label" th:classappend="${mem?.mrequired == 0} ? '' : 'red-row'"
+						 th:text="${mem?.mrequired == 0 ? 'Y' : 'N'}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">선택약관 동의 여부</label>
+					<div class="col col-form-label" th:text="${mem?.coptional}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="memail">이메일</label>
+					<div class="col col-form-label" th:text="${mem?.memail}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="mphone">휴대폰</label>
+					<div class="col col-form-label" th:text="${mem?.formatmphone}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="mclass">회원 등급</label>
+					<div class="col col-form-label" th:text="${mem?.cclass}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="mreport">신고 누적</label>
+					<div class="col col-form-label" th:text="${mem?.mreport}+'건'"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="mbuy">구매 금액</label>
+					<div class="col col-form-label" th:text="${mem?.mbuy}+'원'"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="mpoint">포인트</label>
+					<div class="col col-form-label" th:text="${mem?.mpoint}+'점'"></div>
+				</div>
+				<!--
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="주소">주소</label>
+					<div class="col-form-label d-inline-block" style="padding-left: 15px;">(</div>
+					<div class="col-form-label d-inline-block" th:text="${bdto?.brpostal}"></div>
+					<div class="col-form-label d-inline-block">)</div>&nbsp;
+					<div class="col-form-label d-inline-block" th:text="${bdto?.braddress}"></div>
+				</div>
+				-->
+				<div class="form-group" th:if="${mem?.cstate == '가입자'}">
+					<div align="center">
+						<button type="button" class="btn btn-danger"  th:brno="${mem?.mid}" data-toggle="modal" data-target="#deleteModal">탈퇴 처리</button>
+						<!-- Modal -->
+                        <div class="modal fade" id="deleteModal">
+							<form class="form-valide" action="m_memDelete" method="get">
+								<input type="hidden" name="mid" th:value="${mem?.mid}">
+	                            <div class="modal-dialog" role="document">
+	                                <div class="modal-content">
+	                                    <div class="modal-header">
+	                                        <h5 class="modal-title">회원 정보 삭제 확인</h5>
+	                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+	                                        </button>
+	                                    </div>
+	                                    <div class="modal-body">회원 정보를 삭제하시겠습니까?</div>
+	                                    <div class="modal-footer">
+											<button type="submit" class="btn btn-danger">삭제</button>
+	                                        <button type="button" class="btn btn-info" data-dismiss="modal">닫기</button>
+	                                    </div>
+	                                </div>
+	                            </div>
+							</form>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+    <link href="erp/css/style.css" rel="stylesheet">
+   <!-- Color picker plugins css -->
+   <link href="./erp/plugins/jquery-asColorPicker-master/css/asColorPicker.css" rel="stylesheet">
+   <!-- Date picker plugins css -->
+   <link href="./erp/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet">
+   <!-- Daterange picker plugins css -->
+   <link href="./erp/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
+   <link href="./erp/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+   <style>
+      .right-align {
+         padding: 0rem 1.875rem;
+         text-align: right; /* 텍스트를 우측으로 정렬 */
+      }
+   </style>
+</head>
+
+<body>
+   
+   <div th:fragment="insertcom">
+      <div class="card">
+         <div class="card-body">
+            <div class="row">
+               <div class="col">
+                  <div th:if="${source == 'branch'}" class="card-title">신규 사업장 등록</div>
+                  <div th:if="${source == 'vendor'}" class="card-title">신규 거래처 등록</div>
+               </div>
+               <div class="col right-align">
+                  <button type="button" class="btn btn-info" onclick="hideColumn()" >닫기</button>
+               </div>
+            </div>
+            <div class="form-validation">
+               <form class="form-valide" th:action="m_bookInsert" method="post" enctype="multipart/form-data" autocomplete="off">         
+                  <div class="form-group row">
+                     <label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brname">책 번호 <span class="text-danger">*</span>
+                     </label>
+                     <div class="col-lg-6">
+                        <input type="text" class="form-control" id="bono" name="bono" placeholder="책 번호">
+                     </div>
+                  </div>
+                  
+                  <div class="form-group row">
+                     <label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brdelegate">제목 <span class="text-danger">*</span>
+                     </label>
+                     <div class="col-lg-6">
+                        <input type="text" class="form-control" id="boname" name="boname" placeholder="제목">
+                     </div>
+                  </div>
+                  
+                  <div class="form-group row">
+                     <label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brname">책 내용 <span class="text-danger">*</span>
+                     </label>
+                     <div class="col-lg-6">
+                        <input type="text" class="form-control" id="bocontents" name="bocontent" placeholder="책 내용">
+                     </div>
+                  </div>
+                  
+                  <div class="form-group row">
+                     <label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brbusinessno">작가<span class="text-danger">*</span>
+                     </label>
+                     <div class="col-lg-6">
+                        <input type="text" class="form-control" id="writer" name="bowriter" maxlength="10" placeholder="작가성함">
+                     </div>
+                  </div>
+                  
+                  <div class="form-group row">
+                     <label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brphone">출판사 <span class="text-danger">*</span>
+                     </label>
+                     <div class="col-lg-6">
+                        <input type="text" class="form-control" id="brnameInput" name="bocompany" maxlength="11" placeholder="출판사">
+                        <button type="button" class="btn btn-sm btnbrno" data-toggle="modal" data-target=".searchCom">
+                           <i class="mdi mdi-magnify"></i>검색
+                        </button>
+                        <input type="hidden" class="hb-form" id="brnoInput" name="brno" placeholder="업체 관리코드">
+                        <input type="hidden" id="selectedBrno">
+                        <input type="hidden" id="selectedBrname">
+                        
+                     </div>
+                  </div>
+                  
+                  <div class="form-group row">
+                     <label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brphone">출시일<span class="text-danger">*</span>
+                     </label>
+                     <div class="col-lg-6">
+                        <input type="date" class="form-control" id="bodate" name="bodate" maxlength="11" placeholder="출시일">
+                     </div>
+                  </div>
+                  
+                  <div class="form-group row">
+                     <label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brfax">재고 <span class="text-danger">*</span>
+                     </label>
+                     <div class="col-lg-6">
+                        <input type="text" class="form-control" id="bostock" name="bostock" placeholder="추가할 재고">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="braccountholder">가격<span class="text-danger">*</span>
+                     </label>
+                     <div class="col-lg-6">
+                        <input type="text" class="form-control" id="boprice" name="boprice" placeholder="가격">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="braccountholder">장르<span class="text-danger">*</span>
+                     </label>
+                     <div class="col-lg-6">
+						<div class="col-lg-6">
+						                        <select class="form-control" name = "bogenre" id="bogenre">
+						                           <option name = "bogenre" value="C0" selected   >소설</option>
+						                           <option name = "bogenre" value="C1">인문학</option>
+						                           <option name = "bogenre" value="C2">문구</option>
+						                           <option name = "bogenre" value="C3">에세이</option>
+						                           <option name = "bogenre" value="C4">수험서</option>
+						                           <option name = "bogenre" value="C5">그림책</option>
+						                           <option name = "bogenre" value="C6">경제</option>
+						                        </select>
+						                     </div>
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="braccountholder">첨부파일<span class="text-danger">*</span>
+                     </label>
+                     <div class="col-lg-6">
+                        <input type="file" name="files" onchange="selectFile(this);" multiple>
+                        <p></p>
+                     </div>
+                  </div>
+                  
+                  <div class="form-group">
+                     <div align="center">
+                        <input type="hidden" name="pbookno" value="bono"> 
+                        <button type="submit" class="btn btn-success" onclick="validation()">등록</button>
+                        <button type="reset" class="btn btn-secondary">초기화</button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   
+   
+   <th:block th:insert="~{m_fileScript::file}"></th:block>
+</body>
+
+</html>

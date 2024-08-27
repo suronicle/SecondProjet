@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+  
+    <title>일 별 합계</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+	<link href="./erp/plugins/sweetalert/css/sweetalert.css" rel="stylesheet">
+	<link href="./erp/plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="erp/css/style.css" rel="stylesheet">
+
+
+    
+	<style>
+		.right-align {
+			padding: 0rem 1.875rem;
+			text-align: right; /* 텍스트를 우측으로 정렬 */
+		}
+		.msgbt {
+			margin: 30px 0 0 30px;
+		}
+		.red-row {
+		    color: red;
+		}
+		.blue-row {
+		    color: blue;
+		}
+		.card-1 {
+		    display: flex;
+		    align-items: center; /* 수직 정렬을 원한다면 */
+		}
+
+		.card-title {
+		    flex-grow: 1; /* 가능한 최대 크기 */
+		}
+		.hbtable {
+			padding: 1.875rem 1.875rem;
+			text-align : center;
+		}
+		.tstyle th, .tstyle td{
+			width: 20%;
+		}
+		.hb-form {
+		  display: flex;
+		  width: auto;
+		  text-align: center;
+		  height: calc(1.64844rem + 2px);
+		  padding: 0.25rem 0.5rem;
+		  font-size: 0.76563rem;
+		  line-height: 1.5;
+		  color: #495057;
+		  background-color: #fff;
+		  background-clip: padding-box;
+		  border: 1px solid #ced4da;
+		  border-radius: 0.25rem;
+		  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		}
+		.hb-group {
+		  position: relative;
+		  display: flex;
+		  flex-wrap: wrap;
+		  align-items: stretch;
+		  justify-content: center;
+		}
+	</style>
+</head>
+
+<body>
+
+    <!-- Preloader start -->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!-- Preloader end -->
+    
+    <!-- Main wrapper start -->
+    <div id="main-wrapper">
+		<th:block th:insert="~{m_fragments::header('erp Main')}"></th:block>
+ 		<th:block th:insert="~{m_fragments::topbar}"></th:block>
+		<th:block th:insert="~{m_fragments::sidebar}"></th:block>
+		<!-- Content body start -->
+		<div class="content-body">
+			
+			<div class="row">
+				<div class="col">
+				    <div th:if="${msg}" class="alert alert-success alert-dismissible fade show msgbt">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<th:block th:text="${msg}"></th:block>
+				    </div>
+				</div>
+				<div class="col-md-2">
+					<div class="row page-titles">
+						<div class="col p-md-0">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="/m">Main</a></li>
+								<li class="breadcrumb-item active"><a href="/m_calculation">거래 내역</a></li>
+								<li class="breadcrumb-item active"><a href="/m_comSales">일 별 조회</a></li>
+							</ol>
+						</div>
+					</div>
+			    </div>
+			</div>
+			<!-- div row -->
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col">
+						<div class="card">
+							<div class="card-body">
+								<div class="col card-1">
+									<h4 class="card-title">매입 내역</h4>
+									<a href="/m_calculation"><button type="button" class="btn mb-1 btn-light">전체</button></a>
+									<a href="/m_comSales"><button type="button" class="btn mb-1 btn-danger">매출</button></a>
+								</div>
+								<div class="table-responsive hbtable">
+									<table class="table table-bordered tstyle">
+										<thead>
+											<tr>
+												<th>기간</th>
+												<th>구분</th>
+												<th>합계</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td></td>
+												<td>매입</td>
+												<td></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="custom-tab-1">
+								    <ul class="nav nav-tabs mb-3">
+								        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#purMain">전체</a>
+								        </li>
+								        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#purMonth">월별</a>
+								        </li>
+								        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#purVendor">출판사별</a>
+								        </li>
+										<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#purBook">도서별</a>
+										</li>
+								    </ul>
+									<div class="tab-content">
+									    <div class="tab-pane fade show active" id="purMain" role="tabpanel">
+											<div class="table-responsive container-fluid" id="showEdit" style="display: none;">
+												<th:block th:insert="~{m_calcEdit::purEdit}"></th:block>
+											</div>
+											<div class="table-responsive">
+												<table id="purchaseTable" class="table table-hover table-bordered hb-customdesc">
+													<thead>
+														<tr style="text-align : center">
+															<th>기간</th>
+															<th>업체코드</th>
+															<th>업체명</th>
+															<th>도서코드</th>
+															<th>도서명</th>
+															<th>단가</th>
+															<th>수량</th>
+															<th>금액</th>
+															<th>Action</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr style="text-align : right" class="record"
+															th:each="pur : ${purList}" th:if="${pur.pclass == 1}">
+															<td style="text-align : center"
+																th:text="${pur.formatpdate}"></td>
+															<td style="text-align : center"
+																th:text="${pur.brno}"></td>
+															<td style="text-align : center"
+																th:text="${pur.brname}"></td>
+															<td style="text-align : center"
+																th:text="${pur.pbookno}"></td>
+															<td style="text-align : center"
+																th:text="${pur.boname}"></td>
+															<td th:classappend="${pur.pclass == 1} ? 'blue-row' : ''"
+																th:text="${pur.fomatbooriginal}+'원'"></td>
+															<td th:classappend="${pur.pclass == 1} ? 'blue-row' : 'red-row'"
+																th:text="${pur.brreqnum}+'권'"></td>
+															<td th:classappend="${pur.pclass == 1} ? 'blue-row' : 'red-row'"
+																th:text="${pur.totalpurchase}+'원'"></td>
+															<td style="text-align : center">
+																<span>
+																	<a href="#" th:attr="data-pno=${pur.pno}, data-source='purchase'"
+																	   onclick="showEditFn(this.getAttribute('data-pno'), this.getAttribute('data-source'))"
+																	   data-toggle="tooltip" data-placement="top" title="Edit">
+																		<i class="fa fa-pencil color-muted m-r-5"></i></a>&nbsp;&nbsp;&nbsp;
+																	<a th:href="@{/m_purDelete(pno=${pur.pno}, source='purchase')}"
+																	   data-toggle="tooltip" data-placement="top" title="Close">
+																		<i class="fa fa-close color-danger"></i></a>
+																</span>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+									    </div>
+										<div class="tab-pane fade" id="purMonth">
+											<div class="table-responsive">
+												<table id="purMonthTable" class="table table-hover table-bordered hb-customdesc">
+													<thead>
+														<tr style="text-align : center">
+															<th>월</th>
+															<th>총 수량</th>
+															<th>총 금액</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td></td>
+															<td></td>
+															<td></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+										<div class="tab-pane fade" id="purVendor">
+											<div class="table-responsive">
+												<table id="purVendorTable" class="table table-hover table-bordered hb-customdesc">
+													<thead>
+														<tr style="text-align : center">
+															<th>업체코드</th>
+															<th>업체명</th>
+															<th>1월</th>
+															<th>2월</th>
+															<th>3월</th>
+															<th>4월</th>
+															<th>5월</th>
+															<th>6월</th>
+															<th>7월</th>
+															<th>8월</th>
+															<th>9월</th>
+															<th>10월</th>
+															<th>11월</th>
+															<th>12월</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>업체코드</td>
+															<td>업체명</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</ttd>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+										<div class="tab-pane fade" id="purbook">
+											<div class="table-responsive">
+												<table id="purbookTable" class="table table-hover table-bordered hb-customdesc">
+													<thead>
+														<tr style="text-align : center">
+															<th>도서코드</th>
+															<th>도서명</th>
+															<th>업체코드</th>
+															<th>업체명</th>
+															<th>1월</th>
+															<th>2월</th>
+															<th>3월</th>
+															<th>4월</th>
+															<th>5월</th>
+															<th>6월</th>
+															<th>7월</th>
+															<th>8월</th>
+															<th>9월</th>
+															<th>10월</th>
+															<th>11월</th>
+															<th>12월</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>도서코드</td>
+															<td>도서명</td>
+															<td>업체코드</td>
+															<td>업체명</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</ttd>
+															<td>총 매입 수량 / 총 금액</td>
+															<td>총 매입 수량 / 총 금액</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+				<!-- row end -->
+				
+			</div>
+			<!-- #/ container -->   
+		</div>
+		<!-- Content body end -->
+		<th:block th:insert="~{m_fragments::footer}"></th:block>
+    </div>
+	
+	<div class="modal fade searchCom2" tabindex="-1" role="dialog" aria-hidden="true">
+	    <div class="modal-dialog modal-lg">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title">업체 검색</h5>
+	                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+	                </button>
+	            </div>
+	            <div class="modal-body" id="modalContent2">
+					<form>
+					    <div>
+					        <label class="radio-inline mr-3">
+					            <input type="radio" name="brclass2" value="0" checked> 전체</label>
+					        <label class="radio-inline mr-3">
+					            <input type="radio" name="brclass2" value="1"> 가맹점</label>
+					        <label class="radio-inline">
+					            <input type="radio" name="brclass2" value="2"> 출판사</label>
+					    </div>
+					</form>
+					<th:block th:insert="~{m_searchModal::searchCom2}"></th:block>
+
+				</div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
+	<div class="modal fade searchBook2" tabindex="-1" role="dialog" aria-hidden="true">
+	    <div class="modal-dialog modal-lg">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title">도서 검색</h5>
+	                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+	                </button>
+	            </div>
+	            <div class="modal-body">
+					<th:block th:insert="~{m_searchModal::searchBook2}"></th:block>
+				</div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
+    <!-- Main wrapper end -->
+	<script src="./erp/plugins/sweetalert/js/sweetalert.min.js"></script>
+	<script src="./erp/plugins/sweetalert/js/sweetalert.init.js"></script>
+	<script src="erp/plugins/common/common.min.js"></script>
+	<script src="erp/js/custom.min.js"></script>
+	<script src="erp/js/settings.js"></script>
+	<script src="erp/js/gleek.js"></script>
+	<script src="erp/js/styleSwitcher.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="./erp/plugins/tables/js/jquery.dataTables.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+
+
+	<th:block th:insert="~{m_fragments::scList}"></th:block>
+	<th:block th:insert="~{m_fragments::scInsert}"></th:block>
+	<th:block th:insert="~{m_fragments::scUpdate}"></th:block>
+
+	<script>
+		function showEditFn(pno, source) {
+
+		    // 클릭된 행 찾기
+		    var editRow = $("tr[th\\:pno='" + pno + "'][th\\:source='" + source + "']");
+		    
+
+		    // AJAX 요청
+		    $.ajax({
+		        type: "GET",
+		        url: "/m_calcEdit?pno=" + pno,
+		        data: { "source": source },
+		        success: function(response) {
+		            // 성공 시 편집 영역에 표시
+		            $('#showEdit').html(response);
+		            $('#showEdit').show(); // 편집 영역 표시
+					console.log('Clicked edit for pno:', pno);
+		            // 여기서 필요에 따라 편집 UI를 조정하거나 추가 작업 수행
+		        },
+		        error: function(xhr, status, error) {
+		            console.error(error);
+		        }
+		    });
+		}
+		function hideEdit(){
+			var showEdit = document.getElementById('showEdit');
+			showEdit.style.display = 'none';
+		}
+		$(document).ready(function() {
+		    if (!$.fn.dataTable.isDataTable('#purchaseTable')) {
+		        $('#purchaseTable').DataTable({
+					"paging": true, // 페이징 사용
+			        "ordering": true, // 정렬 사용
+			        "searching": true, // 검색 기능 사용
+			        "info": true, // 정보 표시 사용
+			        "pagingType": "full_numbers", // 페이징 타입
+			        "language": {
+			            "search": "검색:", // 검색 창 텍스트
+			            "lengthMenu": "페이지 당 _MENU_ 개씩 보기", // 페이지 당 아이템 수 텍스트
+			            "zeroRecords": "검색 결과가 없습니다", // 검색 결과 없음 텍스트
+			            "info": "_TOTAL_ 개의 항목 중 _START_ 에서 _END_ 까지 보여줍니다", // 정보 텍스트
+			            "infoEmpty": "검색된 결과가 없습니다", // 검색 결과 없음 텍스트
+			            "infoFiltered": "(총 _MAX_ 개의 항목에서 필터링됨)" // 필터링 정보 텍스트
+			        }
+		        });
+		    }
+
+		    // DataTable 초기화 후 기간 및 총 매입 금액 계산 함수 호출
+		    calculatePeriodAndTotal();
+
+		    // 검색 이벤트 리스너 추가
+		    $('#purchaseTable').on('draw.dt', function() {
+		        calculatePeriodAndTotal();
+		    });
+
+		    // 테이블 내 모든 totalpurchase 값을 더하는 함수
+		    function calculateTotalPurchase() {
+		        var total = 0;
+		        $('#purchaseTable tbody tr').each(function() {
+		            var purValueText = $(this).find('td:nth-child(8)').text().trim(); // 금액 텍스트 가져오기
+		            var purValue = parseFloat(purValueText.replace(/,/g, '').replace('원', '')); // 쉼표 제거 후 숫자로 변환
+		            if (!isNaN(purValue)) {
+		                total += purValue;
+		            }
+		        });
+		        return total;
+		    }
+
+		    // 기간과 금액을 계산하여 출력하는 함수
+		    function calculatePeriodAndTotal() {
+		        var firstDate = $('#purchaseTable tbody tr:first-child td:nth-child(1)').text();
+		        var lastDate = $('#purchaseTable tbody tr:last-child td:nth-child(1)').text();
+		        // 날짜 형식 변환 (yyyy-MM-dd를 가정)
+		        var firstDateObj = new Date(firstDate);
+		        var lastDateObj = new Date(lastDate);
+
+		        // firstDate가 lastDate보다 빠른 경우와 늦은 경우를 비교하여 기간 설정
+		        var periodText;
+		        if (firstDateObj < lastDateObj) {
+		            periodText = firstDate + ' ~ ' + lastDate;
+		        } else {
+		            periodText = lastDate + ' ~ ' + firstDate;
+		        }
+
+		        var total = calculateTotalPurchase();
+		        var formattedTotal = total.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+		        // 기간 출력
+		        $('.hbtable tbody tr:nth-child(1) td:nth-child(1)').text(periodText);
+		        // 금액 출력
+		        $('.hbtable tbody tr:nth-child(1) td:nth-child(3)').text(formattedTotal + '원');
+		    }
+			
+			// 현재 날짜를 가져오는 함수
+			function getCurrentDate2() {
+			  var today = new Date();
+			  var dd = today.getDate();
+			  var mm = today.getMonth() + 1; // January is 0!
+			  var yyyy = today.getFullYear();
+
+			  if (dd < 10) {
+			    dd = '0' + dd;
+			  }
+			  if (mm < 10) {
+			    mm = '0' + mm;
+			  }
+
+			  return yyyy + '-' + mm + '-' + dd;
+			}
+
+			// 오늘 날짜까지만 선택 가능하도록 설정
+			document.getElementById('dateInput2').setAttribute('max', getCurrentDate2());
+			function validateForm2() {
+				
+			    var selectElement2 = document.querySelector('select[#pclass2]');
+			    var selectedValue2 = selectElement2.value;
+
+			    // 선택된 값이 "선택"일 경우 폼 제출을 막음
+			    if (selectedValue2 == 0) {
+			        alert("옵션을 선택해주세요.");
+			        return false; // 폼 제출 막기
+			    }
+
+			    // 선택된 값이 유효할 경우 폼 제출을 허용
+			    return true;
+				
+			}
+			function updateSelectedValues2(brno, brname) {
+			    $('#selectedBrno2').val(brno); // 선택된 brno 값을 hidden input에 할당
+			    $('#selectedBrname2').val(brname); // 선택된 brname 값을 hidden input에 할당
+			    $('#brnoInput2').val(brno); // 선택된 brno 값을 main 페이지의 input에 할당
+			    $('#brnameInput2').val(brname); // 선택된 brname 값을 main 페이지의 input에 할당
+			}
+			$(document).ready(function() {
+				
+				function initializeDataTable2() {
+				    if ($.fn.DataTable.isDataTable('#searchComTable2')) {
+				        $('#searchComTable2').DataTable().destroy();
+				    }
+				    $('#searchComTable2').DataTable({
+				        // DataTable 설정 옵션
+				    });
+				}
+				
+
+				function updateTable2(brclass2) {
+				    $.ajax({
+				        url: "/m_searchCom2",
+				        method: 'GET',
+				        data: { brclass2: brclass2 },
+				        success: function(data) {
+				            // Ajax 요청 성공 시 테이블 내용 업데이트
+				            $('#searchComTable2').html(data);
+							initializeDataTable2();
+				        },
+				        error: function(jqXHR, textStatus, errorThrown) {
+				            console.error("Ajax 요청 실패: ", textStatus, errorThrown);
+				        }
+				    });
+				}
+
+				// 검색 버튼 클릭 시 데이터 업데이트
+				$('.btnbrno2').on('click', function(event) {
+				    var brclass2 = $('input[name="brclass2"]:checked').val();
+				    updateTable2(brclass2);
+				});
+
+				// 라디오 버튼 변경 시 데이터 업데이트
+				$('input[name="brclass2"]').change(function() {
+				    var brclass2 = $('input[name="brclass2"]:checked').val();
+				    updateTable2(brclass2);
+				});
+				
+				initializeDataTable2();
+			});
+		});
+
+	</script>
+
+</body>
+
+</html>

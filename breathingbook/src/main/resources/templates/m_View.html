@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="viewcom">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+					<div th:if="${source == 'branch'}" class="card-title">사업장 상세보기</div>
+					<div th:if="${source == 'vendor'}" class="card-title">거래처 상세보기</div>
+				</div>
+				<div class="col right-align">
+					<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+				</div>
+			</div>
+			<div class="form-view">
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">관리 번호</label>
+					<div class="col col-form-label" th:text="${bdto?.brno}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">업체 명</label>
+					<div class="col col-form-label" th:text="${bdto?.brname}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="대표자명">대표자 명</label>
+					<div class="col col-form-label" th:text="${bdto?.brdelegate}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="사업자등록번호">사업자 등록번호</label>
+					<div class="col col-form-label" th:text="${bdto?.formatbno}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체번호">회사번호</label>
+					<div class="col col-form-label" th:text="${bdto?.formatphone}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">팩스번호</label>
+					<div class="col col-form-label" th:text="${bdto?.formatfax}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="계좌">은행 정보</label>
+					<div class="col col-form-label" th:text="${bdto?.brbank}"></div>
+					<div class="col col-form-label" th:text="${bdto?.formataccount}"></div>
+					<div class="col col-form-label" th:text="${bdto?.braccountholder}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="주소">주소</label>
+					<div class="col-form-label d-inline-block" style="padding-left: 15px;">(</div>
+					<div class="col-form-label d-inline-block" th:text="${bdto?.brpostal}"></div>
+					<div class="col-form-label d-inline-block">)</div>&nbsp;
+					<div class="col-form-label d-inline-block" th:text="${bdto?.braddress}"></div>
+				</div>
+				<div class="form-group">
+					<div align="center">
+						<button type="button" class="btn btn-warning" th:brno="${bdto?.brno}" th:source="${source}"
+								onclick="showEditCom(this.getAttribute('brno'), this.getAttribute('source'))">수정</button>
+						<button type="button" class="btn btn-danger" th:brno="${bdto?.brno}" th:source="${source}" data-toggle="modal" data-target="#deleteModal">삭제</button>
+						<!-- Modal -->
+                        <div class="modal fade" id="deleteModal">
+							<form class="form-valide" action="m_comDelete" method="get">
+								<input type="hidden" name="source" th:value="${source}">
+								<input type="hidden" name="brno" th:value="${bdto?.brno}">
+	                            <div class="modal-dialog" role="document">
+	                                <div class="modal-content">
+	                                    <div class="modal-header">
+	                                        <h5 class="modal-title">삭제 확인</h5>
+	                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+	                                        </button>
+	                                    </div>
+	                                    <div class="modal-body">회사 정보를 삭제하시겠습니까?</div>
+	                                    <div class="modal-footer">
+											<button type="submit" class="btn btn-danger">삭제</button>
+	                                        <button type="button" class="btn btn-info" data-dismiss="modal">닫기</button>
+	                                    </div>
+	                                </div>
+	                            </div>
+							</form>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

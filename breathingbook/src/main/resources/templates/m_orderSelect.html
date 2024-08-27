@@ -1,0 +1,288 @@
+<div th:fragment="viewcom">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+				</div>
+				<div class="col right-align">
+					<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+				</div>
+			</div>
+			<div class="form-view">
+				<form action = "/m_paycheck" method = "post">
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">주문 번호</label>
+					<div class="col col-form-label" th:text="${param?.buyno}"></div>
+					<input type = "hidden" name = "buyno" th:value = "${order?.buyno}"> 
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">구매자 아이디</label>
+					<div class="col col-form-label" th:if="${order?.buyid != 'none'}" th:text="${order?.buyid}"></div>
+					<div class="col col-form-label" th:if="${order?.buyid == 'none'}" th:text="비회원"></div>
+					
+					<input type = "hidden" name = "buyid" th:value = "${order?.buyid}"> 
+					<input type = "hidden" name = "buycode" th:value = "${order?.buycode}"> 
+					<input type = "hidden" name = "bono" th:value = "${order?.bono}">
+					<input type = "hidden" name = "buynum" th:value = "${order?.buynum}">
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">책 번호</label>
+					<div class="col col-form-label" th:text="${order?.bono}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">제목</label>
+					<div class="col col-form-label" th:text="${order?.boname}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">작가</label>
+					<div class="col col-form-label" th:text="${order?.bowriter}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">구매 수량</label>
+					<div class="col col-form-label" th:text="${order?.buynum}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">지점</label>
+					<div class="col col-form-label" th:text="${order?.bocompany}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">결제 상태</label>
+					<div class="col col-form-label" th:text="${order?.codename}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">주문 날짜</label>
+					<div class="col col-form-label" th:text="${order?.buydate}"></div>
+
+				</div>
+				<div class="form-group">
+					<div align="center" th:if="${order?.buycode == 'E1'}">
+						<button type="submit"  class="btn btn-warning">결제 확인</button>
+					</div>
+					<div align="center" th:if="${order?.buycode == 'B13'}">
+						<button type="submit"  class="btn btn-warning">배송 준비</button>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div th:fragment="delivery">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+				</div>
+				<div class="col right-align">
+					<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+				</div>
+			</div>
+			<div class="form-view">
+				<form action = "/m_deliveryCheck" method = "post">
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">주문 번호</label>
+					<div class="col col-form-label" th:text="${order?.buyno}"></div>
+					<input type = "hidden" name = "buyno" th:value = "${order?.buyno}"> 
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">구매자 아이디</label>
+					<div class="col col-form-label" th:if="${order?.buyid != 'none'}" th:text="${order?.buyid}"></div>
+					<div class="col col-form-label" th:if="${order?.buyid == 'none'}" th:text="비회원"></div>
+					<input type = "hidden" name = "buyid" th:value = "${order?.buyid}"> 
+					<input type = "hidden" name = "buycode" th:value = "${order?.buycode}"> 
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">책 번호</label>
+					<div class="col col-form-label" th:text="${order?.bono}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">제목</label>
+					<div class="col col-form-label" th:text="${order?.boname}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">작가</label>
+					<div class="col col-form-label" th:text="${order?.bowriter}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">구매 수량</label>
+					<div class="col col-form-label" th:text="${order?.buynum}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">지점</label>
+					<div class="col col-form-label" th:text="${order?.bocompany}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">배송 상태</label>
+					<div class="col col-form-label" th:text="${order?.codename}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">주문 날짜</label>
+					<div class="col col-form-label" th:text="${order?.buydate}"></div>
+				</div>
+				<div class="form-group">
+					<div align="center" th:if="${order?.buycode == 'B5'}">
+						<button type="submit"  class="btn btn-warning">배송 출발</button>
+					</div>
+					<div align="center" th:if="${order?.buycode == 'B6'}">
+						<button type="submit"  class="btn btn-warning">배송 완료</button>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div th:fragment="returnManage">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+				</div>
+				<div class="col right-align">
+					<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+				</div>
+			</div>
+			<div class="form-view">
+				<form action = "/m_takeBackCheck" method = "post">
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">주문 번호</label>
+					<div class="col col-form-label" th:text="${order?.buyno}"></div>
+					<input type = "hidden" name = "buyno" th:value = "${order?.buyno}"> 
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">구매자 아이디</label>
+					<div class="col col-form-label" th:if="${order?.buyid != 'none'}" th:text="${order?.buyid}"></div>
+					<div class="col col-form-label" th:if="${order?.buyid == 'none'}" th:text="비회원"></div>
+					<input type = "hidden" name = "buyid" th:value = "${order?.buyid}"> 
+					<input type = "hidden" name = "buycode" th:value = "${order?.buycode}"> 
+					<input type = "hidden" name = "bono" th:value = "${order?.bono}">
+					<input type = "hidden" name = "buynum" th:value = "${order?.buynum}">
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">책 번호</label>
+					<div class="col col-form-label" th:text="${order?.bono}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">제목</label>
+					<div class="col col-form-label" th:text="${order?.boname}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">작가</label>
+					<div class="col col-form-label" th:text="${order?.bowriter}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">구매 수량</label>
+					<div class="col col-form-label" th:text="${order?.buynum}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">취소 상태</label>
+					<div class="col col-form-label" th:text="${order?.codename}"></div>
+				</div>
+				<div class="form-group">
+					<div align="center" th:if="${order?.buycode == 'B18'}">
+						<button type="submit"  class="btn btn-warning">취소 확인</button>
+					</div>
+					<div align="center" th:if="${order?.buycode == 'B19'}">
+						<button type="submit"  class="btn btn-warning">취소 완료</button>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div th:fragment="refund">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+				</div>
+				<div class="col right-align">
+					<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+				</div>
+			</div>
+			<div class="form-view">
+				<form action = "/m_refundCheck" method = "post">
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">주문 번호</label>
+					<div class="col col-form-label" th:text="${order?.buyno}"></div>
+					<input type = "hidden" name = "buyno" th:value = "${order?.buyno}"> 
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">구매자 아이디</label>
+					<div class="col col-form-label" th:if="${order?.buyid != 'none'}" th:text="${order?.buyid}"></div>
+					<div class="col col-form-label" th:if="${order?.buyid == 'none'}" th:text="비회원"></div>
+					<input type = "hidden" name = "buyid" th:value = "${order?.buyid}"> 
+					<input type = "hidden" name = "buycode" th:value = "${order?.buycode}"> 
+					<input type = "hidden" name = "bono" th:value = "${order?.bono}">
+					<input type = "hidden" name = "buynum" th:value = "${order?.buynum}">
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">책 번호</label>
+					<div class="col col-form-label" th:text="${order?.bono}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">제목</label>
+					<div class="col col-form-label" th:text="${order?.boname}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">작가</label>
+					<div class="col col-form-label" th:text="${order?.bowriter}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">구매 수량</label>
+					<div class="col col-form-label" th:text="${order?.buynum}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">환불상태</label>
+					<div class="col col-form-label" th:text="${order?.codename}"></div>
+				</div>
+				<div class="form-group">
+					<div align="center" th:if="${order?.buycode == 'B9'}">
+						<button type="submit"  class="btn btn-warning">환불 확인</button>
+					</div>
+					<div align="center" th:if="${order?.buycode == 'B15'}">
+						<button type="submit"  class="btn btn-warning">환불 완료</button>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div th:fragment="exchange">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+				</div>
+				<div class="col right-align">
+					<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+				</div>
+			</div>
+			<div class="form-view">
+				<form action = "/m_exchangeCheck" method = "post">
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">주문 번호</label>
+					<div class="col col-form-label" th:text="${order?.buyno}"></div>
+					<input type = "hidden" name = "buyno" th:value = "${order?.buyno}"> 
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">구매자 아이디</label>
+					<div class="col col-form-label" th:if="${order?.buyid != 'none'}" th:text="${order?.buyid}"></div>
+					<div class="col col-form-label" th:if="${order?.buyid == 'none'}" th:text="비회원"></div>
+					<input type = "hidden" name = "buyid" th:value = "${order?.buyid}"> 
+					<input type = "hidden" name = "buycode" th:value = "${order?.buycode}">
+
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">책 번호</label>
+					<div class="col col-form-label" th:text="${order?.bono}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">제목</label>
+					<div class="col col-form-label" th:text="${order?.boname}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">작가</label>
+					<div class="col col-form-label" th:text="${order?.bowriter}"></div>
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">구매 수량</label>
+					<div class="col col-form-label" th:text="${order?.buynum}"></div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">반품상태</label>
+					<div class="col col-form-label" th:text="${order?.codename}"></div>
+				</div>
+				
+				<div class="form-group">
+					<div align="center" th:if="${order?.buycode == 'B2'}">
+						<button type="submit"  class="btn btn-warning">교환 확인</button>
+					</div>
+					<div align="center" th:if="${order?.buycode == 'B3'}">
+						<button type="submit"  class="btn btn-warning">교환 완료</button>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

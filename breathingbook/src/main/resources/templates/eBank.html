@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>숨쉬는 서재 | 무통장 입금</title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="e-comm/image/x-icon" href="e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="e-comm/css/style.css">
+
+
+</head>
+
+
+<body id="body">
+
+
+<section class="page-header" style="background-color:#ffffff;">
+	<div class="container" >
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name">무통장 입금</h1>
+					<ol class="breadcrumb">
+						<li><a href="/">Home</a></li>
+						<li class="active">bank</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="checkout shopping">
+   <div class="container">
+      <div class="row">
+	
+							<div class="block">
+							                 <h4 class="widget-title"></h4>
+							                 <p>무통장 입금</p>
+							                 <div class="checkout-product-details">
+							                    <div class="payment">
+							                       <div class="card-details">
+							                          <form  class="checkout-form" action = "/ePaymentmethod" method="post">
+							                             <div class="form-group">
+							                                <label for="bank-account">계좌 번호 <span class="required">*</span></label>
+							                                <input  id="bank-account" class="form-control" type="text" name="buyaccount" readonly>
+							                             </div>
+
+														 <div class="text-center mt-20">
+															<input type="hidden" id="paymentbtn" value="W1">
+														<input type="submit" class="btn btn-main" style="background-color:#A1DD70;" name = "paymentbtn" value="무통장 입금"  onclick="paymentbank()">
+														 </div>
+							                          </form>
+							                       </div>
+							                    </div>
+							                 </div>
+							              </div>
+							           </div>
+   
+</div>   
+</div>   
+</div>   
+
+
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="e-comm/plugins/slick/slick.min.js"></script>
+    <script src="e-comm/plugins/slick/slick-animation.min.js"></script>
+
+
+
+	<!-- 카카오api -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	
+    <!-- Main Js File -->
+    <script src="e-comm/js/script.js"></script>
+    
+	<script src="e-comm/js/buy.js"></script>
+
+	<script>
+		function generateRandomNumber() {
+			function getRandomDigits(length) {
+				let digits = '';
+				for (let i = 0; i < length; i++) {
+					digits += Math.floor(Math.random() * 10);
+				}
+				return digits;
+			}
+			const part1 = getRandomDigits(4);
+			const part2 = getRandomDigits(4);
+			const part3 = getRandomDigits(4);
+			const part4 = getRandomDigits(3);
+			const randomNumber = `m뱅킹 ${part1}-${part2}-${part3}-${part4}`;
+			document.getElementById('bank-account').value = randomNumber;
+		}
+		document.addEventListener('DOMContentLoaded', generateRandomNumber);
+	</script>
+	
+  </body>
+  </html>

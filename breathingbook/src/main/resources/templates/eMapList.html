@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<!--
+ // WEBSITE: https://themefisher.com
+ // TWITTER: https://twitter.com/themefisher
+ // FACEBOOK: https://www.facebook.com/themefisher
+ // GITHUB: https://github.com/themefisher/
+-->
+
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>숨쉬는 서재 | 매장</title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="e-comm/image/x-icon" href="e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="e-comm/css/style.css">
+
+<style>
+	
+	.page-header{
+		margin-top:-20px;
+	}
+	
+	.page-wrapper{
+		margin-top:-60px;
+	}
+	
+
+</style>
+  
+</style>
+
+  
+</head>
+
+
+<body id="body">
+
+<!-- Start Top Header Bar -->
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+
+<!-- menu -->
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+
+<section class="page-header" style="background-color:#ffffff;">
+	<div class="container" >
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name" >매장</h1>
+					<ol class="breadcrumb">
+						<li><a href="/">Home</a></li>
+						<li class="active">BookStore</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="pricing-table">
+	<div class="container">
+		<div class="row">
+			<!-- single pricing table -->
+			<div class="container">
+			    <div class="row">
+			        <!-- single pricing table -->
+			        <div class="col-md-4 col-sm-6 col-xs-12" th:each="list : ${list}">
+			            <div class="pricing-item">
+			                
+			                <!-- plan name & value -->
+			                <div class="price-title">
+			                    <h3 th:if="${list.brno=='B00001'}">본점</h3>
+								<h3 th:if="${list.brno=='B00002'}">1호점</h3>
+								<h3 th:if="${list.brno=='B00003'}">2호점</h3>
+								
+			                    <strong class="value" th:if="${list.brno=='B00001'}">인계</strong>
+								<strong class="value" th:if="${list.brno=='B00002'}">수원</strong>
+								<strong class="value" th:if="${list.brno=='B00003'}">관악</strong>
+			                    <p th:if="${list.brno=='B00001'}" th:text="${list.braddress}"></p>
+								<p th:if="${list.brno=='B00002'}" th:text="${list.braddress}"></p>
+								<p th:if="${list.brno=='B00003'}" th:text="${list.braddress}"></p>
+			                </div>
+			                <!-- /plan name & value -->
+			                
+							
+			      			<img src="e-comm/images/bookstore/store1.png"  th:if="${list.brno=='B00001'}" alt="" style="width: 300px; height: 400px;" />
+							<img src="e-comm/images/bookstore/store2.png"  th:if="${list.brno=='B00002'}" alt="" style="width: 300px; height: 400px; margin-top:17px;" />
+							<img src="e-comm/images/bookstore/store3.png"  th:if="${list.brno=='B00003'}" alt="" style="width: 300px; height: 400px; margin-top:17px;" />
+							
+			                <!-- signup button -->
+			                <a class="btn btn-main" th:if="${list.brno=='B00001'}" href="https://map.naver.com/p/search/mbc아카데미컴퓨터교육센터수원인계점/place/1343971763?c=15.00,0,0,0,dh&isCorrectAnswer=true" style="background-color: #A1DD70;">매장보기</a>
+							<a class="btn btn-main" th:if="${list.brno=='B00002'}" href="https://map.naver.com/p/search/MBC아카데미컴퓨터교육센터수원점/place/1242045478?c=15.00,0,0,0,dh&isCorrectAnswer=true" style="background-color: #A1DD70;">매장보기</a>
+							<a class="btn btn-main" th:if="${list.brno=='B00003'}" href="https://map.naver.com/p/search/MBC아카데미컴퓨터학원/place/1244685585?c=15.00,0,0,0,dh&placePath=%3Fentry%253Dbmp" style="background-color: #A1DD70;">매장보기</a>
+
+							
+							<!-- /signup button -->
+			                
+			            </div>
+			        </div>
+			        <!-- end single pricing table -->
+			
+		
+
+			
+			
+		</div>       <!-- End row -->
+	</div>   	<!-- End container -->
+</section>   <!-- End section -->
+
+
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="e-comm/plugins/slick/slick.min.js"></script>
+    <script src="e-comm/plugins/slick/slick-animation.min.js"></script>
+
+
+    <!-- Main Js File -->
+    <script src="e-comm/js/script.js"></script>
+    
+
+
+  </body>
+  </html>

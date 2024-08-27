@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>숨쉬는 서재 | 상세보기</title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="e-comm/image/x-icon" href="e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="e-comm/css/style.css">
+  
+      <!-- Main jQuery -->
+    <script src="e-comm/plugins/jquery/dist/jquery.min.js"></script>
+
+<style>   
+          .menu {
+              margin-top: -90px; 
+              padding-top: 0;
+          }
+
+		
+		  .call-to-action.section {
+		      margin-top: -40px;
+		  }
+		
+</style>
+  
+  
+</head>
+
+
+<body id="body">
+
+<!-- Start Top Header Bar -->
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+
+<th:block th:insert="~{ecom_fragments::search}"></th:block>
+
+
+<!-- menu -->
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+
+<section class="single-product">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<ol class="breadcrumb">
+					<li><a href="/">Home</a></li>
+					<li><a href="shop.html">book</a></li>
+					<li class="active">상세보기</li>
+				</ol>
+			</div>
+			<div class="col-md-6">
+				<ol class="product-pagination text-right">
+					<li><a href="blog-left-sidebar.html"><i class="tf-ion-ios-arrow-left"></i> Next </a></li>
+					<li><a href="blog-left-sidebar.html">Preview <i class="tf-ion-ios-arrow-right"></i></a></li>
+				</ol>
+			</div>
+		</div>
+		<div class="row mt-20">
+			<div class="col-md-5">
+				
+				<div class="single-product-slider">
+					
+					<div id='carousel-custom' class='carousel slide' data-ride='carousel'>
+						
+						<div class='carousel-outer'>
+							<!-- me art lab slider -->
+							<div class='carousel-inner '>
+							
+								<div class='item active'>
+									
+								<img src="e-comm/images/book/bookad2.jpg" alt="" data-zoom-image="e-comm/images/book/bookad2.jpg" style="width: 470px; height: 600px;" />
+								
+								</div>
+								<div class='item'>
+									<img src='e-comm/images/book/bookad3.jpg' alt='' data-zoom-image="e-comm/images/book/bookad3.jpg" style="width: 470px; height: 600px;"  />
+								</div>
+								
+								<div class='item'>
+										<img src='e-comm/images/book/bookad3.jpg' alt='' data-zoom-image="e-comm/images/book/bookad3.jpg" style="width: 470px; height: 600px;"  />
+								</div>
+								<div class='item'>
+									<img src='e-comm/images/book/bookad3.jpg' alt='' data-zoom-image="e-comm/images/book/bookad3.jpg" style="width: 470px; height: 600px;"  />
+								</div>
+								<div class='item'>
+									<img src="e-comm/images/book/bookad2.jpg" alt="" data-zoom-image="e-comm/images/book/bookad2.jpg" style="width: 470px; height: 600px;" />
+								</div>
+								<div class='item'>
+									<img src="e-comm/images/book/bookad2.jpg" alt="" data-zoom-image="e-comm/images/book/bookad2.jpg" style="width: 470px; height: 600px;" />
+								</div>
+								
+							</div>
+							
+							
+							
+							<!-- sag sol -->
+							<a class='left carousel-control' href='#carousel-custom' data-slide='prev'>
+								<i class="tf-ion-ios-arrow-left"></i>
+							</a>
+							<a class='right carousel-control' href='#carousel-custom' data-slide='next'>
+								<i class="tf-ion-ios-arrow-right"></i>
+							</a>
+						</div>
+						
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-7">
+				<form>
+				<div class="single-product-details">
+					
+					<h2 th:text="${book.boname}" th:if="${book.bostock != 0}"></h2>
+					<h2 th:if="${book.bostock == 0}" th:text="${'[품절]'+book.boname}" ></h2>
+					<p class="product-price" th:text="${book.bowriter + ' / ' + book.bocompany}"></p> 
+				
+					<br>
+					<h4 class="product-description mt-20"  th:text="${#strings.length(book.bocontent) &lt;= 30 ? book.bocontent : #strings.substring(book.bocontent, 0, 30) + '...'}">
+					</h4>
+					<br>
+					<br>
+					<div class="color-swatches">
+						
+						<span>가격</span>
+						<ul  th:text="${book.boprice} + 원">				
+						</ul>
+					</div>
+			
+					<div class="product-size">
+										<span>배송비</span>
+										<ul th:if="${book.boshipping == 0}">
+										무료
+										</ul>
+										<ul th:if="${book.boshipping != 0}" th:text="${book.boshipping}">
+										
+										</ul>										
+
+									</div>
+					<div class="product-quantity">
+						<span th:if="${book.bostock != 0}">수량</span>
+						<div class="product-quantity-slider" th:if="${book.bostock != 0}">
+							<input id="product-quantity" type="text" value="0" name="product-quantity">
+						</div>
+					</div>
+					<div class="product-category">
+						<span>카테고리</span>
+						<ul>
+							<li><a href="product-single.html">Products</a></li>
+							<li><a href="product-single.html">Soap</a></li>
+						</ul>
+					</div>
+					<a href="/eCart" class="btn btn-main mt-20" style="background-color:#A1DD70;" th:if="${book.bostock != 0}" >장바구니에 담기</a>
+					<a th:href="@{/eBuy(bono=${book.bono})}"  class="btn btn-main mt-20" style="background-color:#EF3C97;" th:if="${book.bostock != 0}">구매하기</a>
+					<a th:href="@{/eNotMemBuy(bono=${book.bono},buynum=1)}" class="btn btn-main mt-20" style="background-color: white; border: 2px solid #EF3C97; color: #EF3C97; display: inline-block;" th:if="${book.bostock != 0}">비회원 주문</a>
+					
+					
+					<a href="/eRequestS" class="btn btn-main mt-20" th:if="${book.bostock == 0}" 
+					      style="background-color: white; border: 2px solid #A1DD70; color: #A1DD70; display: inline-block;">
+					      요청하기
+					   </a>
+				</div>
+			</div>
+		
+			</form>
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="tabCommon mt-20">
+					<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#details" aria-expanded="true" >책 소개</a></li>
+						<li class=""><a data-toggle="tab" href="#reviews" aria-expanded="false" onclick="rList();">리뷰</a></li>
+					</ul>
+					<div class="tab-content patternbg">
+						<div id="details" class="tab-pane fade active in" th:text="${book.bocontent}">
+
+							
+						</div>
+						
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 은미 작성 -->						
+						<div id="reviews" class="tab-pane fade" style="display: inline-block;">
+						
+						<form id="formR">
+							<input type="hidden" th:value="${book.bono}" name="bono">
+							<input type="hidden" th:value="${session.login.mid}" name="rid">
+							<b>스포일러 표시<input type="radio" name="rspoiler" value="1">
+							<input type="radio" name="rspoiler" value="0" hidden checked="checked"></b>
+							<table>
+								<tr>
+									<td rowspan="2">
+										<textarea rows="5" cols="130%" name="rcontents"></textarea>
+									</td>
+									<td align="center" >
+										<select class="form-control" style="margin-left: 3px;" name="rrating">
+											<option value="0">0점:<h1>☆☆☆☆☆</h1></option>
+											<option value="1">1점:<h1>★☆☆☆☆</h1></option>
+											<option value="2">2점:<h1>★★☆☆☆</h1></option>
+											<option value="3">3점:<h1>★★★☆☆</h1></option>
+											<option value="4">4점:<h1>★★★★☆</h1></option>
+											<option value="5">5점:<h1>★★★★★</h1></option>
+										</select>
+									</td>
+									<td>
+									</td>
+								</tr>
+								<tr>
+									<td align="center">
+										<button id="Rbutton" type="button" onclick="newR();" class="btn btn-main text-center" style="margin-left: 3px; font-size: 15px; background-color: #A1DD70;">리뷰작성</button>
+									</td>
+								</tr>
+							</table>
+						</form>
+						
+						
+							<br>
+							<div class="post-comments">
+							
+						    	<ul id="commentTable" class="media-list comments-list m-bot-50 clearlist">
+						    	
+								    <!-- Comment Item start-->
+									<div id="review">
+									
+									    
+									</div>
+								    <!-- End Comment Item -->
+							</ul>
+							</div>
+							
+
+						</div>
+						
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 은미 작성 끝 -->			
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="products related-products section">
+	<div class="container">
+		<div class="row">
+			<div class="title text-center">
+				<h2>추천 상품</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3" th:each="rbook : ${randbook}">
+				<div class="product-item">
+					<div class="product-thumb">
+						<span class="bage" th:if="${rbook.boshipping == 0}" style="display: inline-block;">무료배송</span>
+						<span class="bage" th:if="${rbook.bostock == 0}" style="background-color:#FF0000 ;padding: 4px ; display: inline-block;  margin-right: 200px;">품절</span>
+						
+						<img class="img-responsive" src="e-comm/images/book/bookad2.jpg" alt="product-img" style="width: 300px; height: 200px;" />
+						<div class="preview-meta">
+							<ul>
+								<li>
+									 <span data-toggle="modal" data-target="#product-modal" th:data-bono="${rbook.bono}"  th:data-boname="${rbook.boname}" th:data-bowriter="${rbook.bowriter}" th:data-bocontent="${rbook.bocontent}">
+										<i class="tf-ion-ios-search"></i>
+									</span>
+								</li>
+								<li>
+			                        <a href="#" ><i class="tf-ion-ios-heart"></i></a>
+								</li>
+								<li>
+									<a href="#!"><i class="tf-ion-android-cart"></i></a>
+								</li>
+							</ul>
+                      	</div>
+					</div>
+					<div class="product-content" >
+						<h4><a th:href="@{/eBookDetail(bono=${rbook.bono})}"  th:text="${#strings.length(rbook.boname) &lt;= 10 ? rbook.boname : #strings.substring(rbook.boname, 0, 10) + '...'}"></a></h4>
+						<p class="price" th:text="${rbook.boprice} + 원"></p>
+					</div>
+				</div>
+			</div>
+
+
+
+			
+		</div>
+	</div>
+</section>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 은미 작성 -->			
+<!-- Basic Modal 리뷰-->
+<div class="modal fade" id="basicModal2" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">리뷰삭제</h3>
+      </div>
+      <div class="modal-body">
+		정말로 삭제하시겠습니까?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+        <button type="button" id="Rdel" class="btn btn-primary">네</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Basic Modal-->	
+
+<!-- Basic Modal 답글-->
+<div class="modal fade" id="basicModal3" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">답글삭제</h3>
+      </div>
+      <div class="modal-body">
+		정말로 삭제하시겠습니까?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+        <button type="button" id="RRdel" class="btn btn-primary">네</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Basic Modal-->	
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 은미 작성 끝 -->						
+
+
+<th:block th:insert="~{eBookModal::modal}"></th:block>
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="e-comm/plugins/slick/slick.min.js"></script>
+    <script src="e-comm/plugins/slick/slick-animation.min.js"></script>
+
+    <!-- Google Mapl -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script type="text/javascript" src="e-comm/plugins/google-map/gmap.js"></script>
+
+    <!-- Main Js File -->
+    <script src="e-comm/js/script.js"></script>
+    
+	<script>
+	    $('#product-modal').on('show.bs.modal', function (event) {
+	        var button = $(event.relatedTarget); // 모달을 트리거한 버튼
+	        var bono = button.data('bono');
+			var boname = button.data('boname');
+			var bowriter = button.data('bowriter');
+			var bocontent = button.data('bocontent');
+			// 길이 제한 및 "..." 추가
+			var bocontentlen = bocontent.length > 200 ? bocontent.substring(0, 200) + '...' : bocontent;
+			
+	        // 모달 내용 업데이트
+	        var modal = $(this);
+	        modal.find('#modal-bono').text(bono);
+			modal.find('#modal-title').text(boname);
+			modal.find('#modal-content').text(bocontentlen);
+			modal.find('#modal-writer').text(bowriter);
+			modal.find('#modal-detail-link').attr('href', '/eBookDetail?bono=' + bono); // Bono 값을 링크에 추가
+	    });
+	</script>
+	
+	
+	
+	<script th:inline="javascript">
+	// 은미: 댓글 리스트 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	let smid = [[${session.login.mid}]];
+	
+	function rList() {
+		
+		let bono = [[${book.bono}]];
+	 	
+	    $.ajax({
+	        type: 'GET',
+	        url: '/eRlist',
+	        data: {bono : bono},
+	        dataType: 'json',
+	        
+	        //컨트롤러 성공 시 
+	        success: function(rlist) {
+	        	
+	        	
+	        	
+	        	let reviewList="";
+	        	
+				for(let i=0;i<rlist.length;i++){
+					
+					reviewList+="<li class='media' style='background-color:#FAFAFA;' id='"+ rlist[i].rno +"R'>";
+						
+					reviewList+="<div class='media-body'>";
+					
+					reviewList+="<div class='comment-info'>";
+					
+
+					reviewList+="<a href='#!' style='display: inline-block; float:left;'><br> &nbsp;&nbsp;&nbsp;<i class='tf-profile-male'></i>&nbsp;&nbsp;&nbsp;"+rlist[i].rid+"</a>";
+					
+					
+					reviewList+="<h3 style='color:#EF3C97; display: inline-block; float:right;'>";
+					
+					for (let a=0; a < rlist[i].rrating ;a++) {
+						reviewList+="<i class='tf-ion-ios-star' style='text-align:right;'></i>";
+					}
+					
+					for (let x=0; x < (5-rlist[i].rrating) ;x++) {
+						reviewList+="<i class='tf-ion-ios-star-outline' style='text-align:right;'></i>";
+					}
+					
+					reviewList+="</h3>";
+					
+					
+					reviewList+="<br><br><br>";
+					
+					
+					if(rlist[i].rspoiler === 1) {
+						
+						reviewList+= "&nbsp;&nbsp;&nbsp; <button onclick='getShow(\"" + rlist[i].rno + "SP\");' >스포일러보기</button>";
+						reviewList+="<b id='"+ rlist[i].rno +"SP' style='display:none; margin-top: 10px'> &nbsp;&nbsp;&nbsp;"+rlist[i].rcontents +"</b>";
+						
+					} else {					
+						
+						reviewList+="<b> &nbsp;&nbsp;&nbsp;"+rlist[i].rcontents +"</b>";
+					
+					}
+					
+					if(smid == rlist[i].rid) {
+						reviewList+="<button style='float: right; margin-right: 10px;' class='btn btn-primary' onclick='getShow(\"" + rlist[i].rno + "\");'>수정</button>";
+					}
+					reviewList+="<br><br>";
+					
+					if(smid == rlist[i].rid) {
+						reviewList+="<button type='button' style='float: left; color:red; background-color: transparent; border: none; margin-left: 10px;' data-toggle='modal' data-target='#basicModal2' data-rno="+rlist[i].rno+">삭제</button>";
+					}
+					reviewList+="<a onclick='rrList(\"" + rlist[i].rno + "\");' class='comment-button' href='#!' style='float: right;'><i class='tf-ion-chatbubbles'></i>답글&nbsp;&nbsp;&nbsp;</a>";
+					reviewList+="<a class='comment-button' onclick=\"sympathy('" + rlist[i].rno + "', 'A', '" + 0 + "');\" style='float: right;'> <i class='tf-ion-heart'></i>공감"+rlist[i].rsympathy +"&nbsp;&nbsp;&nbsp;</a>";
+					reviewList+="<p style='float: right;'> 최초작성일: "+ rlist[i].rdate+"&nbsp;&nbsp;&nbsp;</p>";
+					
+					reviewList+= "</div>";
+					
+					reviewList+= "</div>";
+					
+					
+					reviewList+= "<form id='"+ rlist[i].rno +"' style='margin-left: 10px; display:none;'>";
+					reviewList+= "";
+					reviewList+= "<input type='hidden' value=" + rlist[i].rno + " name='rno1'>";
+					reviewList+= "<b>스포일러 표시<input type='radio' name='rspoiler1' value='1'" + (rlist[i].rspoiler === 1 ? "checked" : "") + ">";
+					reviewList+= "<input type='radio' name='rspoiler1' value='0'"+ (rlist[i].rspoiler === 0 ? "checked hidden" : "hidden") +"></b>";
+					reviewList+= "<table>";
+					reviewList+= "<tr>";
+					reviewList+= "<td rowspan='2'>";
+					reviewList+= "<textarea rows='5' cols='130%' name='rcontents1'>"+rlist[i].rcontents+"</textarea>";
+					reviewList+= "</td>";
+					reviewList+= "<td align='center' >";
+					reviewList+= "<select class='form-control' style='margin-left: 3px;' name='rrating1'>";
+					reviewList+= "<option value='0' "+ (rlist[i].rrating === 0 ? "selected" : "") +">0점:<h1>☆☆☆☆☆</h1></option>";
+					reviewList+= "<option value='1' "+ (rlist[i].rrating === 1 ? "selected" : "") +">1점:<h1>★☆☆☆☆</h1></option>";
+					reviewList+= "<option value='2' "+ (rlist[i].rrating === 2 ? "selected" : "") +">2점:<h1>★★☆☆☆</h1></option>";
+					reviewList+= "<option value='3' "+ (rlist[i].rrating === 3 ? "selected" : "") +">3점:<h1>★★★☆☆</h1></option>";
+					reviewList+= "<option value='4' "+ (rlist[i].rrating === 4 ? "selected" : "") +">4점:<h1>★★★★☆</h1></option>";
+					reviewList+= "<option value='5' "+ (rlist[i].rrating === 5 ? "selected" : "") +">5점:<h1>★★★★★</h1></option>";
+					reviewList+= "</select>";
+					reviewList+= "</td>";
+					reviewList+= "<td>";
+					reviewList+= "</td>";
+					reviewList+= "</tr>";
+					reviewList+= "<tr>";
+					reviewList+= "<td align='center'>";
+					
+					reviewList+= "<button type='button' onclick='upR(\"" + rlist[i].rno + "\");' class='btn btn-main text-center' style='margin-left: 3px; font-size: 15px; background-color: #A1DD70;'>리뷰수정</button>";
+					
+					reviewList+= "</td>";
+					reviewList+= "</tr>";
+					reviewList+= "</table>";
+					reviewList+= "</form>";
+					
+					
+					reviewList+= "<div class='post-comments' style='margin-left: 50px;'>";
+					reviewList+= "<ul id='com"+ rlist[i].rno + "' class='media-list comments-list m-bot-50 clearlist'>";
+					reviewList+= "<div id='re"+ rlist[i].rno + "'></div></ul></div>"
+					
+				
+					
+					reviewList+= "</li>"
+				}
+				$("#review").html(reviewList);
+	        },
+	
+	        // 컨트롤러 실패 시
+	        error: function() {
+	            alert('오류가 발생했습니다. 문의 게시판에 글을 남겨주세요.');
+	            
+	        }
+	    });
+	}
+	
+	// 은미 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 작성
+	function newR() {
+		
+	        var formData = $("#formR").serialize();
+	
+	        $.ajax({
+	        	
+	            url : '/enewR',
+	            type : 'POST', 
+	            data : formData, 
+	            
+	            success : function(msg) {
+	               
+	            	alert(msg);
+	            	rList();
+	                
+	            },
+	    
+	            error : function(xhr, status) {
+	            	
+	            	alert('오류가 발생했습니다. 댓글 등록을 재시도 하시거나, 문의 게시판에 글을 남겨주세요.');
+	                
+	            }
+	        }); 
+		    
+	}
+	
+	// 은미 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 삭제
+	
+	    $('#basicModal2').on('show.bs.modal', function (event) {
+	    	
+	       var button = $(event.relatedTarget); // 모달을 호출한 버튼
+	       var rno = button.data('rno'); // 버튼의 데이터
+	       
+	       
+	       var modal = $(this); // 모달 호출
+	       
+	       //해당 모달에 id가 rno인 버튼이 체크될 때 모달 닫기 및 삭제가 진행되도록 함.
+	       modal.find('#Rdel').off('click').on('click', function() {
+	    	  	 modal.modal('hide'); // 모달 닫기
+	    	     Rdel(rno); //댓글 삭제
+	       });
+	   });
+	
+	//모달 삭제 실행
+	function Rdel(rno) {
+	
+	        $.ajax({
+	        	
+	            url : '/eRdel',
+	            type : 'POST', 
+	            data : {rno : rno}, 
+	            
+	            success : function(msg) {
+	               
+	            	alert(msg);
+	            	rList();
+	                
+	            },
+	    
+	            error : function(xhr, status) {
+	            	
+	            	alert('오류가 발생했습니다. 댓글 삭제를 재시도 하시거나, 문의 게시판에 글을 남겨주세요.');
+	            	rList();
+	                
+	            }
+	        }); 
+	}	
+	
+	
+	// 은미 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 수정
+	
+
+	function getShow(rno){
+		
+		var rnobutton =  document.getElementById(rno);
+		
+		if(rnobutton.style.display == 'block') {
+			document.getElementById(rno).style.display = ' none';
+		} else {
+			document.getElementById(rno).style.display = 'block';
+		}
+		
+	}
+	
+	
+	function upR(rno) {
+		
+        var formData = $("#"+rno).serialize();
+
+        $.ajax({
+        	
+            url : '/eRup',
+            type : 'POST', 
+            data : formData, 
+            
+            success : function(msg) {
+               
+            	alert(msg);
+            	rList();
+                
+            },
+    
+            error : function(xhr, status) {
+            	
+            	alert('오류가 발생했습니다. 댓글 수정을 재시도 하시거나, 문의 게시판에 글을 남겨주세요.');
+            	rList();
+                
+            }
+        }); 
+	    
+	}
+	
+	
+	// 은미 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 대댓글 리스트
+	
+	
+	var a = 0;
+	
+	function rrList(rno) {
+			
+	    $.ajax({
+	        type: 'GET',
+	        url: '/eRRlist',
+	        data: {rno : rno},
+	        dataType: 'json',
+	        
+	        //컨트롤러 성공 시 
+	        success: function(rrlist) {
+	        	
+	        	
+	        	let rreviewList="";
+	        	
+	        	let a = document.getElementById("formRR"+rno);
+	        	
+				if(a !== null) {
+					
+					
+					
+				} else {
+					
+		        	
+		        	rreviewList+= "<form id='formRR"+ rno + "' style='margin-left: 10px;'>";
+					rreviewList+= "";
+					rreviewList+= "<input type='hidden' name='rno' value=" + rno + ">";
+					rreviewList+= "<input type='hidden' name='cid' value=" + smid + ">";
+					rreviewList+= "<b>스포일러 표시<input type='radio' name='cspoiler' value='1'>";
+					rreviewList+= "<input type='radio' name='cspoiler' value='0' checked hidden></b>";
+					rreviewList+= "<table>";
+					rreviewList+= "<tr>";
+					rreviewList+= "<td rowspan='2'>";
+					rreviewList+= "<textarea rows='5' cols='110%' name='ccontents'></textarea>";
+					rreviewList+= "</td>";
+					rreviewList+= "<td align='center' >";
+					rreviewList+= "</td>";
+					rreviewList+= "</tr>";
+					rreviewList+= "<tr>";
+					rreviewList+= "<td align='center'>";
+					rreviewList+= "<button type='button' onclick='newRR(\"" + rno + "\");' class='btn btn-main text-center' style='margin-left: 3px; font-size: 15px; background-color: #A1DD70;'>답글작성</button>";
+					rreviewList+= "</td>";
+					rreviewList+= "</tr>";
+					rreviewList+= "</table>";
+					rreviewList+= "</form>";
+					
+					for(let i=0;i<rrlist.length;i++){
+						
+						
+						rreviewList+="<li class='media' style='background-color:#FAFAFA;' id='"+ rrlist[i].cno +"R'>";
+						
+						rreviewList+= "<table>";
+						rreviewList+= "<tr>";
+						rreviewList+= "<td style='width: 10%;'>";
+						rreviewList+="<h1 style='color:gray;'>└</h1>";
+						rreviewList+= "</td>";
+						rreviewList+= "<td style='width: 90%;'>";
+						
+						
+						rreviewList+="<div class='media-body'>";
+						
+						rreviewList+="<div class='comment-info'>";
+						
+	
+						rreviewList+="<a href='#!' style='display: inline-block; float:left;'><br> &nbsp;&nbsp;&nbsp;<i class='tf-profile-male'></i>&nbsp;&nbsp;&nbsp;"+rrlist[i].cid+"</a>";
+						
+						
+						
+						rreviewList+="<br><br><br>";
+						
+						if(rrlist[i].cspoiler === 1) {
+							
+							rreviewList+= "&nbsp;&nbsp;&nbsp; <button onclick='getShow(\"" + rrlist[i].cno + "SP\");' >스포일러보기</button>";
+							rreviewList+="<b id='"+ rrlist[i].cno +"SP' style='display:none; margin-top: 10px'> &nbsp;&nbsp;&nbsp;"+rrlist[i].ccontents +"</b>";
+							
+						} else {					
+							
+							rreviewList+="<b> &nbsp;&nbsp;&nbsp;"+rrlist[i].ccontents +"</b>";
+						
+						}
+						
+						if(smid == rrlist[i].cid) {
+							rreviewList+="<button style='float: right; margin-right: 10px;' class='btn btn-primary' onclick='getShow(\"" + rrlist[i].cno + "\");'>수정</button>";
+						}
+						rreviewList+="<br><br>";
+						
+						if(smid == rrlist[i].cid) {
+							rreviewList+="<button style='float: left; color:red; background-color: transparent; border: none; margin-left: 10px;' data-toggle='modal' data-target='#basicModal3' data-rno=\'"+rrlist[i].rno+"'\data-cno=\'"+rrlist[i].cno+"'\ >삭제</button>";
+						}
+						rreviewList+="<a class='comment-button' onclick=\"sympathy('" + rrlist[i].cno + "', 'A', '" + rrlist[i].rno + "');\" style='float: right;'> <i class='tf-ion-heart'></i>공감"+rrlist[i].csympathy +"&nbsp;&nbsp;&nbsp;</a>";
+						rreviewList+="<p style='float: right;'> 최초작성일: "+ rrlist[i].cdate+"&nbsp;&nbsp;&nbsp;</p>";
+						
+						rreviewList+= "</div>";
+						
+						rreviewList+= "</div>";
+						
+						
+						rreviewList+= "<form id='"+ rrlist[i].cno +"' style='margin-left: 10px; display:none;'>";
+						rreviewList+= "";
+						rreviewList+= "<input type='hidden' value=" + rrlist[i].cno + " name='cno1'>";
+						rreviewList+= "<b>스포일러 표시<input type='radio' name='cspoiler1' value='1'" + (rrlist[i].cspoiler === 1 ? "checked" : "") + ">";
+						rreviewList+= "<input type='radio' name='cspoiler1' value='0'"+ (rrlist[i].cspoiler === 0 ? "checked hidden" : "hidden") +"></b>";
+						rreviewList+= "<table>";
+						rreviewList+= "<tr>";
+						rreviewList+= "<td rowspan='2'>";
+						rreviewList+= "<textarea rows='5' cols='110%' name='ccontents1'>"+rrlist[i].ccontents+"</textarea>";
+						rreviewList+= "</td>";
+						rreviewList+= "<td align='center' >";
+						rreviewList+= "</td>";
+						rreviewList+= "<td>";
+						rreviewList+= "</td>";
+						rreviewList+= "</tr>";
+						rreviewList+= "<tr>";
+						rreviewList+= "<td align='center'>";
+						
+						rreviewList+= "<button type='button' onclick=\"upRR('" + rrlist[i].cno + "', '" + rrlist[i].rno + "');\" class='btn btn-main text-center' style='margin-left: 3px; font-size: 15px; background-color: #A1DD70;'>답글수정</button>";
+						
+						rreviewList+= "</td>";
+						rreviewList+= "</tr>";
+						rreviewList+= "</table>";
+						rreviewList+= "</form>";
+						
+						rreviewList+= "</td>";
+						rreviewList+= "</tr>";
+						rreviewList+= "</table>";
+						
+						rreviewList+= "</li>"
+						
+						
+						
+					}
+				
+				}
+				
+				$("#re"+rno).html(rreviewList);
+				
+	        },
+	
+	        // 컨트롤러 실패 시
+	        error: function() {
+	            alert('오류가 발생했습니다. 문의 게시판에 글을 남겨주세요.');
+	            
+	        }
+	    });
+	    
+		
+	}
+	
+	
+	
+	// 은미 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 대댓글 작성
+	function newRR(rno) {
+		
+	        var formData = $("#formRR"+rno).serialize();
+	
+	        $.ajax({
+	        	
+	            url : '/enewRR',
+	            type : 'POST', 
+	            data : formData, 
+	            
+	            success : function(msg) {
+	               
+	            	alert(msg);
+	            	rrList(rno);
+	            	rrList(rno);
+	                
+	            },
+	    
+	            error : function(xhr, status) {
+	            	
+	            	alert('오류가 발생했습니다. 대댓글 등록을 재시도 하시거나, 문의 게시판에 글을 남겨주세요.');
+	            	rrList(rno);
+	            	rrList(rno);
+	                
+	            }
+	        }); 
+		    
+	}
+	
+	// 은미 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 대댓삭제
+	
+    $('#basicModal3').on('show.bs.modal', function (event) {
+    	
+       var button = $(event.relatedTarget); // 모달을 호출한 버튼
+       var rno = button.data('rno'); // 버튼의 데이터
+       var cno = button.data('cno'); // 버튼의 데이터
+       
+       
+       
+       var modal = $(this); // 모달 호출
+       
+       
+       //해당 모달에 id가 cno인 버튼이 체크될 때 모달 닫기 및 삭제가 진행되도록 함.
+       modal.find('#RRdel').off('click').on('click', function() {
+    	   
+    	  	 modal.modal('hide'); // 모달 닫기
+    	     RRdel(cno, rno); // 댓글 닫기
+       });
+   });
+	
+	//모달 삭제 실행
+	function RRdel(cno, rno) {
+		
+	
+	        $.ajax({
+	        	
+	            url : '/eRRdel',
+	            type : 'POST', 
+	            data : {cno : cno}, 
+	            
+	            success : function(msg) {
+	               
+	            	alert(msg);
+	            	rrList(rno);
+	            	rrList(rno);
+	                
+	            },
+	    
+	            error : function(xhr, status) {
+	            	
+	            	alert('오류가 발생했습니다. 대댓글 삭제를 재시도 하시거나, 문의 게시판에 글을 남겨주세요.');
+	            	rrList(rno);
+	            	rrList(rno);
+	                
+	            }
+	        }); 
+	}	
+	
+	
+	// 은미 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 대댓글수정
+	
+	
+	function upRR(cno,rno) {
+		
+        var formData = $("#"+cno).serialize();
+
+        $.ajax({
+        	
+            url : '/eRRup',
+            type : 'POST', 
+            data : formData, 
+            
+            success : function(msg) {
+               
+            	
+            	rrList(rno);
+            	rrList(rno);
+                
+            },
+    
+            error : function(xhr, status) {
+            	
+            	alert('오류가 발생했습니다. 대댓글 수정을 재시도 하시거나, 문의 게시판에 글을 남겨주세요.');
+            	rrList(rno);
+            	rrList(rno);
+                
+            }
+        }); 
+	    
+	}
+	
+	// 은미 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 공감
+	
+	
+	function sympathy(sno,sid,no) {
+		
+		$.ajax({
+        	
+            url : '/esympathy',
+            type : 'POST', 
+            data : {sno : sno, sid:sid}, 
+            
+            success : function() {
+            	
+            	if (no == 0) {
+                	rList();
+                	
+            	} else {
+            		
+            		rrList(no);
+            		rrList(no);
+            	}
+               
+            },
+    
+            error : function(xhr, status) {
+            	
+            	alert('오류가 발생했습니다. 대댓글 삭제를 재시도 하시거나, 문의 게시판에 글을 남겨주세요.');
+            	if (no == 1) {
+                	rList();
+                	
+            	} else {
+            		
+            		rrList(no);
+            		rrList(no);
+            	}
+                
+            }
+        }); 
+	    
+	}
+
+	
+	</script>
+
+  </body>
+  </html>

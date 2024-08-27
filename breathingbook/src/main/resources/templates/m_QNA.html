@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+  
+    <title>QNA List</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+	<link href="./erp/plugins/sweetalert/css/sweetalert.css" rel="stylesheet">
+	<link href="./erp/plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="erp/css/style.css" rel="stylesheet">
+
+
+    
+	<style>
+		.right-align {
+			padding: 0rem 1.875rem;
+			text-align: right; /* 텍스트를 우측으로 정렬 */
+		}
+		.msgbt {
+			margin: 30px 0 0 30px;
+		}
+		
+		.img {
+		    width: 100%; /* 원하는 너비 */
+		}
+
+	</style>
+</head>
+
+<body>
+
+    <!-- Preloader start -->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!-- Preloader end -->
+    
+    <!-- Main wrapper start -->
+    <div id="main-wrapper">
+		<th:block th:insert="~{m_fragments::header('erp Main')}"></th:block>
+  		<th:block th:insert="~{m_fragments::topbar}"></th:block>
+		<th:block th:insert="~{m_fragments::sidebar}"></th:block>
+		<!-- Content body start -->
+		<div class="content-body">
+			
+			<div class="row">
+				<div class="col">
+				    <div th:if="${msg}" class="alert alert-success alert-dismissible fade show msgbt">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<th:block th:text="${msg}"></th:block>
+				    </div>
+				</div>
+				<div class="col-md-2">
+					<div class="row page-titles mx-0">
+						<div class="col p-md-0">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item">
+								<a href="/m">Main</a></li>
+                        		<li class="breadcrumb-item active"><a href="!#">공지사항</a></li>
+							</ol>
+						</div>
+					</div>
+			    </div>
+			</div>
+			
+			
+			<!-- div row -->
+			<div class="container-fluid">
+				<div class="row">
+					<div id="firstColumn" class="col">
+						<div class="card">
+							<div class="card-body">
+							<h4 class="card-title">공지사항 리스트</h4>
+								<div class="table-responsive">
+									<table class="table table-hover table-bordered hb-orderdesc">
+										<thead>
+											<tr align="center">
+												<th style="width: 10%;">no</th>
+												<th style="width: 10%;">답변여부</th>
+												<th style="width: 10%;">문의일자</th>
+												<th style="width: 12%;">문의유형</th>
+												<th style="width: 20%;">제목</th>
+												<th style="width: 10%;">문의자</th>
+												<th style="width: 10%;">회원여부</th>
+												<th style="width: 8%;">상태</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="dto : ${dtolist}" class="record" align="center" th:onclick="ditail([[${dto.ino}]])">
+												<td th:text="${dto.ino}"></td>
+												<td th:text="${dto.ianswer} == null ? '미답변' : '답변완료'"></td>
+												<td th:text="${dto.idate}"></td>
+												<td th:text="${dto.idiv}"></td>
+												<td th:text="${dto.ititle}" style="text-align: left;"></td>
+												<td th:text="${dto.iname} == '' ? ${dto.iid} : ${dto.iname}"></td>
+												<td th:text="${dto.iname} == '' ? '회원' : '비회원'"></td>
+												<td th:text="${dto.idel} == '1' ? (${dto.iname} == '' ? '철회' : '숨김') : '-'"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- first column end -->
+					
+					<div class="col-md-6" id="comView" style="display: none;">
+					
+							<div class="card">
+								<div class="card-body">
+									
+									<!-- 상세창 -->
+									<div class="form-view" id="View2" style="display: none;">
+									<div class="row">
+										<div class="col">
+											<div class="card-title">문의상세</div>
+										</div>
+										<div class="col right-align">
+											<button type="button" class="btn btn-info" onclick="hide()">닫기</button>
+										</div>
+										<br><br>
+									</div>
+										
+										<div class="form-validation">
+		                                    <form class="form-valide" th:action="@{/m_QNA}" method="post" onsubmit="return formcheck();" enctype="multipart/form-data"> 
+		                                    	<div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="">문의번호
+		                                            </label>
+		                                            <div class="col-lg-5">
+		                                               	<input type="text" class="form-control" id="ino" name="ino" readonly="readonly">
+		                                            </div>
+		                                            
+		                                            <label class="col-lg-2 col-form-label" for="">문의유형
+		                                            </label>
+		                                            <div class="col-lg-3 col-form-label">
+		                                               	<p id="idiv"></p>
+		                                            </div>
+		                                        </div>
+		                                        <div class="form-group row">
+		                                        	<label class="col-lg-2 col-form-label" for="">제목
+		                                            </label>
+		                                            <div class="col-lg-8 col-form-label">
+		                                                <p id="ititle"></p>
+		                                            </div>
+		                                        </div>
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="">작성자
+		                                            </label>
+		                                            <div class="col-lg-5">
+		                                                <p id="userdiv"></p>
+		                                            </div>
+		                                            <div class="col-lg-2" id ="ibut"></div>
+		                                        </div>
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="">문의 내용
+		                                            </label>
+		                                            <div class="col-lg-5 col-form-label">
+		                                                <p id="idate"></p>
+		                                            </div>
+		                                            <label class="col-lg-2 col-form-label" for="">문의 비밀번호
+		                                            </label>
+		                                            <div class="col-lg-3 col-form-label">
+		                                                <p id="ipw"></p>
+		                                            </div>
+		                                        </div>
+		                                        	<textarea class="form-control" id="icontent" rows="10" disabled="disabled"></textarea>
+		                                        <br><br>
+		                                        <p id="iadel" style="color: red; text-align: center;  display: none; ">철회한 문의입니다.</p>
+		                                        <div class="form-group row" id ="answer">
+		                                            <label class="col-lg-2 col-form-label" for="">답변 내용
+		                                            </label>
+		                                            <div class="col-lg-8 col-form-label" >
+		                                                <p id="iadate"></p>
+		                                            </div>
+		                                        </div>
+		                                            <textarea class="form-control" id="ianswer" name="ianswer" rows="10"></textarea>
+		                                        <br><br>
+		                                        
+		                                        <!-- Basic Modal-->
+												<div class="modal fade" id="basicModal1" tabindex="-1">
+												  <div class="modal-dialog">
+												    <div class="modal-content">
+												      <div class="modal-header">
+												        <h3 class="modal-title">답변등록/수정</h3>
+												      </div>
+												      <div class="modal-body">
+														정말로 답변을 등록 또는 수정하시겠습니까?
+												      </div>
+												      <div class="modal-footer">
+												        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+												        <button type="submit" class="btn btn-primary">네</button>
+												      </div>
+												    </div>
+												  </div>
+												</div>
+												<!-- End Basic Modal-->	
+												
+		                                    </form>
+										</div>
+										
+										
+										<div class="form-group">
+											<div align="center">
+												<button type="button" class="btn btn-info" data-toggle="modal" data-target="#basicModal1" >답변등록/수정</button>
+												<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#basicModal2" style="display: none;" id="del1">숨김처리</button>
+												<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#basicModal2-1" style="display: none;" id="del2">철회처리</button>
+												<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#basicModal2-2" style="display: none;" id="del3">숨김취소</button>
+												<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#basicModal3">삭제</button>
+												
+											</div>
+											
+											
+										</div>
+									</div>
+									<!-- 작성창 끝 -->
+									
+									<!-- Basic Modal-->
+									<div class="modal fade" id="basicModal2" tabindex="-1">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <h3 class="modal-title">문의숨김</h3>
+									      </div>
+									      <div class="modal-body">
+											정말로 문의를 숨김 처리하시겠습니까?
+									      </div>
+									      <div class="modal-footer">
+									        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+									        <button type="button" class="btn btn-primary" onclick="del(1);">네</button>
+									      </div>
+									    </div>
+									  </div>
+									</div>
+									<!-- End Basic Modal-->	
+									
+									<!-- Basic Modal-->
+									<div class="modal fade" id="basicModal2-1" tabindex="-1">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <h3 class="modal-title">문의철회</h3>
+									      </div>
+									      <div class="modal-body">
+											정말로 문의를 철회 처리하시겠습니까?
+											철회 시 상태를 복원할 수 없습니다.
+									      </div>
+									      <div class="modal-footer">
+									        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+									        <button type="button" class="btn btn-primary" onclick="del(0);">네</button>
+									      </div>
+									    </div>
+									  </div>
+									</div>
+									<!-- End Basic Modal-->	
+									
+									<!-- Basic Modal-->
+									<div class="modal fade" id="basicModal2-2" tabindex="-1">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <h3 class="modal-title">문의숨김취소</h3>
+									      </div>
+									      <div class="modal-body">
+											정말로 문의를 숨김 취소 처리하시겠습니까?
+									      </div>
+									      <div class="modal-footer">
+									        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+									        <button type="button" class="btn btn-primary" onclick="del(2);">네</button>
+									      </div>
+									    </div>
+									  </div>
+									</div>
+									<!-- End Basic Modal-->	
+									
+									
+									<!-- Basic Modal-->
+									<div class="modal fade" id="basicModal3" tabindex="-1">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <h3 class="modal-title">문의삭제</h3>
+									      </div>
+									      <div class="modal-body">
+											정말로 문의를 영구 삭제하시겠습니까?
+											되돌릴 수 없습니다.
+									      </div>
+									      <div class="modal-footer">
+									        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+									        <button type="button" class="btn btn-primary" onclick="del(3);">네</button>
+									      </div>
+									    </div>
+									  </div>
+									</div>
+									<!-- End Basic Modal-->	
+									
+									
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				<!-- row end -->
+				
+				
+				
+			</div>
+			<!-- #/ container -->   
+		</div>
+		<!-- Content body end -->
+		<th:block th:insert="~{m_fragments::footer}"></th:block>
+    </div>
+    <!-- Main wrapper end -->
+	<script src="./erp/plugins/sweetalert/js/sweetalert.min.js"></script>
+	<script src="./erp/plugins/sweetalert/js/sweetalert.init.js"></script>
+	<script src="erp/plugins/common/common.min.js"></script>
+    <script src="erp/js/custom.min.js"></script>
+    <script src="erp/js/settings.js"></script>
+    <script src="erp/js/gleek.js"></script>
+    <script src="erp/js/styleSwitcher.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="./erp/plugins/tables/js/jquery.dataTables.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+
+
+	
+	<!-- Bootstrap 3.1 -->
+    <script src="./e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script th:inline="javascript">
+	
+	function show(num) {
+		
+		var comView = document.getElementById('comView');
+		var View2 = document.getElementById('View2');
+		
+		if (num == 1) {
+			
+				comView.style.display = 'block';
+				View2.style.display = 'none';
+			
+		} else {
+				comView.style.display = 'block';
+				View2.style.display = 'block';
+		}
+		
+	}
+	
+	function hide() {
+		comView.style.display = 'none';
+		View2.style.display = 'none';
+	}
+	
+	
+	
+	function ditail(nnum) {
+		
+		var userdiv = "회원";
+		var iid = "";
+		
+		$.ajax({
+	        type: 'GET',
+	        url: '/m_qone',
+	        data: {ino:nnum},
+	        dataType: 'json',
+	        
+	        //컨트롤러 성공 시 
+	        success: function(response) {
+	        	
+	        	$('#ibut').html("");
+	        	$('#del3').hide();
+	        	$('#iadate').text("");
+	        	
+	        	$('#ino').val(response.ino);
+	        	$('#ititle').text(response.ititle);
+	        	$('#icontent').text(response.icontent);
+	        	$('#ipw').text(response.ipw);
+	        	
+	        	if(response.iname != null && response.iname != '') {
+	        		$('#del2').hide();
+	        		$('#del1').show();
+	        		userdiv = "비회원";
+	        		iid = response.iname + " / "  ;
+	        	} else {
+	        		$('#del1').hide();
+	        		$('#del2').show();
+	        		$('#ibut').html("<button class='btn btn-light' type='button' onclick=\"popmember('" + response.iid + "')\" >회원정보보기</button>");
+	        		iid = response.iid + " / "  ;
+	        	}
+	        	
+	        	$('#userdiv').text(iid + userdiv + " / " + response.iemail   );
+	        	
+	        	$('#idate').text("(" + "문의일자 :" + response.idate + ")");
+	        	$('#ianswer').text(response.ianswer);
+	        	
+	        	$('#answer').show();
+    			$('#ianswer').show();
+    			$('#iadel').hide();
+    			
+    			if(response.iadate != null) {
+    				$('#iadate').text("(" + "답변일자 :" + response.iadate + ")");	
+    			}
+	        	
+	        	$('#idiv').text(response.idiv);
+	        	
+	        	if(response.idel == '1') {
+	        		$('#del1').hide();
+	        		$('#del3').show();
+	        	}
+	        	
+				if(response.iname == null || response.iname == '') {
+	        		
+	        		if(response.idel == '1') {
+	        			$('#answer').hide();
+	        			$('#ianswer').hide();
+	        			$('#del2').hide();
+	        			$('#del3').hide();
+	        			$('#iadel').show();
+		        	}
+	        		
+	        	}
+	        	
+        		show(2);   	
+	        },
+	
+	        // 컨트롤러 실패 시
+	        error: function() {
+	            alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+	            
+	        }
+	    });
+	
+	}
+	
+	  
+	  function formcheck() {
+		  
+		  
+		//답변
+		let ianswer = document.getElementById("ianswer").value;
+		
+		if(ianswer === '') {
+			  alert("답변 내용을 작성해주세요.");
+			  
+			  return false;
+		  }
+		
+		return true;
+	  } 
+	  
+	  
+	  
+		function del(num) {
+			
+			var ino = document.getElementById('ino').value;
+			
+			if(num === 1 || num === 0) {
+				$.ajax({
+			        type: 'POST',
+			        url: '/m_qdel',
+			        data: {ino:ino},
+			        
+			        //컨트롤러 성공 시 
+			        success: function(msg) { 
+			        	
+			        	if(msg == "Y") {
+			        		
+			        		if(num === 1) {
+			        			alert('문의가 정상적으로 숨김 처리 되었습니다.');
+			        		} else {
+			        			alert('문의가 정상적으로 철회 처리 되었습니다.');
+			        		}
+			        		
+			        		
+			        	} else {
+			        		alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+			        	}
+			        	
+			        },
+			
+			        // 컨트롤러 실패 시
+			        error: function() {
+			            alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+			            
+			        }
+			    });
+			} else if (num === 3) {
+				
+				$.ajax({
+			        type: 'POST',
+			        url: '/m_qnadel',
+			        data: {ino:ino},
+			        
+			        //컨트롤러 성공 시 
+			        success: function(msg) { 
+			        	
+			        	if(msg == "Y") {
+			        		alert('문의가 정상적으로 삭제 처리 되었습니다.');
+			        	} else {
+			        		alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+			        	}
+			        	
+			        },
+			
+			        // 컨트롤러 실패 시
+			        error: function() {
+			            alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+			            
+			        }
+			    });
+				
+			} else {
+				
+				$.ajax({
+			        type: 'POST',
+			        url: '/m_qopen',
+			        data: {ino:ino},
+			        
+			        //컨트롤러 성공 시 
+			        success: function(msg) { 
+			        	
+			        	if(msg == "Y") {
+			        		alert('문의가 정상적으로 숨김 취소 처리 되었습니다.');
+			        	} else {
+			        		alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+			        	}
+			        	
+			        },
+			
+			        // 컨트롤러 실패 시
+			        error: function() {
+			            alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+			            
+			        }
+			    });
+				
+			}
+			
+			location.reload();
+		
+		}
+		
+		
+		function popmember(mid) {
+			
+			var url = '/m_popmem?mid=' + mid; // URL 설정
+			var options = 'width=' + 650 + ',height=' + 400 + ',left=' + 100; // 창 크기 설정
+			
+			// 자식 창 열기
+	        var childWindow = window.open(url, '_blank', options);
+		}
+		
+	</script>
+
+</body>
+
+</html>

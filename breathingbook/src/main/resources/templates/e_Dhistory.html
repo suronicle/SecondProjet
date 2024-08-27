@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title> 숨쉬는서재 | 주문상세 </title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="./e-comm/image/x-icon" href="./e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="./e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="./e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="./e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="./e-comm/css/style.css">
+
+</head>
+
+<body id="body">
+
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+<section class="page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name">주문상세</h1>
+					<ol class="breadcrumb">
+						<li><a href="/">Home</a></li>
+						<li><a href="/ePhistory">주문내역</a></li>
+						<li class="active">주문상세</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="user-dashboard">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+      	
+        <h4 class="widget-title" style="font-weight : bold;" th:text="'주문일: '+ ${dto[0].buydate} + ' / 주문번호: ' + ${dto[0].buyno}"></h4>
+        <div class="dashboard-wrapper dashboard-user-profile">
+          <div class="media">
+          	<div th:each="dto:${dto}">
+          		<div class="pull-left text-center" href="#!">
+	              <span th:text="'NO:' + ${dtoStat.index + 1}"></span>
+	            </div>
+	            <div class="pull-left text-center" href="#!">
+	              <br>
+	              <img class="media-object user-img" th:src="${dto.filepath}" alt="Image" style="width: 100px; height: 100px;">
+	              <p th:onclick="location.href='/eBookDetail?bono='+ [[${dto.buybooknum}]]" class="btn btn-transparent mt-20">상품상세보기</p>
+	            </div>
+	            <div class="media-body">
+	              <ul class="user-profile-list">
+	                <li><span>상품번호:</span> <small th:text="${dto.buybooknum}"></small></li>
+	                <li><span>상품명:</span> <small th:text="${dto.boname}"></small></li>
+	                <li><span>구매단가:</span> <small th:text="${#numbers.formatInteger(dto.boprice, 3, 'COMMA')}+ '원'"></small></li>
+	                <li><span>구매수량:</span> <small th:text="${dto.buynum} + '권'"></small></li> 
+	                <li><span>배송비:</span> <small th:text="${#numbers.formatInteger(dto.boshipping, 3, 'COMMA')}+ '원'"></small></li>
+	                <li><span>소계:</span> <small th:text="${#numbers.formatInteger(dto.buyprice, 3, 'COMMA')}+ '원'"></small></li>
+	              </ul>
+	              <br>
+	          </div>
+	          <div class="media-body">
+	              <ul class="user-profile-list">
+	                <li>
+	                	<span>주문 상태</span> <small th:text="${dto.codename} + ' ('+ ${dto.wayname} +')'"></small>
+	                	<br>
+	                	<span>운송장 번호</span> <small th:text="${dto.dtransport}"></small>
+	                </li>
+	                <li>
+	                  <button type="button" th:onclick="upcode('B18',[[${dto.buyno}]]);" th:if="${dto.buycode=='E1' || dto.buycode=='B10'}" class="btn btn-dark" style="display: inline-block; width: 20%; background-color: #A1DD70">취소</button>
+		              <button type="button" th:onclick="upcode('B9',[[${dto.buyno}]]);" th:if="${dto.buycode=='E2' || dto.buycode=='B5'}" class="btn btn-dark" style="display: inline-block; width: 20%; background-color: #A1DD70">환불</button>
+		              <button type="button" th:onclick="upcode('B2',[[${dto.buyno}]]);" th:if="${dto.buycode=='B6' || dto.buycode=='B7'}" class="btn btn-dark" style="display: inline-block; width: 20%; background-color: #A1DD70">교환</button>
+		              <button type="button" th:onclick="confirm('B13',[[${dto.buyno}]], [[${dto.buybooknum}]], [[${dto.buynum}]]);" class="btn btn-dark" style="display: inline-block; width: 20%; background-color: #A1DD70" th:if="${dto.buycode=='B1'||dto.buycode=='E1' || dto.buycode=='B10' || dto.buycode=='E2' || dto.buycode=='B5' || dto.buycode=='B6' || dto.buycode=='B7'|| dto.buycode=='B3'||  dto.buycode=='B15' ||  dto.buycode=='B19' ||dto.buycode=='B20' || dto.buycode=='B4'}">구매확정</button>
+	                </li>
+	                <li>
+	                	<br>
+	                	<h2 th:if="${dtoStat.last}" style="font-weight : bold; text-align: center;" th:text="'주문 총금액 : ' + ${#numbers.formatInteger(sum, 3, 'COMMA')+'원'}"></h2>
+	                </li>
+	                
+	              </ul>
+	              <br>
+	          </div>
+	          
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+</section>
+
+
+
+
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="./e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="./e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="./e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="./e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="./e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="./e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="./e-comm/plugins/slick/slick.min.js"></script>
+    <script src="./e-comm/plugins/slick/slick-animation.min.js"></script>
+
+    <!-- Google Mapl -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script type="text/javascript" src="./e-comm/plugins/google-map/gmap.js"></script>
+
+    <!-- Main Js File -->
+    <script src="js/script.js"></script>
+    
+	<script th:inline="javascript">
+	
+		function upcode(buycode,buyno) {
+			
+       	$.ajax({
+               type: 'POST',
+               url: '/ebuycode',
+               data: {buycode : buycode, buyno : buyno},
+               
+               //컨트롤러 성공 시 
+               success: function(response) {
+                   if (response === "Y") {
+                	   window.location.reload(); // 페이지 재로드
+                   } else {
+                   	alert('오류가 발생했습니다.');
+                   }
+               },
+
+               // 컨트롤러 실패 시
+               error: function() {
+                   alert('오류가 발생했습니다.');
+               }
+           });
+	       
+	 	}	
+		
+		function confirm (buycode,buyno,buybooknum,buynum) {
+				
+	       	$.ajax({
+	               type: 'POST',
+	               url: '/econfirm',
+	               data: {buycode : buycode, buyno : buyno, buybooknum:buybooknum, buynum:buynum},
+	             //컨트롤러 성공 시 
+	               success: function(response) {
+	                   if (response === "Y") {
+	                	   window.location.reload(); // 페이지 재로드
+	                   } else {
+	                   	alert('오류가 발생했습니다.');
+	                   }
+	               },
+
+	               // 컨트롤러 실패 시
+	               error: function() {
+	                   alert('오류가 발생했습니다.');
+	               }
+	           });
+		}
+	</script>
+
+  </body>
+  </html>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.book.erp.dao.BranchDAO">
+
+	<!-- 업체 정보 등록-->
+	<insert id="comInsert" parameterType="BranchDTO" useGeneratedKeys="true" keyProperty="brno">
+		INSERT INTO branch 
+		VALUES (#{brno}, #{brclass},
+				#{brno}, #{brbusinessno},
+				#{brdel}, #{brdelegate},
+				#{brname}, #{brphone},
+				#{brfax}, #{brbank},
+				#{braccountholder}, #{braccount},
+				now(), null, 
+				#{brpostal},#{braddress})
+	</insert>
+	<!-- 사업장 목록 -->
+	<select id="branchList" resultType="BranchDTO">
+		  SELECT *
+			FROM branch
+		   WHERE brclass = 1 AND brdel = 0
+		ORDER BY brno desc
+	</select>
+
+	<!-- 거래처 목록 -->    
+	<select id="vendorList" resultType="BranchDTO">
+		SELECT *
+		FROM branch
+		WHERE brclass = 2 AND brdel = 0
+	</select>
+	
+	<!-- 본사 및 가맹점 전체 목록 -->
+	<select id="searchCom" resultType="BranchDTO">
+		  SELECT *
+			FROM branch
+		   WHERE brdel = 0 AND brclass != 2
+		ORDER BY brno desc
+	</select>
+	
+	<!-- 업체 정보 상세-->
+	<select id="comSelect" resultType="BranchDTO">
+		SELECT * FROM branch WHERE brno=#{brno}
+	</select>
+	
+	<!-- 업체 정보 수정-->
+	<update id="comUpdate" parameterType="BranchDTO">
+		UPDATE branch
+		SET brname=#{brname},
+			brdelegate=#{brdelegate},
+			brbusinessno=#{brbusinessno},
+			brpostal=#{brpostal},
+			braddress=#{braddress},
+			brphone=#{brphone},
+			brfax=#{brfax},
+			brbank=#{brbank},
+			braccountholder=#{braccountholder},
+			braccount=#{braccount}
+		WHERE brno=#{brno}
+	</update>
+
+	<!-- 비밀번호 수정-->
+	<update id="changePw">
+		UPDATE branch
+		SET brpw=#{cpw2}
+		WHERE brno=#{brno}
+	</update>
+	
+	<!-- 업체 정보 삭제-->
+	<update id="comDelete" parameterType="String">
+		UPDATE branch SET brdel = 1, brend = now()
+		WHERE brno=#{brno}
+	</update>
+	
+    <!-- 관리번호 생성-->
+	<select id="getNextBrno" resultType="int">
+		SELECT COALESCE(MAX(SUBSTR(brno, 2) + 1), 1) FROM branch WHERE brclass = #{brclass}
+	</select>
+	
+	
+	<!-- 추가 -->
+	
+	
+	<!-- 회원 정보 목록 -->
+	<select id="memList" resultType="memberDTO">
+		  SELECT
+		  		m.mid,
+		  		m.mname,
+		  		m.mjoindate,
+		  		m.msecessiondate,
+		  		c.codename as cstate
+			FROM
+				member m
+			JOIN
+				codetable c ON c.pid = m.mstate
+		   WHERE
+		   		m.mid != 'none'
+		ORDER BY
+				mjoindate desc
+	</select>
+	
+	<!-- 회원 정보 상세 -->
+	<select id="viewMem" resultType="memberDTO">
+		  SELECT
+		  		m.mid,
+		  		m.mname,
+		  		m.memail,
+		  		m.magency,
+		  		m.mphone,
+		  		m.mrequired,
+		  		c1.codename as coptional,
+		  		m.mjoindate,
+		  		m.msecessiondate,
+		  		m.mreport,
+		  		c2.codename as cstate,
+		  		m.mpoint,
+		  		c3.codename as cclass,
+		  		m.mbuy
+			FROM
+				member m
+			JOIN
+				codetable c1 ON c1.pid = m.moptional
+			JOIN
+				codetable c2 ON c2.pid = m.mstate
+			JOIN
+				codetable c3 ON c3.pid = m.mclass
+		   WHERE
+		   		m.mid=#{mid}
+	</select>
+	
+	<!-- 업체 정보 삭제-->
+	<update id="memDelete" parameterType="String">
+		UPDATE member SET mstate = 'H4', msecessiondate = now()
+		WHERE mid=#{mid}
+	</update>
+
+</mapper>

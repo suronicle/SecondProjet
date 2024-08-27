@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>배송지 목록</title>
+<link rel="shortcut icon" type="./e-comm/image/x-icon" href="./e-comm/images/titlelogo.png" />
+<style type="text/css">
+
+
+	
+	.table-container table {
+	    width: 100%;
+	    border-collapse: collapse;
+	}
+	
+	.table-container th, .table-container td {
+	    padding: 8px;
+	    border: 1px solid #ddd;
+	}
+	
+	.table-container thead {
+	    background-color: #f2f2f2;
+	    position: sticky;
+	    top: 0;
+	}
+
+</style>
+
+
+  <script src="./e-comm/plugins/jquery/dist/jquery.min.js"></script>
+
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="./e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="./e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  
+
+  
+
+</head>
+<body>
+
+
+
+
+
+
+
+<div class="table-container">
+   <table>
+       <thead>
+       		<tr>
+       			<td colspan="6">
+					<div class="content breadcrumb" style="height: 50px;">
+						<h1 class="page-name">배송지 내역</h1>
+						<small style="float: right;">**상세 주소만 수정이 가능합니다.</small>
+						<br>
+						<small style="float: right;">**최소 한 개의 주소는 유지 됩니다.</small>
+					</div>
+       			</td>
+       		</tr>
+           <tr style="text-align: center;">
+            <td style="width: 5%;">기본</td>
+            <td style="width: 7%;">우편</td>
+		    <td style="width: 18%;">주소</td>
+		    <td style="width: 18%;">상세 주소</td>
+		    <td style="width: 7%;">동</td>
+		    <td style="width: 5%;">삭제</td>
+               <!-- 여러 개의 헤더 셀 추가 -->
+           </tr>
+       </thead>
+       <tbody>
+           <!-- 여러 개의 행 추가 -->
+           <tr th:each="adto:${adto}" style="text-align: center;" th:style="${adto.ano == 1} ? 'background-color: #F6EEC9;' : ''">
+           
+	           <td style="text-align: center;">
+	           
+	           <i th:if="${adto.ano == 1}" class="tf-ion-android-done-all"></i></td>
+           
+	           <td th:text="${adto.apostal}"></td>
+	           
+	           <td th:text="${adto.aadress}" style="text-align: left;"></td>
+	           
+	           <td> <input style="border: none; background-color: transparent;" th:value="${adto.adetail}" th:id = "${adto.ano}+'D'"> <button th:onclick="asetting([[${adto.aid}]], [[${adto.ano}]])">수정</button> </td>
+	           
+	           <td th:text="${adto.adong}"></td>
+	           
+	           <td style="text-align: center;">
+	           	  <a th:if="${adto.ano != 1}" style="color: red;" th:onclick="deladress([[${adto.aid}]], [[${adto.ano}]])">삭제</a>
+	           	  <p th:if="${adto.ano == 1}">불가</p>
+		      </td>
+		    </tr>
+        </tbody>
+    </table>
+</div>
+			
+	<script th:inline="javascript">
+	
+	    function deladress(aid, ano) {
+	    	
+	       $.ajax({
+	           type: 'POST',
+	           url: '/eadel',
+	           data: {aid:aid, ano:ano},
+	           
+	           //컨트롤러 성공 시 
+	           success: function(msg) {
+	        	   if (msg === "Y") {
+	        		   
+	        		  alert("주소가 삭제 되었습니다.");
+	        		  location.reload();
+	        		  
+	               } else if (msg === "N") {
+	            	   
+	            	   alert("주소 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
+	            	   
+	               } else {
+	            	   alert("주소 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
+	               }
+	           },
+	
+	           // 컨트롤러 실패 시
+	           error: function() {
+	        	   alert("주소 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
+	           }
+	       });
+	              
+	  	}
+	    
+	    
+	    function asetting(aid, ano) {
+	    	
+	    	let adetail = document.getElementById(ano + 'D').value;
+	    	
+	    	
+		       $.ajax({
+		           type: 'POST',
+		           url: '/asetting',
+		           data: {aid:aid, ano:ano, adetail:adetail},
+		           
+		           //컨트롤러 성공 시 
+		           success: function(msg) {
+		        	   if (msg === "Y") {
+		        		   
+		        		  alert("상세 주소가 변경 되었습니다.");
+		        		  location.reload();
+		        		  
+		               } else if (msg === "N") {
+		            	   
+		            	   alert("상세 주소 변경 중 오류가 발생했습니다. 다시 시도해주세요.");
+		            	   
+		               } else {
+		            	   alert("상세 주소 변경 중 오류가 발생했습니다. 다시 시도해주세요.");
+		               }
+		           },
+		
+		           // 컨트롤러 실패 시
+		           error: function() {
+		        	   alert("상세 주소 변경 중 오류가 발생했습니다. 다시 시도해주세요.");
+		           }
+		       });
+		              
+		  	}
+	    
+	    function abasic(aid, ano) {
+	    	
+		       $.ajax({
+		           type: 'POST',
+		           url: '/abasic',
+		           data: {aid:aid, ano:ano},
+		           
+		           //컨트롤러 성공 시 
+		           success: function(msg) {
+		        	   if (msg === "Y") {
+		        		   
+		        		  alert("기본 주소가 변경 되었습니다.");
+		        		  location.reload();
+		        		  
+		               } else if (msg === "N") {
+		            	   
+		            	   alert("기본 주소 변경 중 오류가 발생했습니다. 다시 시도해주세요.");
+		            	   
+		               } else {
+		            	   alert("기본 주소 변경 중 오류가 발생했습니다. 다시 시도해주세요.");
+		               }
+		           },
+		
+		           // 컨트롤러 실패 시
+		           error: function() {
+		        	   alert("기본 주소 변경 중 오류가 발생했습니다. 다시 시도해주세요.");
+		           }
+		       });
+		              
+		  	}
+	
+	</script>
+			
+</body>
+</html>

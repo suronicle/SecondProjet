@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>숨쉬는 서재 | 비회원 장바구니</title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="e-comm/image/x-icon" href="e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="e-comm/css/style.css">
+
+<style>
+	
+	.page-header{
+		margin-top:-20px;
+	}
+	
+	.page-wrapper{
+		margin-top:-60px;
+	}
+	
+</style>
+<style>   
+          .menu {
+              margin-top: -90px; 
+              padding-top: 0;
+          }
+
+		
+		  .call-to-action.section {
+		      margin-top: -40px;
+		  }
+		
+</style>    
+  
+</head>
+
+
+<body id="body">
+
+<!-- Start Top Header Bar -->
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+
+<!-- search -->
+<th:block th:insert="~{ecom_fragments::search}"></th:block>
+
+<!-- menu -->
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+
+<section class="page-header" style="background-color:#ffffff;">
+	<div class="container" >
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name" >장바구니</h1>
+					<ol class="breadcrumb">
+						<li><a href="/">Home</a></li>
+						<li class="active">non-mem cart</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+<div class="page-wrapper">
+  <div class="cart shopping">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="block">
+            <div class="product-list">
+              <form method="post">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="">책 정보</th>
+					  <th class="">구매 수</th>
+                      <th class="">책 가격</th>
+                      <th class=""></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                   <tr th:each="cart : ${cartlist}">
+                      <td class="">
+                        <div class="product-info">
+                          <img width="80" th:src="${cart.filepath}" alt="" />
+						  <a th:if="${cart.bostock!=0}" th:href=@{/eBookDetail(bono=${cart.bono})} th:text="${'#'+cart.cno+' '+cart.boname+' / ' + cart.bowriter}"></a>
+						  <a th:if="${cart.bostock==0}" th:href=@{/eBookDetail(bono=${cart.bono})} th:text="${'#'+cart.cno+' '+cart.boname+' / ' + cart.bowriter+' [품절]'}" style="color:#FF0000;"></a>
+                        </div>
+                      </td>
+					  <td class="" th:text="${cart.cbuynum}"></td>
+                      <td class="" th:text="${#strings.length(cart.boprice.toString()) > 3 ? (#strings.substring(cart.boprice.toString(), 0, #strings.length(cart.boprice.toString()) - 3) + ',' + #strings.substring(cart.boprice.toString(), #strings.length(cart.boprice.toString()) - 3)) : cart.boprice.toString()}"></td>
+                      <td class="">
+                        <a th:href="@{/eCartDel(mid=${mid},cno=${cart.cno})}" style="color:#FF0000;">제거</a>
+                      </td>
+                    </tr>
+                   
+                  </tbody>
+                </table>
+                <a th:href="@{/eNotMemBuy(mid=none)}" class="btn btn-main pull-right" style="background-color:#A1DD70;">구매</a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="e-comm/plugins/slick/slick.min.js"></script>
+    <script src="e-comm/plugins/slick/slick-animation.min.js"></script>
+
+
+    <!-- Main Js File -->
+    <script src="e-comm/js/script.js"></script>
+    
+
+
+  </body>
+  </html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title> 숨쉬는서재 | 공지사항 </title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="./e-comm/image/x-icon" href="./e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="./e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="./e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="./e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="./e-comm/css/style.css">
+
+</head>
+
+<body id="body">
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+let m = [[${msg}]];
+  if(m != null){
+      alert(m);
+  }
+
+</script>
+
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+<section class="page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name">비회원 문의 내역</h1>
+					<ol class="breadcrumb">
+						<li><a href="index.html">Home</a></li>
+						<li class="active">비회원 문의 내역</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="pricing-table"> 
+	<div class="container">
+	
+	     <div class="dashboard-wrapper user-dashboard">
+          <div class="table-responsive">
+          <h5 style="float: right;">*수정 및 취소가 불가능합니다.<br><br>*닉네임으로 문의 내용을 찾아보세요.</h5>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 10%; text-align: center;">문의번호</th>
+                  <th style="width: 20%; text-align: center;">문의일</th>
+                  <th style="width: 10%; text-align: center;">문의자</th>
+                  <th style="width: 20%; text-align: center;">제목</th>
+                  <th style="width: 20%; text-align: center;">문의유형</th>
+                  <th style="width: 10%; text-align: center;">상태</th>
+                </tr>
+              </thead>
+              <tbody th:each="dto:${dto}">
+                  <tr th:onclick="getShow([[${dto.ino}]])">
+                  <th style="text-align: center;" th:text="${dto.ino}"></th>
+                  <td th:id="${dto.ino}+IV" style="text-align: center;" th:text="${dto.idate}">
+                  </td>
+                  <td style="text-align: center;" th:text="${dto.iname}"></td>
+                  <td>
+                  <i th:if="${dto.ipw != null && dto.ipw != ''}" class="tf-ion-android-lock"></i> <b th:text="${dto.ititle}"></b>
+                  </td>
+                  <td style="text-align: center;" th:text="${dto.idiv}">
+                  </td>
+                  <td style="text-align: center;">
+	                  <p th:if="${dto.ianswer == null || dto.ianswer == ''}" style="display: inline-block;">답변대기중</p>
+	                  <p th:if="${dto.ianswer != null && dto.ianswer != ''}" style="display: inline-block;  color: blue;">답변완료</p>
+                  </td>
+                </tr>
+                <tr th:id="${dto.ino + 'DIV'}" style="display:none;">
+                	<td colspan="5">
+						<div class="checkout shopping">
+							<div>
+								<div class="product-checkout-details">
+			  						<div class="block">
+			  							<small style="float: right;">작성일: <small th:text="${dto.idate}" ></small></small>
+			  							<h4 class="widget-title" style="font-weight : bold;" th:text="${dto.ititle}"></h4>
+			  							<input type="hidden" th:id="${dto.ino + 'pwpw'}" th:value="${dto.ipw}">
+			  							<div th:id = "${dto.ino + 'DIVs'}">
+			  							</div>
+                						
+                					</div>
+                				</div>
+                			</div>
+                		</div>
+                	</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+		<br>
+	</div>
+</section>
+
+<div th:each="dto:${dto}">
+
+<button data-toggle="modal" th:data-target="'#' + ${dto.ino + 'Modal'}" th:id="${dto.ino + 'submitButton'}" hidden=""></button>
+	                  
+<!-- Basic Modal 답글-->
+<div class="modal fade" th:id="${dto.ino + 'Modal'}" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">비공개문의</h3>
+      </div>
+      <div class="modal-body">
+		비밀번호: <input type="text" class="form-control"  th:id="${dto.ino + 'ipw'}" style="width: 50%; display: inline-block;">
+		<button type="button" class="btn btn-primary" style="display: inline-block;" th:onclick="pwck([[${dto.ino}]])">확인</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close" th:id="${dto.ino + 'mbut'}">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Basic Modal-->	
+</div>
+
+<script th:inline="javascript">
+
+	function getShow(ino){
+		
+		let status = $("#"+ino+"DIV").css("display");
+		let pw = document.getElementById(ino+"pwpw").value;
+		
+		if(pw != null && pw != ''){
+			
+			document.getElementById(ino + "submitButton").click();
+			
+		} else {
+			
+			if (status == "none") {
+				
+				
+		        $.ajax({
+		        	
+		        	type : 'GET', 
+		            url : '/eQNAcont',
+		            data : {ino : ino},
+			        dataType: 'json',
+			        
+		            success : function(cdto) {
+		            	
+		            	
+			            let icontent="";
+			            icontent+= "<div class='media product-card'>";
+			            icontent+= "<p>" + cdto.icontent + "</p></div>";
+			            
+			            if(cdto.ianswer != null && cdto.ianswer != '') {
+			            	icontent+= "<div class='media product-card' style='border: 1px solid;'>";
+			            	icontent+= "<br>└ <b style='display: inline-block;'>관리자 답변</b>";
+			            	icontent+= "<small style='display: inline-block;'>"+ cdto.iadate + "</small>";
+			            	icontent+= "<p style='margin-left: 10px; margin-right: 10px;'>"+cdto.ianswer+"</p>";
+			            	icontent+= "<br>";
+			            }
+			            icontent+= "</div>";
+			            
+			            $("#"+ino+"DIVs").html(icontent);
+			            $("#"+ino+"DIV").css("display", "");
+		            },
+		    
+		            error : function(xhr, status) {
+		            	
+		            	alert('오류가 발생했습니다. 재시도하세요.');
+		                
+		            }
+		        }); 
+				
+	            
+	        } else {
+	            $("#"+ino+"DIV").css("display", "none");
+	        }
+			
+		}
+		
+	}
+	
+	
+	function pwck (ino) {
+		
+		var ipw = document.getElementById(ino + "ipw").value;
+		
+		
+		$.ajax({
+        	
+        	type : 'POST', 
+            url : '/eQNApw',
+            data : {ino : ino},
+	        
+            success : function(pwck) {
+            
+            	if(ipw == pwck) {
+            		$('#'+ino+'Modal').modal('hide');
+            		document.getElementById(ino+"pwpw").value = '';
+            		getShow(ino);
+            		
+            	} else {
+            		alert("비밀번호가 일치하지 않습니다.");
+            	}
+            
+            },
+    
+            error : function(xhr, status) {
+            	alert('오류가 발생했습니다. 재시도하세요.');
+                
+            }
+        }); 
+	}
+	
+</script>
+
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="./e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="./e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="./e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="./e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="./e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="./e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="./e-comm/plugins/slick/slick.min.js"></script>
+    <script src="./e-comm/plugins/slick/slick-animation.min.js"></script>
+
+    <!-- Google Mapl -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script type="text/javascript" src="./e-comm/plugins/google-map/gmap.js"></script>
+
+    <!-- Main Js File -->
+    <script src="js/script.js"></script>
+    
+
+
+  </body>
+  </html>

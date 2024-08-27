@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+    <link href="erp/css/style.css" rel="stylesheet">
+	<!-- Color picker plugins css -->
+	<link href="./erp/plugins/jquery-asColorPicker-master/css/asColorPicker.css" rel="stylesheet">
+	<!-- Date picker plugins css -->
+	<link href="./erp/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet">
+	<!-- Daterange picker plugins css -->
+	<link href="./erp/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
+	<link href="./erp/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+	<style>
+		.right-align {
+			padding: 0rem 1.875rem;
+			text-align: right; /* 텍스트를 우측으로 정렬 */
+		}
+	</style>
+</head>
+
+<body>
+	<div>
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col">
+					</div>
+					<div class="col right-align">
+						<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+					</div>
+				</div>
+				<div class="form-view">
+					<form action = "/m_bookUpdate" method = "post">
+					<div class="form-group row">
+						<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">책 번호</label>
+						<div class="col col-form-label" th:text="${book?.bono}"></div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">책 제목</label>
+						<div class="col col-form-label" th:text="${book?.boname}"></div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="대표자명">작가</label>
+						<div class="col col-form-label" th:text="${book?.bowriter}"></div>
+						<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="대표자명">장르</label>
+						<div class="col col-form-label" th:text="${book?.bogenre}"></div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">등록 날짜</label>
+						<div class="col col-form-label" th:text="${book?.bodate}"></div>
+						<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체번호">재고</label>
+						<div class="col col-form-label" th:text="${book?.bostock}"></div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">책 가격</label>
+						<input type = "text" class="col col-form-label" name = "boprice" th:value="${book?.boprice}">
+						<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="사업자등록번호">출판사</label>
+						<input type = "text" class="col col-form-label" name = "bocompany" th:value="${book?.bocompany}">
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="braccountholder">구분<span class="text-danger"></span>
+						</label>
+						<div class="col-lg-6">
+							<select class="form-control" name = "bocode" id="bocode">
+								<option value="A0">기본</option>
+								<option value="A1">광고</option>
+								<option value="A2">신작</option>
+								
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">책 내용</label>
+						<div class="col col-form-label" th:text="${book?.bocontent}"></div>
+					</div>
+						<input type = "hidden" name = "bono" th:value = "${book?.bono}">
+					
+					<div class="form-group">
+						<div align="center">
+							<button type="submit"  class="btn btn-warning">수정</button>
+						</div>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

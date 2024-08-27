@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>요청책</title>
+</head>
+<body>
+<div th:fragment="reqList">
+	
+	
+	
+	<section class="product-category section">
+	   <div class="container">
+	      <div class="row">
+	         
+			<div class="col-md-12">
+	            <div class="title text-center">
+	               <h2>TO BE CONTINUED .. 요청 책</h2>
+	            </div>
+	         </div>
+			 
+			 <!-- 반복할 코드 시작 -->
+			 <div class="col-md-4" th:each="book : ${reqbook}">
+			     <div class="category-box">
+			         <a href="#!">
+			             <img th:src="${book.filepath}" alt="" style="width: 100%; height: auto;" />
+			             <div class="content">
+			                 <h3 th:text="${#strings.length(book.boname) &lt;= 10 ? book.boname : #strings.substring(book.boname, 0, 10) + '...'}"></h3>
+			                <p th:text="${#strings.length(book.bocontent) &lt;= 25 ? book.bocontent : #strings.substring(book.bocontent, 0, 25) + '...'}"></p>
+			             </div>
+			         </a>
+			     </div>
+			 </div>
+			 <!-- 반복할 코드 끝 -->
+			 
+	      </div>
+	   </div>
+	</section>
+	
+	
+	
+</div>
+</body>
+</html>

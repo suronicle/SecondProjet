@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title> 숨쉬는서재 | 기본 </title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="./e-comm/image/x-icon" href="./e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="./e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="./e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="./e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="./e-comm/css/style.css">
+
+</head>
+
+<body id="body">
+
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+<section class="page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name">문의하기</h1>
+					<ol class="breadcrumb">
+						<li><a href="index.html">Home</a></li>
+						<li class="active">문의하기</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="top-header">
+	   <div class="checkout shopping">
+	      <div class="container">
+
+			  <div class="product-checkout-details">
+			     <div class="block">
+			     	<h4 class="widget-title" style="font-weight : bold;">자주묻는질문</h4>
+			     	<div class="media product-card">
+				      	<div align="center">
+					        <button onclick="question(1)" class="btn btn-main btn-small btn-round-full" style="font-size: 15px; background-color: #799351;">교환/환불 절차</button>
+					        <button onclick="question(2)" class="btn btn-main btn-small btn-round-full" style="font-size: 15px; background-color: #799351;">이메일 정보 분실</button>
+					        <button onclick="question(3)" class="btn btn-main btn-small btn-round-full" style="font-size: 15px; background-color: #799351;">계정 분실</button>
+					        <button onclick="question(4)" class="btn btn-main btn-small btn-round-full" style="font-size: 15px; background-color: #799351;">신규 도서 요청</button>
+					        <button onclick="question(5)" class="btn btn-main btn-small btn-round-full" style="font-size: 15px; background-color: #799351;">도서 입고일 문의</button>
+					        
+					        <div class="product-checkout-details" style="border: 1px solid; margin-top: 50px; display:none;" id="divA">
+						     <div class="block">
+						     	<h4 class="widget-title" style="font-weight : bold;" align="left" id="titleA"></h4>
+						     	<div class="media product-card">
+							      	<div align="left" id="contA">
+									</div>
+						        </div>
+						     </div>
+						    </div>
+				      	</div>
+			     	</div>
+			     </div>
+			  </div>
+			  
+			  
+			 <div class="product-checkout-details">
+			     <div class="block">
+			        <h4 class="widget-title" style="font-weight : bold;">문의하기</h4>
+						&nbsp;&nbsp;&nbsp; <h5 style="width: 5%; display: inline-block;">제목: 
+						</h5><input type="text" class="form-control" style="width: 90%; display: inline-block;" id="ititle" name="ititle"> <br> <br>
+						&nbsp;&nbsp;&nbsp; <h5 style="width: 5%; display: inline-block;">유형: </h5>
+						<select class="form-control" style="width: 20%; height:45px; display: inline-block;" id="idiv" name="idiv">
+							<option value="0">개인정보관련문의</option>
+							<option value="1">도서관련문의</option>
+							<option value="2">주문관련문의</option>
+							<option value="3">결재관련문의</option>
+							<option value="4">홈페이지오류문의</option>
+							<option value="5">기타문의</option>
+						</select>
+						
+						<span th:if="${session.login == null || session.login == ''}"> 
+							&nbsp;&nbsp;&nbsp; <h5 style="width: 5%; display: inline-block;">닉네임: </h5>
+							<input type="text" class="form-control" style="width: 10%; display: inline-block;" id="iname" name="iname" placeholder="필수입력">
+							&nbsp;&nbsp;&nbsp; <h5 style="width: 5%; display: inline-block;">이메일: </h5>
+							<input type="text" class="form-control" style="width: 15%; display: inline-block;" id="iemail" name="iemail" placeholder="필수입력">
+							&nbsp;&nbsp;&nbsp; <h5 style="width: 8%; display: inline-block;">비밀번호: </h5>
+							<input type="text" class="form-control" style="width: 15%; display: inline-block;" id="ipw" name="ipw" placeholder="미입력 시 전체 공개">
+							<input id="mid" value="" hidden="">
+						</span>
+						
+				        
+				        <span th:if="${session.login != null && session.login != ''}">
+							<input type="hidden" id="iname" name="iname" value="">
+							<input type="hidden" id="iemail" name="iemail" value="">
+				        	<input type="hidden" id="ipw" value="">
+				        	<input id="mid" th:value="${session.login.mid}" hidden="">
+				        </span>
+				        
+				        <button type="button" class="btn btn-primary" style="display: inline-block; float: right;" onclick="nck();">문의등록</button>
+						<button data-toggle="modal" data-target="#basicModal" id="submitButton" hidden=""></button>
+						<div class="media product-card">
+							<div align="center">
+								<div class="post-meta">
+									<div class="post-content">
+										<textarea class="form-control" rows="20" cols="150%" id="icontent" name="icontent"></textarea>
+									</div>
+				        		</div>
+							</div>
+						</div>
+				</div>
+			  </div>
+				
+			  
+			</div>
+		</div>
+</section>
+
+<!-- Basic Modal 답글-->
+<div class="modal fade" id="basicModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">문의 등록</h3>
+      </div>
+      <div class="modal-body">
+		<span th:if="${session.login == null || session.login == ''}">비밀번호 미기입 시 전체공개됩니다.</span>
+		수정이 불가능하며, 취소는 회원만 가능합니다. <br>
+		<b>정말로 문의를 등록하시겠습니까?</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+        <button type="button" class="btn btn-primary" onclick="newqna();">네</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Basic Modal-->	
+
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="./e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="./e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="./e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="./e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="./e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="./e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="./e-comm/plugins/slick/slick.min.js"></script>
+    <script src="./e-comm/plugins/slick/slick-animation.min.js"></script>
+
+    <!-- Google Mapl -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script type="text/javascript" src="./e-comm/plugins/google-map/gmap.js"></script>
+
+    <!-- Main Js File -->
+    <script src="js/script.js"></script>
+    
+	<script th:inline="javascript">
+	
+	
+	function question (num) {
+		
+		let title = "";
+		let cont = "";
+		
+		if(num == 1) {
+		
+			title = "교환/환불 절차";
+			cont = "<b>■ 교환</b><br>&nbsp; 1. 교환 가능 여부 확인: 도서 교환 정책에 따른 훼손 여부를 확인<br>"
+			+"&nbsp; 2. 교환 신청: 구매 내역 페이지에서 교환 버튼 클릭<br>"
+			+"&nbsp; 3. 상품 반송: 구매자가 직접 '숨쉬는서재' 본사로 도서 배송 처리<br>"
+			+"&nbsp; 4. 새 상품 발송: 판매자가 수령한 상품을 확인한 후 새로운 상품을 발송<br><br>"
+			+"<b>■ 환불</b> <br>"
+			+ "&nbsp; 1. 환불 가능 여부 확인: 도서 교환 정책에 따른 훼손 여부를 확인<br>"
+			+ "&nbsp; 2. 환불 신청: 구매 내역 페이지에서 교환 버튼 클릭<br>"
+			+ "&nbsp; 3. 상품 반송: 구매자가 직접 '숨쉬는서재' 본사로 도서 배송 처리<br>"
+			+ "&nbsp; 4. 환불 처리: 판매자가 상품을 수령하고 확인한 후 환불 절차를 진행. 은행사별 환불 일정에 따라 기간 내에 환불이 처리<br><br>"
+			+ "<div align='center'>"
+			+ "========================[받는이 정보]========================"
+			+ "<br><br>"
+			+ "&nbsp;&nbsp;&nbsp;&nbsp; <h8>주소: 수원시 000 0000 0000 (0010) 1층 접수처</h8>"
+			+ "&nbsp;&nbsp;&nbsp;&nbsp; <h8>받는이: 숨쉬는서재 교환접수처</h8>"
+			+ "&nbsp;&nbsp;&nbsp;&nbsp; <h8>연락처: 031 000 000 (내선: 100)</h8>";
+		}
+		if(num == 2) {
+			title = "이메일 정보 분실";
+			cont = "<b> Q. 계정을 분실해서 아이디 및 비밀번호를 찾고자 하는 데 이메일 정보를 분실했어요.</b><br><br>"
+			       + "<b>A. 이메일 번호를 분실 시 절차가 번거로워질 수 있습니다.</b><br>"
+			       + "&nbsp;&nbsp; 해당 사항은 문의 게시판 또는 고객센터로 연락주시면 담당 관리자가 친절히 도와 드리겠습니다.<br>" 
+			       + "&nbsp;&nbsp; 필요에 따라 일부 개인정보를 요구할 수 있으나, 블라인드 체크이며 주민번호를 제외한 정보를 요청드리지 않습니다.<br>" 
+			       + "&nbsp;&nbsp; 개인정보 노출을 거부하신다면 신규 회원가입을 요청드립니다.<br>"; 
+		}
+		if(num == 3) {
+			title = "계정 분실";
+			cont = "<b>Q. 계정을 분실했습니다. 어떻게 찾을까요?</b><br><br>"
+			       + "<b>A. 아이디 및 비밀번호 찾기를 시도해보세요.</b>&nbsp;&nbsp;&nbsp;&nbsp;"
+			       + "<button type='button' class='btn btn-info' onclick=\"location.href='/eidfind'\">회원 아이디 찾기로 이동</button>&nbsp;&nbsp;&nbsp;&nbsp;" 
+			       + "<button type='button' class='btn btn-info' onclick=\"location.href='/epwfind'\">회원 비밀번호 찾기로 이동</button>";
+		}
+		if(num == 4) {
+			title = "신규 도서 요청";
+			cont = "<b> Q. 원하는 책이 없어요. 어떻게 하나요?</b><br><br>"
+			       + "<b> A. 찾는 책이 있다면 구매할 수 있도록 도와드릴게요.</b><br>"
+			       + "&nbsp;&nbsp; 저희 [숨쉬는서재]는 [도서요청하기] 서비스를 지원하고 잇습니다. 원하시는 책을 요청해보세요.&nbsp;&nbsp;&nbsp;&nbsp;" 
+			       + "<button type='button' class='btn btn-info' onclick=\"location.href='/eidfind'\">신규 도서 요청으로 이동</button>&nbsp;&nbsp;&nbsp;&nbsp;";
+		}
+		if(num == 5) {
+			title = "도서 입고일 문의";
+			cont = "<b> Q. 사고 싶은 책이 있는 데 언제 입고 되나요?</b><br><br>"
+			       + "<b> A. 품절 도서 및 요청 도서는 출판사 사정에 따라 상이할 수 있습니다.</b><br>"
+			       + "&nbsp;&nbsp; 우선 신규 도서 요청 또는 품절 도서 입고 요청을 하신 상태에서 안내드립니다. <br> "
+			       + "&nbsp;&nbsp; 도서 입고는 품절 평균 1개월이 소요되며, 요청일로부터 3개월 이상이 지나도 입고가 되지 않을 시 따로 문의 주시면 감사드리겠습니다.";
+		}
+		
+		cont += "<br><br><br><button type='button' style='float: right;' class='btn btn-danger' onclick='getShow(0);'>닫기</button>&nbsp;&nbsp;&nbsp;&nbsp;";
+		getShow(1);
+		// 선택된 텍스트를 특정 h1 요소에 추가
+        $('#titleA').text(title);
+    	$('#contA').html(cont);
+		
+	}
+	
+	function getShow(num){
+		
+		if(num == 0) {
+			document.getElementById('divA').style.display = ' none';
+		} else {
+			document.getElementById('divA').style.display = 'block';
+		}
+		
+	}
+    
+	
+	function nck() {
+		
+	    var ititle = document.getElementById('ititle').value;
+	    var div = document.getElementById('idiv');
+	    var idiv =  div.options[div.selectedIndex].value;
+	    var ipw = document.getElementById('ipw');
+	    var icontent = document.getElementById('icontent').value;
+	    var mid = document.getElementById('mid').value;
+	    var iname = document.getElementById('iname').value;
+	    var iemail = document.getElementById('iemail').value;
+	    
+	    if(ititle == '') {
+	    	
+	    	alert ("제목을 기입해주세요.");
+	    	
+	    	return false;
+	    }
+		
+		if(icontent == '') {
+			
+			alert ("문의내용을 기입해주세요.");
+			
+			return false;
+		}
+	    
+	    if(mid == null || mid == '') {
+	    	
+	    	if(iname == '') {
+				
+				alert ("닉네임을 기입해주세요. 닉네임은 비회원 문의 내역 조회 시 식별코드로 사용됩니다.");
+				
+				return false;
+			}
+	    	
+	    	if(iemail == '') {
+				
+				alert ("답변을 받을 이메일을 기입해주세요.");
+				
+				return false;
+			}
+	    	
+	    	if(ipw.value != '' && ipw.value.trim().length < 4) {
+		    	
+		    	alert ("비밀번호를 입력하시려면 4자리 이상을 작성해주세요.");
+		    	
+				return false;
+		    }
+	    	
+	    	if(ipw.value == '') {
+				ipw.value = null;
+		    }
+			
+	    }
+			   
+		
+		document.getElementById('submitButton').click();
+	}
+    
+	
+	function newqna() {
+		
+	    var ititle = document.getElementById('ititle').value;
+	    var div = document.getElementById('idiv');
+	    var idiv =  div.options[div.selectedIndex].value;
+	    var ipw = document.getElementById('ipw').value;
+	    var icontent = document.getElementById('icontent').value;
+	    var mid = document.getElementById('mid').value;
+	    var iname = document.getElementById('iname').value;
+	    var iemail = document.getElementById('iemail').value;
+	    
+		
+	    $.ajax({
+	        type: 'POST',
+	        url: '/eQNA',
+	        data: {ititle : ititle,idiv : idiv,ipw : ipw, icontent : icontent, iname:iname, iemail:iemail},
+	        
+	        //컨트롤러 성공 시 
+	        success: function(response) {
+	        	
+	        	if (response == 'Y') {
+	        		
+	        		if(mid == null || mid == '') {
+	        			window.location.href = "/eQNAlist";
+	        		} else {
+	        			window.location.href = "/emyQNAlist";
+	        		}
+	        		
+	        	}else {
+	        		alert('오류가 발생했습니다. 다시 시도해주세요.');
+	        	}
+	        },
+	
+	        // 컨트롤러 실패 시
+	        error: function() {
+	            alert('오류가 발생했습니다. 다시 시도해주세요.');
+	            
+	        }
+	    });
+	}
+	</script>
+
+  </body>
+  </html>

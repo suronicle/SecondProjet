@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+  
+    <title>My Info</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+	<link href="./erp/plugins/sweetalert/css/sweetalert.css" rel="stylesheet">
+	<link href="./erp/plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="erp/css/style.css" rel="stylesheet">
+
+
+    
+	<style>
+		.right-align {
+			padding: 0rem 1.875rem;
+			text-align: right; /* 텍스트를 우측으로 정렬 */
+		}
+		.msgbt {
+			margin: 30px 0 0 30px;
+		}
+	</style>
+</head>
+
+<body>
+
+    <!-- Preloader start -->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!-- Preloader end -->
+    
+    <!-- Main wrapper start -->
+    <div id="main-wrapper">
+		<th:block th:insert="~{m_fragments::header('erp Main')}"></th:block>
+ 		<th:block th:insert="~{m_fragments::topbar}"></th:block>
+		<th:block th:insert="~{m_fragments::sidebar}"></th:block>
+		<!-- Content body start -->
+		<div class="content-body">
+			
+			<div class="row">
+				<div class="col">
+				    <div th:if="${msg}" class="alert alert-success alert-dismissible fade show msgbt">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<th:block th:text="${msg}"></th:block>
+				    </div>
+				</div>
+				<div class="col-md-2">
+					<div class="row page-titles mx-0">
+						<div class="col p-md-0">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="/m">Main</a></li>
+								<li class="breadcrumb-item active"><a href="/m_myinfo?brno=B00001">내 정보</a></li>
+							</ol>
+						</div>
+					</div>
+			    </div>
+			</div>
+			<!-- div row -->
+			<div class="container-fluid">
+				<div class="row">
+					<div id="firstColumn" class="col">
+						<div class="card">
+							<div class="card-body">
+								<h4 class="card-title">My Info</h4>
+								<div class="form-view">
+									<div class="form-group row">
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">관리 번호</label>
+										<div class="col col-form-label" th:text="${bdto?.brno}"></div>
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">업체 명</label>
+										<div class="col col-form-label" th:text="${bdto?.brname}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="대표자명">대표자 명</label>
+										<div class="col col-form-label" th:text="${bdto?.brdelegate}"></div>
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="사업자등록번호">사업자 등록번호</label>
+										<div class="col col-form-label" th:text="${bdto?.formatbno}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체번호">회사번호</label>
+										<div class="col col-form-label" th:text="${bdto?.formatphone}"></div>
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">팩스번호</label>
+										<div class="col col-form-label" th:text="${bdto?.formatfax}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="계좌">은행 정보</label>
+										<div class="col col-form-label" th:text="${bdto?.brbank}"></div>
+										<div class="col col-form-label" th:text="${bdto?.formataccount}"></div>
+										<div class="col col-form-label" th:text="${bdto?.braccountholder}"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="주소">주소</label>
+										<div class="col-form-label d-inline-block" style="padding-left: 15px;">(</div>
+										<div class="col-form-label d-inline-block" th:text="${bdto?.brpostal}"></div>
+										<div class="col-form-label d-inline-block">)</div>&nbsp;
+										<div class="col-form-label d-inline-block" th:text="${bdto?.braddress}"></div>
+									</div>
+									<div class="form-group">
+										<div align="center">
+											<button type="button" class="btn btn-warning" th:brno="${bdto?.brno}" th:source="${source}"
+													onclick="showEditCom(this.getAttribute('brno'), this.getAttribute('source'))">수정</button>&nbsp;&nbsp;&nbsp;
+											<button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#changePwModal" data-backdrop="static">비밀번호 변경</button>
+											<!-- Modal -->
+											<div class="modal fade" id="changePwModal">
+											    <div class="modal-dialog" role="document">
+											        <div class="modal-content">
+											            <div class="modal-header">
+											                <h5 class="modal-title">비밀번호 변경</h5>
+											                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+											                </button>
+											            </div>
+											            <div class="modal-body">
+															<div class="form-group row">
+																<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="currentPw"> 현재 비밀번호</label>
+																<div class="col-lg-6 col-form-label">
+																	<input type="password" class="form-control" id="cpw1" name="cpw1" placeholder="현재 비밀번호">
+																</div>
+															</div>
+															<div class="form-group row">
+																<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="cpw2">변경 비밀번호</label>
+																<div class="col-lg-6 col-form-label">
+																	<input type="password" class="form-control" id="cpw2" name="cpw2" placeholder="변경할 비밀번호">
+																</div>
+															</div>
+															<div class="form-group row">
+																<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="confirmPw">변경 재확인</label>
+																<div class="col-lg-6 col-form-label">
+																	<input type="password" class="form-control" id="cpw3" placeholder="변경 비밀번호 재확인">
+																</div>
+															</div>
+														</div>
+											            <div class="modal-footer">
+															<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+															<button type="submit" class="btn btn-success cpw">변경</button>
+											            </div>
+											        </div>
+											    </div>
+											</div>
+											<!-- Modal end -->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- first column end -->
+					<div class="col-md-6" id="comEdit" style="display: none;">
+						<th:block th:insert="~{m_comUpdate::editcom}"></th:block>
+					</div>
+				</div>
+				<!-- row end -->
+			</div>
+			<!-- #/ container -->   
+		</div>
+		<!-- Content body end -->
+		<th:block th:insert="~{m_fragments::footer}"></th:block>
+    </div>
+
+    <!-- Main wrapper end -->
+	<script src="./erp/plugins/sweetalert/js/sweetalert.min.js"></script>
+	<script src="./erp/plugins/sweetalert/js/sweetalert.init.js"></script>
+	<script src="erp/plugins/common/common.min.js"></script>
+    <script src="erp/js/custom.min.js"></script>
+    <script src="erp/js/settings.js"></script>
+    <script src="erp/js/gleek.js"></script>
+    <script src="erp/js/styleSwitcher.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="./erp/plugins/tables/js/jquery.dataTables.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+
+
+	<th:block th:insert="~{m_fragments::scUpdate}"></th:block>
+
+	<script>
+		
+		function showEditCom(brno, source){
+		   var comEdit = document.getElementById('comEdit');
+		   $.ajax({
+		         type: "GET",
+		         url: "/m_comUpdate?brno="+brno,
+		         data: {
+		            "source": source
+		         },
+		         success: function(response) {
+		            comEdit.style.display = 'block';
+		            $('#comEdit').html(response);
+		         },
+		         error: function(xhr, status, error) {
+		            console.error(error);
+		         }
+		      });
+		}
+		
+		function hideColumn() {
+		    var comEdit = document.getElementById('comEdit');
+		    comEdit.style.display = 'none';
+		}
+		
+		$(document).ready(function() {
+			
+			$('.cpw').on('click', function(event) {
+			    event.preventDefault();
+			    var cpw1 = document.getElementById('cpw1').value; // 현재 비밀번호
+			    var cpw2 = document.getElementById('cpw2').value; // 변경할 비밀번호
+			    var cpw3 = document.getElementById('cpw3').value; // 변경할 비밀번호 확인
+
+			    // 변경할 비밀번호의 길이가 4자 이상 8자 이하여야 함
+			    if (cpw2.length >= 4 && cpw2.length <= 8) {
+			        // 변경 비밀번호와 확인 비밀번호가 일치하는지 확인
+			        if (cpw2 === cpw3) {
+			            // AJAX를 통해 비밀번호 변경 요청을 서버에 전송
+			            $.ajax({
+			                url: '/m_changePw', // 비밀번호 변경을 처리할 서버의 URL
+			                type: 'POST', // POST 방식으로 데이터 전송
+			                data: { 
+			                    cpw1: cpw1, // 현재 비밀번호
+			                    cpw2: cpw2, // 변경할 비밀번호
+			                    cpw3: cpw3  // 변경할 비밀번호 확인
+			                },
+			                success: function(response) {
+			                    // 서버에서 성공적으로 응답이 왔을 때
+			                    if (response === "success") {
+									sweetAlert({
+									    title: "Good !!",
+									    text: "비밀번호가 성공적으로 변경되었습니다.\n다시 로그인 해주세요.",
+									    type: "success"
+									}, function() {
+									    window.location.href = '/elogin'; // 로그인 페이지로 이동
+									});
+			                    } else {
+			                        // 서버에서 오류가 발생했을 때
+			                        sweetAlert("알림", "현재 비밀번호를 다시 확인해주세요.", "error");
+			                    }
+			                },
+			                error: function() {
+			                    // AJAX 요청 자체가 실패했을 때
+			                    sweetAlert("알림", "서버에 오류가 발생했습니다.", "error");
+			                }
+			            });
+			        } else {
+			            // 변경 비밀번호와 확인 비밀번호가 일치하지 않을 때
+			            sweetAlert("알림", "변경 비밀번호 확인이 일치하지 않습니다.", "error");
+			        }
+			    } else {
+			        // 변경할 비밀번호의 길이가 4자 이상 8자 이내가 아닐 때
+			        sweetAlert("알림", "비밀번호를 4~8자리로 입력해주세요.", "error");
+			    }
+			});
+
+		});
+	</script>
+
+</body>
+
+</html>

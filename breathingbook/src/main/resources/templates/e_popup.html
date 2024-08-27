@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>팝업</title>
+
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="./e-comm/image/x-icon" href="./e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="./e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="./e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="./e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="./e-comm/css/style.css">
+  <style type="text/css">
+  .popup-image {
+    max-width: 100%;
+    max-height: 100%;
+}
+  </style>
+</head>
+<body>
+
+
+	<div class="checkout shopping">
+		<div>
+			<div class="product-checkout-details">
+				<div class="block">
+					<small style="float: right;">작성일: <small th:text="${dto.ndate}" ></small></small>
+					<h4 class="widget-title" style="font-weight : bold;" th:text="${dto.ntitle}" ></h4>
+					<div class="media product-card">
+						<img th:if="${dto.npicturefake != null}" alt="팝업이미지" th:src="@{./files/} + ${dto.npicturefake}" class="popup-image">
+						<p th:text="${dto.ncontent}"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<button id="close-popup" style="float: right;">닫기</button>
+	<label style="float: right;">
+        <input type="checkbox" id="doNotShowAgain" > 전체 팝업 오늘 다시 보지 않기
+    </label>
+    
+
+    <script>
+        document.getElementById('close-popup').addEventListener('click', function() {
+            // 체크박스 상태를 확인하여 메시지 전송
+            if (document.getElementById('doNotShowAgain').checked) {
+                window.opener.postMessage('popupClosed', '*'); // 부모 창에 메시지 전송
+            }
+            window.close(); // 팝업 닫기
+        });
+    </script>
+
+</body>
+</html>

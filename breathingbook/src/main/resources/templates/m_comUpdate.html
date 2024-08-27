@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<div th:fragment="editcom">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+					<div th:if="${source == 'branch'}" class="card-title">사업장 정보 수정</div>
+					<div th:if="${source == 'vendor'}" class="card-title">거래처 정보 수정</div>
+				</div>
+				<div class="col right-align">
+					<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+				</div>
+			</div>
+			<div class="form-validation">
+				<form class="form-valide" action="m_comUpdate" method="post" id="updateForm" onsubmit="validation2()">
+					<input type="hidden" name="source" th:value="${source}">
+					<th:block th:if="${source == 'branch'}"><input type="hidden" name="brClass" value="1"></th:block>
+					<th:block th:if="${source == 'vendor'}"><input type="hidden" name="brClass" value="2"></th:block>						
+					
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">관리 번호</label>
+						<div class="col-lg-6 col-form-label" th:text="${bdto?.brno}"></div>
+						<input type="hidden" name="brno" th:value="${bdto?.brno}">
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brname">업체 명 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" name="brname" th:value="${bdto?.brname}" placeholder="업체명">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brdelegate">대표자 명 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" name="brdelegate" th:value="${bdto?.brdelegate}" placeholder="대표자명">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brbusinessno">사업자 등록번호 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" id="rebrbusinessno" name="brbusinessno" th:value="${bdto?.brbusinessno}" maxlength="10" placeholder="(-)없이 입력">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="sample6_postcode">우편번호 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6 input-group">
+							<input type="text" class="form-control" id="sample6_postcode" name="brpostal" th:value="${bdto?.brpostal}" placeholder="우편번호" required readonly>
+							<input type="button" class="btn" onclick="sample6_execDaumPostcode()" th:value="주소찾기">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="sample6_address">주소 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" id="sample6_address" th:value="${bdto?.braddress}" placeholder="주소" readonly>
+							<input type="text" class="form-control" id="sample6_extraAddress" style="width: 40%;" placeholder="비고" readonly>
+							<input type="hidden" name="braddress" id="rebraddress">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brphone">회사 번호 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" id="rebrphone" name="brphone" th:value="${bdto?.brphone}" maxlength="11" placeholder="(-)없이 입력">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brfax">fax 번호 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" id="rebrfax" name="brfax" th:value="${bdto?.brfax}" maxlength="11" placeholder="(-)없이 입력">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brbank">은행 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6 input-group">
+							<input type="text" class="form-control" id="rebank" name="brbank" th:value="${bdto?.brbank}" placeholder="은행명">
+							<select class="form-control" id="rebank2" onchange="bankselect2()">
+								<option value="직접입력">직접 입력</option>
+								<option value="신한은행">신한은행</option>
+								<option value="기업은행">기업은행</option>
+								<option value="우리은행">우리은행</option>
+								<option value="농협은행">농협은행</option>
+								<option value="국민은행">국민은행</option>
+								<option value="카카오뱅크">카카오뱅크</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="braccountholder">예금주 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" th:value="${bdto?.braccountholder}" name="braccountholder" placeholder="예금주">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="braccount">계좌번호 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" id="rebraccount" th:value="${bdto?.braccount}" name="braccount" maxlength="14" placeholder="(-)없이 입력">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-lg-8 ml-auto">
+							<button type="submit" class="btn btn-success">수정 완료</button>
+							<button type="reset" class="btn btn-secondary">초기화</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

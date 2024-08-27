@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>숨쉬는 서재 Breathing Books</title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="e-comm/image/x-icon" href="e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="e-comm/css/style.css">
+
+
+  
+</head>
+
+
+<body id="body">
+
+
+	
+<!-- Start Top Header Bar -->
+<div th:fragment="header">
+<section class="top-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-xs-12 col-sm-4">
+				<div class="contact-number">
+					<i class="tf-ion-ios-telephone"></i>
+					<a href="/eInfo"><span>MBC ace</span></a>
+				</div>
+			</div>
+			
+			<div class="col-md-4 col-xs-12 col-sm-4">
+			    <!-- Site Logo -->
+			    <div class="logo text-center">
+			        <a href="/">
+			            <!-- replace logo here -->
+			            <svg width="450" height="70" viewBox="0 0 450 70" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+			                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-size="40" font-family="AustinBold, Austin" font-weight="bold">
+			                    <g id="Group" transform="translate(0, 0)" fill="#000000">
+			                        <!-- Adding an image element -->
+			                        <image x="0" y="0" width="40" height="40" href="e-comm/images/titlelogo.png" />
+			                        <text id="AVIATO">
+			                            <tspan x="50" y="40" style="fill: #A1DD70;">Breathing Books</tspan>
+			                        </text>
+			                  <image x="290" y="20" width="80" height="80" href="e-comm/images/brandName.png" />
+			                    </g>
+			                </g>
+			            </svg>
+			        </a>
+			    </div>
+			</div>
+					
+			<div class="col-md-4 col-xs-12 col-sm-4">
+				<!-- Cart -->
+				<ul class="top-menu text-right list-inline">
+					<li class="dropdown cart-nav dropdown-slide">
+						<a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"><i
+								class="tf-ion-android-cart"></i>장바구니</a>
+						<div class="dropdown-menu cart-dropdown" th:if="${count!=null}">
+							<!-- Cart Item -->
+							<div class="media" th:each="list : ${cartlist}" >
+								<a class="pull-left" href="#!">
+									<img class="media-object" th:src="${list.filepath}" alt="image" />
+								</a>
+								<div class="media-body">
+									<h4 class="media-heading" th:if="${list.bostock!=0}"th:text="${list.boname}"><a href="/eCart"></a></h4>
+									<h4 class="media-heading" th:if="${list.bostock==0}" th:text="${'[품절] '+list.boname}" style="color:#FF0000;"><a href="/eCart"></a></h4>
+									<div class="cart-price">
+										<span th:text="${list.cbuynum+' x'}"></span>
+										<span th:text="${#strings.length(list.boprice.toString()) > 3 ? (#strings.substring(list.boprice.toString(), 0, #strings.length(list.boprice.toString()) - 3) + ',' + #strings.substring(list.boprice.toString(), #strings.length(list.boprice.toString()) - 3)) : list.boprice.toString()} + ' 원'"></span>
+									</div>
+									
+								</div>
+
+								
+							</div><!-- / Cart Item -->
+							<!-- Cart Item -->
+						
+
+							<ul class="text-center cart-buttons">
+								<li><a th:href="@{/eCart(mid=${mid})}" th:if="${session.login != null}" class="btn btn-small">장바구니 보기</a>
+								<a th:href="@{/eCart(mid=none)}" th:if="${session.login == null or #strings.isEmpty(session.login.mid)}" class="btn btn-small">장바구니 보기</a></li>
+								<li><a th:href="@{/eBuy(mid=${mid})}"  th:if="${session.login != null}" class="btn btn-small btn-solid-border">구매</a>
+									<a th:href="@{/eNotMemBuy(mid=none)}" th:if="${session.login == null or #strings.isEmpty(session.login.mid)}" class="btn btn-small btn-solid-border">구매</a>
+								</li>
+							</ul>
+						</div>
+
+					</li><!-- / Cart -->
+
+					<!-- Search -->
+					<li class="dropdown dropdown-slide">
+						<a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="350"
+									role="button" aria-haspopup="true" aria-expanded="false"><i
+														class="tf-ion-ios-help"></i>요청 <span
+										class="tf-ion-ios-arrow-down"></span></a>
+								<div class="dropdown-menu">
+									<div class="row">
+
+										<!-- Basic -->
+										<div class="col-lg-11 col-md-4 mb-sm-3">
+											<ul>
+												
+												<li><a href="/eRequestS">품절/판매 중지</a></li>
+												<li><a href="/eRequestN">신작</a></li>
+												<li><a href="/eRequestList">요청된 책</a></li>
+
+											</ul>
+										</div>
+
+								</div><!-- / .dropdown-menu -->
+					</li><!-- / Search -->
+					
+					<!-- login -->
+						<li class="dropdown search dropdown-slide">
+							
+							<a href="/elogin" style="font-weight: bold;" 
+							   th:if="${session.login == null or #strings.isEmpty(session.login.mid)}">회원</a>
+							   <div class="dropdown-menu" style="width: auto; min-width: 150px;"> <!-- 드롭다운 메뉴 너비 자동으로 조정 -->
+							       <div class="row">
+							           <!-- Basic -->
+							           <div class="col-lg-12 col-md-12 mb-sm-3"> <!-- 너비 조정 -->
+							               <ul>
+							                   <li><a href="/ejoin">회원가입</a></li> <!-- 여백 조정 -->
+							                   <li><a href="/elogin">로그인</a></li> <!-- 여백 조정 -->
+			
+							               </ul>
+							           </div>
+							       </div><!-- / .dropdown-menu -->
+							   </div>
+						</li><!-- / login -->
+
+
+						<li class="dropdown dropdown-slide">
+						    <a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="350"
+						       role="button" aria-haspopup="true" aria-expanded="false" style="font-weight: bold; color:#A1DD70"
+						       th:if="${session.login != null and !#strings.isEmpty(session.login.mid)}"
+						       th:text="${session.login.mname + ' 님'}"><span class="tf-ion-ios-arrow-down"></span></a>
+						    <div class="dropdown-menu" style="width: auto; min-width: 150px;"> <!-- 드롭다운 메뉴 너비 자동으로 조정 -->
+						        <div class="row">
+						            <!-- Basic -->
+						            <div class="col-lg-12 col-md-12 mb-sm-3"> <!-- 너비 조정 -->
+						                <ul>
+						                    <li><a href="/eLogout">로그아웃</a></li> <!-- 여백 조정 -->
+						                    <li><a href="/emypage">마이페이지</a></li> <!-- 여백 조정 -->
+						                    <li><a href="/esetting">내정보</a></li> <!-- 여백 조정 -->
+						                </ul>
+						            </div>
+						        </div><!-- / .dropdown-menu -->
+						    </div>
+						</li><!-- / Search -->
+
+
+				</ul><!-- / .nav .navbar-nav .navbar-right -->
+			</div>
+		</div>
+	</div>
+</section><!-- End Top Header Bar -->
+
+</div><!-- header end-->
+
+<!-- Main Menu Section -->
+<div th:fragment="menu">
+<section class="menu">
+	<nav class="navbar navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<h2 class="menu-title"></h2>
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+					aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+
+			</div><!-- / .navbar-header -->
+
+			<!-- Navbar Links -->
+			<div id="navbar" class="navbar-collapse collapse text-center">
+				<ul class="nav navbar-nav">
+
+					<!-- Home -->
+					<li class="dropdown ">
+						<a th:href="@{/eMain}">Home</a>
+					</li><!-- / Home -->
+
+
+					<!-- Books -->
+					<li class="dropdown dropdown-slide">
+						<a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="350"
+							role="button" aria-haspopup="true" aria-expanded="false">도서 <span
+								class="tf-ion-ios-arrow-down"></span></a>
+						<div class="dropdown-menu">
+							<div class="row">
+
+								<!-- Basic -->
+								<div class="col-lg-6 col-md-6 mb-sm-3">
+									<ul>
+										<li class="dropdown-header">카테고리</li>
+										<li role="separator" class="divider"></li>
+										<li><a th:href="@{/eBookCList(bogenre=C0)}">소설</a></li>
+										<li><a th:href="@{/eBookCList(bogenre=C1)}">인문학</a></li>
+										<li><a th:href="@{/eBookCList(bogenre=C5)}">그림책</a></li>
+										<li><a th:href="@{/eBookCList(bogenre=C3)}">에세이</a></li>
+				
+									</ul>
+								</div>
+
+								<!-- Layout -->
+								<div class="col-lg-6 col-md-6 mb-sm-3">
+									<ul>
+										<li class="dropdown-header">&nbsp;</li>
+										<li role="separator" class="divider"></li>
+										<li><a th:href="@{/eBookCList(bogenre=C4)}">수험서</a></li>
+										<li><a th:href="@{/eBookCList(bogenre=C2)}">문구</a></li>
+										<li><a th:href="@{/eBookCList(bogenre=C6)}">경제</a></li>
+									</ul>
+								</div>
+
+							</div><!-- / .row -->
+						</div><!-- / .dropdown-menu -->
+					</li><!-- / Books -->
+
+
+
+
+
+					<!-- Shop -->
+					<li class="dropdown dropdown-slide">
+						<a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="350"
+							role="button" aria-haspopup="true" aria-expanded="false">서재 <span
+								class="tf-ion-ios-arrow-down"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/eMapList">리스트</a></li>
+							<li><a href="https://map.naver.com/p/search/mbc컴퓨터아카데미?c=10.75,0,0,0,dh">지도</a></li>
+			
+						</ul>
+					</li><!-- / Shop -->
+					
+					<!-- Pages -->
+					<li class="dropdown full-width dropdown-slide">
+						<a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="350"
+							role="button" aria-haspopup="true" aria-expanded="false">고객페이지<span
+								class="tf-ion-ios-arrow-down"></span></a>
+						<div class="dropdown-menu">
+							<div class="row">
+
+								<!-- Introduction -->
+								<div class="col-sm-3 col-xs-12">
+									<ul>
+										<li class="dropdown-header">고객지원</li>
+										<li role="separator" class="divider"></li>
+										<li><a href="/eQNA">문의하기</a></li>
+										<li><a href="/eQNAlist" th:if="${session.login == null or #strings.isEmpty(session.login.mid)}">문의내역</a></li>
+							  			<li><a href="/emyQNAlist" th:if="${session.login != null and !#strings.isEmpty(session.login.mid)}">문의내역</a></li>
+							   			<li><a href="/enotice">공지사항</a></li>
+									</ul>
+								</div>
+
+								<!-- Contact -->
+								<div class="col-sm-3 col-xs-12">
+									<ul>
+										<li class="dropdown-header">구매</li>
+										<li role="separator" class="divider"></li>
+										<li><a href="/ePhistory">주문내역</a></li>
+										<li><a href="/eNotMemBuyLogin">비회원 주문 내역</a></li>
+
+									</ul>
+								</div>
+
+								<!-- Utility -->
+								<div class="col-sm-3 col-xs-12">
+									<ul>
+										<li class="dropdown-header">개인정보</li>
+										<li role="separator" class="divider"></li>
+										<li><a href="/ejoin">회원가입</a></li>
+										<li><a href="/elogin">로그인</a></li>
+										<li><a href="/emypage"  th:if="${session.login != null and !#strings.isEmpty(session.login.mid)}">마이페이지</a></li>
+									</ul>
+								</div>	
+								<!-- Mega Menu -->
+								<div class="col-sm-2 col-xs-8">
+										<img class="img-responsive" src="e-comm/images/titlelogo.png" alt="menu image" />
+								</div>
+							</div><!-- / .row -->
+						</div><!-- / .dropdown-menu -->
+					</li><!-- / Pages -->
+					
+										<!-- Home -->
+					<li class="dropdown ">
+						<a th:href="@{/eroulette}" style="color:#A1DD70;">포인트적립</a>
+					</li><!-- / Home -->
+
+				</ul><!-- / .nav .navbar-nav -->
+
+			</div>
+			<!--/.navbar-collapse -->
+		</div><!-- / .container -->
+	</nav>
+</section>
+
+</div><!-- main menu end-->
+
+
+
+
+
+
+<div th:fragment="search">
+
+<!--
+Start Call To Action
+==================================== -->
+
+<section class="call-to-action section">
+	<form action="/eBookSearch">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 text-center">
+				
+				<div class="col-lg-6 col-md-offset-3">
+				    <div class="input-group subscription-form">
+				      <input type="text" class="form-control" name="boname" placeholder="책 제목 (ex: 정보처리기사 실기 단기완성)" required>
+				      <span class="input-group-btn">
+				       <button class="btn btn-main" type="submit" style="background-color: #A1DD70;">검색하기</button>
+				      </span>
+				    </div><!-- /input-group -->
+			  </div><!-- /.col-lg-6 -->
+
+			</div>
+		</div> 		<!-- End row -->
+	</div>   	<!-- End container -->
+	</form>
+</section>   <!-- End section -->
+
+
+</div>
+
+
+
+
+<div th:fragment="footer">
+<footer class="footer section text-center">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="social-media">
+					<li>
+						<a href="https://www.facebook.com/themefisher">
+							<i class="tf-ion-social-facebook"></i>
+						</a>
+					</li>
+					<li>
+						<a href="https://www.instagram.com/themefisher">
+							<i class="tf-ion-social-instagram"></i>
+						</a>
+					</li>
+					<li>
+						<a href="https://www.twitter.com/themefisher">
+							<i class="tf-ion-social-twitter"></i>
+						</a>
+					</li>
+					<li>
+						<a href="https://www.pinterest.com/themefisher/">
+							<i class="tf-ion-social-pinterest"></i>
+						</a>
+					</li>
+				</ul>
+				<ul class="footer-menu text-uppercase">
+					<li>
+						<a href="/">Home</a>
+					</li>
+					<li>
+						<a href="/eQNA">문의하기</a>
+					</li>
+					<li>
+						<a href="/eQNAlist" th:if="${session.login == null or #strings.isEmpty(session.login.mid)}">문의내역</a>
+						<a href="/emyQNAlist" th:if="${session.login != null and !#strings.isEmpty(session.login.mid)}">문의내역</a>
+					</li>
+					<li>
+						<a href="/enotice">공지사항</a>
+					</li>
+				</ul>
+				<p class="copyright-text">Copyright &copy;2024, Designed &amp; Developed by <a href="https://naver.com/">Breathing Books</a></p>
+			</div>
+		</div>
+	</div>
+</footer>
+</div>
+
+
+
+
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="e-comm/plugins/slick/slick.min.js"></script>
+    <script src="e-comm/plugins/slick/slick-animation.min.js"></script>
+
+
+    <!-- Main Js File -->
+    <script src="e-comm/js/script.js"></script>
+	<!-- modal Js File -->
+	<script src="e-comm/js/modal.js"></script>
+
+
+	
+  </body>
+  </html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>top9</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<style>
+	.icon-button {
+	    background: none;
+	    border: none;
+	    padding: 0;
+	    margin: 0;
+	    cursor: pointer;
+	    display: inline-flex;
+	    align-items: center;
+	    justify-content: center;
+	    color: inherit; /* 필요 시 색상 설정 */
+	    font: inherit; /* 폰트 상속 */
+	    line-height: 1; /* 줄 간격 설정 */
+	    text-decoration: none; /* 텍스트 데코레이션 제거 */
+	    width: 24px; /* 아이콘과 동일한 크기로 설정 */
+	    height: 24px; /* 아이콘과 동일한 크기로 설정 */
+	}
+
+	.icon-button i {
+	    pointer-events: none; /* 아이콘 클릭 시 이벤트가 아이콘 자체가 아닌 버튼으로 전달되도록 함 */
+	}
+	
+</style>
+<body>
+
+<div th:fragment="top9">
+
+	<section class="products section bg-gray">
+		<form action="/eBookBuy" method="get">
+	    <div class="container">
+	        <div class="row">
+	            <div class="title text-center">
+	                <h2>Top 9</h2>
+	            </div>
+	        </div>
+	        <div class="row">
+				
+	            <div class="col-md-4" th:each="book, iter : ${top9}">
+	                <div class="product-item">
+	                    <div class="product-thumb">
+	                        <!-- Display ranking dynamically -->
+	                        <span class="bage" th:style="|background-color: rgba(255, 0, 0, 0.5);|">TOP [[${iter.index + 1}]]</span>
+					
+	                        <span class="bage" th:if="${book.bostock == 0}" style="background-color:#FF0000; padding: 4px; display: inline-block; margin-right: 300px;">품절</span>
+							<span class="bage" th:if="${book.bocode == 'A2' && book.bostock != 0}" style="background-color:#A1DD70; padding: 4px; display: inline-block; margin-right: 300px;">신작</span>
+							
+	                        <img th:src="${book.filepath}" alt="product-img" style="width: 360px; height: 550px;" />
+	                        <div class="preview-meta">
+	                            <ul>
+									<li>
+									    <span data-toggle="modal" data-target="#product-modal" th:data-bono="${book.bono}" th:data-boname="${book.boname}" th:data-bowriter="${book.bowriter}" th:data-bocontent="${book.bocontent}">
+									        <i class="tf-ion-ios-search-strong"></i>
+									    </span>
+									</li>
+									<li>
+									    <a href="#!"><i class="tf-ion-ios-heart"></i></a>
+									</li>
+									<li>
+									    <a href="#!"><i class="tf-ion-android-cart"></i></a>
+									</li>
+	                            </ul>
+	                        </div>
+	                    </div>
+	                    <div class="product-content">
+	                        <h4>
+	                            <a th:href="@{/eBookDetail(bono=${book.bono}, mid=${mid})}" th:text="${#strings.length(book.boname) <= 20 ? book.boname : #strings.substring(book.boname, 0, 20) + '...'}"></a>
+	                        </h4>
+	                        <p class="price" th:text="${#strings.length(book.boprice.toString()) > 3 ? (#strings.substring(book.boprice.toString(), 0, #strings.length(book.boprice.toString()) - 3) + ',' + #strings.substring(book.boprice.toString(), #strings.length(book.boprice.toString()) - 3)) : book.boprice.toString()} + ' 원'"></p>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+		</form>
+	</section>
+			
+<th:block th:insert="~{eBookModal::modal}"></th:block>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="e-comm/js/modal.js"></script>
+</body>
+</html>

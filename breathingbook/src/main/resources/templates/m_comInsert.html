@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<div th:fragment="insertcom">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+					<div th:if="${source == 'branch'}" class="card-title">신규 사업장 등록</div>
+					<div th:if="${source == 'vendor'}" class="card-title">신규 거래처 등록</div>
+				</div>
+				<div class="col right-align">
+					<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+				</div>
+			</div>
+			<div class="form-validation">
+				<form class="form-valide" action="m_comInsert" method="post" onsubmit="validation()">
+					<input type="hidden" name="source" th:value="${source}">
+					<th:block th:if="${source == 'branch'}"><input type="hidden" name="brclass" value="1"></th:block>
+					<th:block th:if="${source == 'vendor'}"><input type="hidden" name="brclass" value="2"></th:block>						
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brname">회사 명 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" name="brname" placeholder="업체명" required>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brdelegate">대표자 명 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" name="brdelegate" placeholder="대표자명" required>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brbusinessno">사업자 등록번호 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" id="brbusinessno" name="brbusinessno" minlength="10" maxlength="10" placeholder="(-)없이 입력" required>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="insert_postcode">우편번호 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6 input-group">
+							<input type="text" class="form-control" id="insert_postcode" name="brpostal" placeholder="우편번호" required>
+							<input type="button" class="btn" onclick="insert_execDaumPostcode()" value="주소찾기">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="insert_address">주소 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" id="insert_address" placeholder="주소" required>
+							<input type="text" class="form-control" id="insert_extraAddress" style="width: 40%;" placeholder="동" readonly>
+							<input type="hidden" name="braddress" id="braddress">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brphone">전화번호 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" id="brphone" name="brphone" minlength="9" maxlength="11" placeholder="(-)없이 입력" required>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="brfax">fax번호 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" id="brfax" name="brfax" minlength="9" maxlength="11" placeholder="(-)없이 입력" required>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="bank">은행 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6 input-group">
+							<input type="text" class="form-control" id="bank" name="brbank" placeholder="은행명" required>
+							<select class="form-control" id="bank2" onchange="bankselect()">
+								<option value="직접입력">직접 입력</option>
+								<option value="신한은행">신한은행</option>
+								<option value="기업은행">기업은행</option>
+								<option value="우리은행">우리은행</option>
+								<option value="농협은행">농협은행</option>
+								<option value="국민은행">국민은행</option>
+								<option value="카카오뱅크">카카오뱅크</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="braccountholder">예금주 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" name="braccountholder" placeholder="예금주" required>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-lg-4 col-form-label" style="font-weight: bold; font-size: medium;" for="braccount">계좌번호 <span class="text-danger">*</span>
+						</label>
+						<div class="col-lg-6">
+							<input type="text" class="form-control" id="braccount" name="braccount" minlength="9" maxlength="15" placeholder="(-)없이 입력" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<div align="center">
+							<button type="submit" class="btn btn-success">등록</button>
+							<button type="reset" class="btn btn-secondary">초기화</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

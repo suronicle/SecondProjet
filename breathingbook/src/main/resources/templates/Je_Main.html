@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>숨쉬는 서재 Breathing Books</title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="e-comm/image/x-icon" href="e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="e-comm/css/style.css">
+
+<style>   
+          .menu {
+              margin-top: -90px; 
+              padding-top: 0;
+          }
+
+		
+		  .call-to-action.section {
+		      margin-top: -40px;
+		  }
+		
+</style>
+  
+  
+</head>
+
+
+<body id="body">
+
+
+
+
+
+<!-- Start Top Header Bar -->
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+
+<th:block th:insert="~{ecom_fragments::search}"></th:block>
+
+
+<!-- menu -->
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+
+
+
+<div class="hero-slider">
+  <div class="slider-item th-fullpage hero-area" style="background-image: url(e-comm/images/book/bookad4.png);"  th:each="book : ${adbook}">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 text-center">
+          <p data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">광고</p>
+                   <h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5" th:text="${#strings.length(book.boname) <= 10 ? book.boname : #strings.substring(book.boname, 0, 10) + '...'}"></h1><h3 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5" style="color: white;"  th:text="${book.bowriter}"></h3>
+          <a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn" th:href="@{/eNotMemBuy(bono=${book.bono})}" >구매하기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- 은미 팝업 띄우기~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+<script th:inline="javascript">
+    let ndto = [[${ndto}]];
+    let ndtos = new Object();
+
+	let dtolength = 1;
+    
+    ndto.forEach(function(item){
+        ndtos.nwidth = item.nwidth;
+        ndtos.nlength = item.nlength;
+        ndtos.nnum = item.nnum;
+
+		var url = '/epop?nnum=' + ndtos.nnum; // URL 설정
+		var options = 'width=' + ndtos.nwidth + ',height=' + ndtos.nlength + ',left=' + (100*dtolength); // 창 크기 설정
+		dtolength = dtolength + 1;
+		
+		
+		// 자식 창 열기
+        var childWindow = window.open(url, '_blank', options);
+		
+    });
+
+</script>
+<!-- 은미 팝업 띄우기~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+
+<th:block th:insert="~{eBookTop9::top9}"></th:block>
+
+
+<th:block th:insert="~{eBookReqList::reqList}"></th:block>
+
+
+<th:block th:insert="~{eBookModal::modal}"></th:block>
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+
+
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="e-comm/plugins/slick/slick.min.js"></script>
+    <script src="e-comm/plugins/slick/slick-animation.min.js"></script>
+
+    <!-- Google Mapl -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script type="text/javascript" src="e-comm/plugins/google-map/gmap.js"></script>
+
+    <!-- Main Js File -->
+    <script src="e-comm/js/script.js"></script>
+    
+
+
+  </body>
+  </html>

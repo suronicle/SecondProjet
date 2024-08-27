@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title> 숨쉬는서재 | 공지사항 </title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="./e-comm/image/x-icon" href="./e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="./e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="./e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="./e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="./e-comm/css/style.css">
+
+</head>
+
+<body id="body">
+
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+<section class="page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name">공지사항</h1>
+					<ol class="breadcrumb">
+						<li><a href="index.html">Home</a></li>
+						<li class="active">공지사항</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="pricing-table"> 
+	<div class="container">
+	
+	     <div class="dashboard-wrapper user-dashboard">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 10%; text-align: center;">구분</th>
+                  <th style="width: 15%; text-align: center;">작성일시</th>
+                  <th style="width: 30%; text-align: center;">제목</th>
+                  <th style="width: 30%; text-align: center;">이벤트기간</th>
+                </tr>
+              </thead>
+              <tbody th:each="dto:${dto}">
+                <tr th:onclick="getShow([[${dto.nnum}]] + 'DIV')">
+                  <td th:id="${dto.nnum}+IV" style="text-align: center;">
+                  	<p th:if="${dto.nclass == 1}">공지</p>
+                  	<p th:if="${dto.nclass == 2}">이벤트</p>
+                  	<p th:if="${dto.nclass == 3}">기타</p>
+                  </td> 	
+                  <td style="text-align: center;" th:text="${dto.ndate}"></td>
+                  <td>
+                  	<i th:if="${dto.nfilefake != null}" class="tf-ion-android-folder" style="display: inline-block;"></i> <p th:text="${dto.ntitle}" style="display: inline-block;"></p>
+                  </td>
+                  <td style="text-align: center;">
+	                  <small th:text="${dto.nstartdate}" style="display: inline-block;"/> ~ 
+	                  <small th:text="${dto.nenddate}"/>
+                  </td>
+                </tr>
+                <tr th:id="${dto.nnum + 'DIV'} " style="display:none;">
+                	<td colspan="4">
+						<div class="checkout shopping">
+							<div>
+								<div class="product-checkout-details">
+			  						<div class="block">
+			  							<small style="float: right;">작성일: <small th:text="${dto.ndate}" ></small></small>
+			  							<h4 class="widget-title" style="font-weight : bold;" th:text="${dto.ntitle}"></h4>
+			  							<div class="media product-card">
+			  							<a th:if="${dto.nfilefake != null}" th:href="@{'/download?filename=' + ${dto.nfilefake} + '&realname=' + ${dto.nfilereal}}" 
+			  							style="float: right; color: red;" download> <i class="tf-ion-android-folder"></i>첨부파일</a>
+			  							
+			  							
+			  							<img th:if="${dto.npicturefake != null}" alt="이미지" th:src="@{./files/} + ${dto.npicturefake}" style="width: 100%;">
+                						<p th:text="${dto.ncontent}"></p>
+                						</div>
+                					</div>
+                				</div>
+                			</div>
+                		</div>
+                	</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+		<br>
+	</div>
+</section>
+
+
+<script th:inline="javascript">
+
+	function getShow(nno){
+		
+		let status = $("#"+nno).css("display");
+		
+		if (status == "none") {
+            $("#"+nno).css("display", "");
+        } else {
+            $("#"+nno).css("display", "none");
+        }
+		
+	}
+
+</script>
+
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="./e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="./e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="./e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="./e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="./e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="./e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="./e-comm/plugins/slick/slick.min.js"></script>
+    <script src="./e-comm/plugins/slick/slick-animation.min.js"></script>
+
+    <!-- Google Mapl -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script type="text/javascript" src="./e-comm/plugins/google-map/gmap.js"></script>
+
+    <!-- Main Js File -->
+    <script src="js/script.js"></script>
+    
+
+
+  </body>
+  </html>

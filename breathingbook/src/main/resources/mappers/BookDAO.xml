@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.book.ecom.dao.BookDAO">
+
+		<!-- top 9 -->
+		<select id="bestbooktop9" resultType="BookDTO">
+			SELECT *
+			FROM book, file
+			WHERE bodel != 1
+            AND book.bono=file.filepostno
+			ORDER BY bosold DESC
+			LIMIT 9
+		</select>
+
+
+		<!-- 요청 북 3개-->
+		<select id="reqbook" resultType="BookDTO">
+			SELECT *
+			FROM book, file
+			WHERE bocode="A3"
+			AND book.bono=file.filepostno
+			ORDER BY bodate DESC
+			LIMIT 3
+		</select>
+		
+		
+
+		<!-- 품절 책 or 삭제 된 책-->
+		<select id="soldbook" resultType="BookDTO">
+			SELECT *
+			FROM book
+			WHERE bostock=0
+			OR bodel=1
+		</select>
+		
+		<!-- 신작 책-->
+		<select id="newbook" resultType="BookDTO">
+			SELECT *
+			FROM book
+			WHERE bocode="A2"
+		</select>
+		
+
+		<!-- 광고 북 3개-->
+		<select id="adbook" resultType="BookDTO">
+			SELECT *
+			FROM book, file
+			WHERE book.bono=file.filepostno
+			AND bocode="A1"
+			ORDER BY bodate DESC
+			LIMIT 3
+		</select>
+
+
+		<!-- 책 상세보기 -->
+		<select id="bookdetail" parameterType="java.lang.String"  resultType="BookDTO">
+			SELECT *
+			FROM book,codetable,file
+			WHERE book.bogenre = codetable.pid 
+			AND file.filepostno = book.bono
+			AND bono=#{bono}
+		</select>
+		
+		
+		
+
+
+		<!-- 랜덤 4개 -->
+		<select id="randombook" parameterType="java.lang.String" resultType="BookDTO">
+			SELECT *
+			FROM book, file
+			WHERE book.bono=file.filepostno
+			AND bono != #{bono} 
+			AND bodel = 0			
+			ORDER BY RAND()
+			LIMIT 4
+		</select>
+
+
+
+		<!-- 비회원 구매-->
+		<insert id="buynotmem" parameterType="BookDTO">
+		INSERT INTO buy (buyid, buybooknum,  buynum, buyprice, buydate, buycode, buydelivery, buyway, buyaccount,buypassword ) 
+		VALUES (#{buyid}, #{cbookno}, #{cbuynum}, #{buyprice}, now(), "E1", 0, #{buyway}, #{buyaccount},#{buypassword})
+		</insert>		
+		
+		
+		<!-- 구매 -->
+		
+		
+		<!-- 구매 수 변동-->
+		<update id="countchange" parameterType="BookDTO">
+		UPDATE book SET bostock = bostock-#{cbuynum}, bosold = bosold+#{cbuynum} 
+		WHERE bono = #{cbookno}
+		</update>		
+		
+
+		<!-- 재고 수 -->
+		<select id="stockcount" parameterType="java.lang.String">
+		SELECT bostock
+		FROM book
+		WHERE bono=#{buybooknum}
+		</select>		
+		
+		
+		
+		<!-- 회원 구매 -->
+		<insert id="buymem" parameterType="BookDTO">
+		INSERT INTO buy (buyid, buybooknum, buynum, buyprice, buydate, buycode, buydelivery, buyway, buyaccount ) 
+		VALUES (#{buyid} , #{cbookno} , #{cbuynum}, #{buyprice}, now(), "E1", #{buydelivery}, #{buyway}, #{buyaccount})
+		</insert>		
+		
+
+		
+		
+
+</mapper>

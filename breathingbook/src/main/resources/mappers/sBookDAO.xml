@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="kr.co.book.erp.dao.sBookDAO">
+	<!-- 책리스트 -->
+	<select id ="hBookList" resultType="BookDTO">
+		select * from book;
+	</select>
+	
+	<select id ="bBookList" resultType="BookDTO">
+		SELECT b.*, p.*, br.*, c.*
+		FROM book b
+		INNER JOIN purchase p ON b.bono = p.pbookno
+		INNER JOIN branch br ON p.brno = br.brno
+		INNER JOIN codetable c ON c.pid = p.pcode
+		INNER JOIN (
+		    SELECT pbookno, MAX(pdate) AS latest_pdate
+		    FROM purchase
+		    WHERE brno = 'B00001'
+		    GROUP BY pbookno
+		) latest_p ON p.pbookno = latest_p.pbookno AND p.pdate = latest_p.latest_pdate
+		WHERE p.brno = 'B00001'
+		ORDER BY p.pbookno ASC;
+	</select>
+	<!-- 책등록 -->
+	<insert id="bookInsert" parameterType="BookDTO">
+		insert into book(bono,boname,bocontent,bowriter,bocompany,bodate,bostock,boprice,bogenre,booriginal,bocode)
+		values(#{bono},#{boname},#{bocontent},#{bowriter},#{bocompany},#{bodate},#{bostock},#{boprice},#{bogenre},#{boprice} - 3000, 'A0');
+	</insert>
+	
+	<!-- 책 상세 -->
+	<select id = "bookSelect" resultType = "BookDTO">
+		select *
+		from book
+		where bono = #{bono};
+	</select>
+	
+	<!-- 책 업데이트 -->
+	<update id = "bookUpdate">
+		update book
+		set boprice = #{boprice}, bocompany = #{bocompany}, bocode = #{bocode}
+		where bono = #{bono}
+	</update>
+	
+	
+	
+	<!-- 재고 관리 -->
+	<select id ="hBookStock" resultType="BookDTO">
+		select * 
+		from book 
+		inner join purchase p
+		on pbookno = bono
+		inner join codetable
+		on pid = p.pcode
+		inner join branch b
+		on p.brno = 'admin'
+		and p.brno = b.brno
+		order by pno asc;
+	</select>
+	
+	<select id ="bBookStock" resultType="BookDTO">
+		SELECT b.*, p.*, br.*, c.*
+		FROM book b
+		INNER JOIN purchase p ON b.bono = p.pbookno
+		INNER JOIN branch br ON p.brno = br.brno
+		INNER JOIN codetable c ON c.pid = p.pcode
+		INNER JOIN (
+		    SELECT pbookno, MAX(pdate) AS latest_pdate
+		    FROM purchase
+		    WHERE brno = 'B00001'
+		    GROUP BY pbookno
+		) latest_p ON p.pbookno = latest_p.pbookno AND p.pdate = latest_p.latest_pdate
+		WHERE p.brno = 'B00001'
+		ORDER BY p.pbookno ASC;
+
+	</select>
+	
+	<!-- 재고추가 -->
+	<update id = "stockProcessing" parameterType = "BookDTO">
+		update book
+		set bostock = bostock + #{brreqnum}
+		where bono = #{bono} 
+	</update>
+	
+	<!-- 가맹점 요청 -->
+	<update id = "stockRequest" parameterType = "BookDTO">
+		update purchase
+		set pdate = now(),pcode = 'A4',brreqnum = #{brreqnum}
+		where pno = #{pno}
+	</update>
+	
+	<!-- 차감처리 -->
+	<update id = "Deducted" parameterType = "BookDTO">
+		update book
+		set bostock = bostock - #{deducted}
+		where bono = #{bono}
+	</update>
+	
+	<!-- 요청 책 리스트 -->
+	<select id ="requestBook" resultType="BookDTO">
+		select *
+		from book
+		inner join purchase
+		on pbookno = bono
+		inner join codetable
+		on pcode = 'A4' 
+		and pcode = pid
+		inner join branch
+		on branch.brno =  purchase.brno
+		order by pno asc;
+ 	</select>
+	<!-- 책 상세-->
+	<select id = "rBookView" resultType = "BookDTO">
+		select *
+		from book 
+		inner join purchase
+		on pbookno = bono and pno = #{pno}
+		inner join branch
+		on purchase.brno = branch.brno
+		inner join codetable
+		on pid = pcode;
+	</select>
+	<!-- 요청처리-->
+	<update id = "processing" parameterType = "BookDTO">
+		update purchase
+		set pcode = 'A0'
+		where pno = #{pno};
+	</update>
+
+	
+	
+
+	<!-- 주문 리스트 -->
+	<select id = "hOrderList" resultType = "BookDTO">
+		select *
+		from book 
+		inner join buy 
+		on bono = buybooknum
+		inner join codetable
+		on buycode = pid
+	</select>
+	<select id = "bOrderList" resultType = "BookDTO">
+		select *
+		from book
+		inner join buy
+		on bono = buybooknum
+		and buybrno = #{brno}
+		inner join codetable
+		on buycode = pid
+	</select>
+	<!-- 배송 리스트 -->
+	<select id = "deliveryList" resultType = "BookDTO">
+		select *
+		from book
+		inner join buy
+		on buybooknum = bono
+		inner join delivery
+		on buyno = dtransport
+		inner join codetable
+		on  pid = buycode
+		where buycode = 'B5' or buycode = 'B6' or buycode = 'B7';
+	</select>
+	<!-- 반품 리스트 -->
+	<select id = "returnManage" resultType = "BookDTO">
+		select *
+		from book
+		inner join buy
+		on bono = buybooknum
+		inner join codetable
+		on buycode = pid
+		where buycode = 'B18' or buycode = 'B19' or buycode = 'B20'
+	</select>
+	<!-- 환불 리스트 -->
+	<select id = "hRefundList" resultType = "BookDTO">
+		select *
+		from book
+		inner join buy
+		on bono = buybooknum
+		inner join codetable
+		on buycode = pid
+		where buycode = 'B8' or buycode = 'B9' or buycode = 'B15'
+	</select>
+	
+	<select id = "bRefundList" resultType = "BookDTO">
+		select *
+		from book
+		inner join buy
+		on bono = buybooknum
+		and buybrno = #{brno}
+		inner join codetable
+		on buycode = pid
+		where buycode = 'B8' or buycode = 'B9' or  buycode = 'B15'
+	</select>
+	<!-- 교환 리스트 -->
+	<select id = "hExchangeList" resultType = "BookDTO">
+		select *
+		from book
+		inner join buy
+		on bono = buybooknum
+		inner join codetable
+		on buycode = pid
+		where buycode = 'B2' or buycode = 'B3' or buycode = 'B4'
+	</select>
+	<select id = "bExchangeList" resultType = "BookDTO">
+		select *
+		from book
+		inner join buy
+		on bono = buybooknum
+		and buybrno = #{brno}
+		inner join codetable
+		on buycode = pid
+		where buycode = 'B2' or buycode = 'B3' or buycode = 'B4'
+	</select>
+	
+	
+	<!-- 주문 상세-->
+	<select id = "orderSelect" resultType = "BookDTO">
+		select *
+		from book 
+		inner join buy 
+		on bono = buybooknum
+		and buyno = #{buyno}
+		inner join codetable
+		on buycode = pid
+		inner join branch
+		on brno = 'admin';
+	</select>
+	<!-- 배송 상세 -->
+	<select id = "deliverySelect" resultType = "BookDTO">
+		select *
+		from book 
+		inner join buy 
+		on bono = buybooknum
+		and buyno = #{buyno}
+		inner join codetable
+		on buycode = pid
+		inner join delivery
+		on buyno = dtransport;
+	</select>
+	<!-- 취소 상세-->
+	<select id = "returnManageSelect" resultType = "BookDTO">
+		select *
+		from book 
+		inner join buy 
+		on bono = buybooknum
+		and buyno = #{buyno}
+		inner join codetable
+		on buycode = pid;
+
+	</select>
+	<!-- 환불 상세-->
+	<select id = "refundSelect" resultType = "BookDTO">
+		select *
+		from book 
+		inner join buy 
+		on bono = buybooknum
+		and buyno = #{buyno}
+		inner join codetable
+		on buycode = pid;
+
+	</select>
+	<!-- 교환 상세-->
+	<select id = "exchangeSelect" resultType = "BookDTO">
+		select *
+		from book 
+		inner join buy 
+		on bono = buybooknum
+		and buyno = #{buyno}
+		inner join codetable
+		on buycode = pid;
+
+	</select>
+	
+	
+	<!-- 결제 확인(버튼) -->
+	<update id = "paycheck" parameterType = "BookDTO">
+		update buy
+		set buycode = 'B13'
+		where buyno = #{buyno};
+	</update>
+	<!-- 구매 확정 -> 배송준비 -->
+	<insert id ="dalreadydelivery" parameterType = "BookDTO">
+		insert into delivery(dtransport,did,dbookno) values (#{buyno},#{buyid},#{bono})
+	</insert>
+	<update id = "alreadydelivery" parameterType = "BookDTO">
+		update buy
+		set buycode = 'B5'
+		where buyno = #{buyno};
+	</update>
+	<!-- 배송 준비 중 -> 배송 중 -->
+	<update id = "delivering" parameterType = "BookDTO">
+		update buy 
+		set buycode = 'B6'
+		where buyno = #{buyno};
+	</update>
+	<!-- 배송 중 -> 배송 완료 -->
+	<update id = "completeDelivery" parameterType = "BookDTO">
+		update buy 
+		set buycode = 'B7'
+		where buyno = #{buyno};
+	</update>
+	<!-- 취소 신청 -> 취소 처리 중 -->
+	<update id = "processingTakeBack" parameterType = "BookDTO">
+		update buy 
+		set buycode = 'B19'
+		where buyno = #{buyno};
+	</update>
+	<!-- 취소 처리 중 -> 취소 완료 &-->
+	<update id = "completeTakeBack" parameterType = "BookDTO">
+		update buy 
+		set buycode = 'B20'
+		where buyno = #{buyno};
+	</update>
+	<update id = "stockPlus" parameterType = "BookDTO">
+		update book
+		set bostock = bostock + #{buynum}
+		where bono = #{bono}
+	</update>
+	<!-- 환불 신청 -> 환불 처리 중 *-->
+	<update id = "processingRefund" parameterType = "BookDTO">
+		update buy 
+		set buycode = 'B15'
+		where buyno = #{buyno} ;
+	</update>
+	<!-- 환불 처리 중 -> 환불 완료 -->
+	<update id = "completeRefund" parameterType = "BookDTO">
+		update buy 
+		set buycode = 'B8'
+		where buyno = #{buyno};
+	</update>
+	<!-- 교환 신청 -> 교환 처리 중 -->
+	<update id = "processingExchange" parameterType = "BookDTO">
+		update buy 
+		set buycode = 'B3'
+		where buyno = #{buyno} ;
+	</update>
+	<!-- 교환 처리 중 -> 교환 완료 -->
+	<update id = "completeExchange" parameterType = "BookDTO">
+		update buy b
+		set buycode = 'B4'
+		where buyno = #{buyno} ;
+	</update>
+	
+	
+
+</mapper>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+    <link href="erp/css/style.css" rel="stylesheet">
+	<!-- Color picker plugins css -->
+	<link href="./erp/plugins/jquery-asColorPicker-master/css/asColorPicker.css" rel="stylesheet">
+	<!-- Date picker plugins css -->
+	<link href="./erp/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet">
+	<!-- Daterange picker plugins css -->
+	<link href="./erp/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
+	<link href="./erp/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+	<style>
+		.right-align {
+			padding: 0rem 1.875rem;
+			text-align: right; /* 텍스트를 우측으로 정렬 */
+		}
+	</style>
+</head>
+
+<body>
+	<div th:if="${brno == 'admin'}">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col">
+					</div>
+					<div class="col right-align">
+						<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+					</div>
+				</div>
+				<div class="form-view">
+					<form action="/m_stockProcessing" method="post">
+						<div class="form-group row">
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">책 번호</label>
+							<div class="col col-form-label" th:text="${stock?.bono}"></div>
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">책 제목</label>
+							<div class="col col-form-label" th:text="${stock?.boname}"></div>
+							<input type="hidden" name="pno" th:value="${stock?.pno}">
+							<input type="hidden" name="brno" th:value="${stock?.brno}">
+							<input type="hidden" name="pcode" th:value="${stock?.pcode}">
+							<input type="hidden" name="bono" th:value="${stock?.bono}">
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="대표자명">작가</label>
+							<div class="col col-form-label" th:text="${stock?.bowriter}"></div>
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="사업자등록번호">지점</label>
+							<div class="col col-form-label" th:text="${stock?.brname}"></div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체번호">재고</label>
+							<div class="col col-form-label" th:if ="${stock.brno == 'admin'}" th:text="${stock?.bostock}"></div>
+							<div class="col col-form-label" th:if ="${stock.brno != 'admin'}" th:text="${stock?.brchanum}"></div>
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">상태</label>
+							<div class="col col-form-label" th:text="${stock?.codename}"></div>
+						</div>
+						<div class="form-group row" th:if="${stock?.pcode == 'A4'}">
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체번호">요청 날짜</label>
+							<div class="col col-form-label" th:text="${stock?.pdate}"></div>
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">요청 수량</label>
+							<div class="col col-form-label" name = "brreqnum" th:text="${stock?.brreqnum}"></div>
+						</div>
+						<div class="form-group" th:if="${stock?.pcode != 'A4'}">
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">추가 수량</label>
+							<input type="text" class="form-control" id="brreqnum" name="brreqnum" maxlength="10" placeholder="추가 수량">
+						</div>
+						
+						<div class="form-group">
+							<div align="center" th:if="${stock?.pcode == 'A0'}">
+								<button type="submit" class="btn btn-warning">추가</button>
+								<button type="button" class="btn btn-danger"
+									th:onclick="'window.open(\'/m_bookDeducted?pno=' + ${stock?.pno} + '\', \'_blank\', \'width=600,height=400,scrollbars=yes\')'">				
+									재고 차감
+								</button>
+							</div>
+							<div align="center" th:if="${stock?.pcode == 'A3'}">
+								<button type="submit" class="btn btn-warning">추가</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:if="${brno != 'admin'}">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col">
+					</div>
+					<div class="col right-align">
+						<button type="button" class="btn btn-info" onclick="hideColumn()">닫기</button>
+					</div>
+				</div>
+				<div class="form-view">
+					<form action="/m_stockProcessing" method="post">
+						<input type="hidden" name="pno" th:value="${stock?.pno}">
+						<input type="hidden" name="brno" th:value="${brno}">
+						<div class="form-group row">
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">책 번호</label>
+							<div class="col col-form-label" th:text="${stock?.bono}"></div>
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체명">책 제목</label>
+							<div class="col col-form-label" th:text="${stock?.boname}"></div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="대표자명">작가</label>
+							<div class="col col-form-label" th:text="${stock?.bowriter}"></div>
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="사업자등록번호">지점</label>
+							<div class="col col-form-label" th:text="${stock?.brname}"></div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체번호">재고</label>
+							<div class="col col-form-label" th:text="${stock?.pstock}"></div>
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">상태</label>
+							<div class="col col-form-label" th:text="${stock?.codename}"></div>
+						</div>
+						<div class="form-group row" th:if="${stock?.pcode == 'A4'}">
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체번호">요청 날짜</label>
+							<div class="col col-form-label" th:text="${stock?.pdate}"></div>
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">요청 수량</label>
+							<div class="col col-form-label" th:text="${stock?.brreqnum}"></div>
+						</div>
+						<div class="form-group" th:if="${stock?.pcode != 'A4'}">
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="업체번호">요청 날짜</label>
+							<div class="col col-form-label" th:text="${stock?.pdate}"></div>
+							<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="팩스번호">요청 수량</label>
+							<input type="text" class="form-control" id="brreqnum" name="brreqnum" maxlength="10" placeholder="요청수량">
+						</div>
+						
+						<div class="form-group">
+							<div align="center" th:if="${stock?.pcode == 'A4' }">
+								<button type="submit" class="btn btn-warning" disabled>요청</button>
+								<button type="button" class="btn btn-danger" onclick="window.open('/m_bookDeducted','_blank','width=600,height=400,scrollbars=yes');">재고 차감</button>
+							</div>
+							<div align="center" th:if="${stock?.pcode != 'A4'}">
+								<button type="submit" class="btn btn-warning">요청</button>
+								<button type="button" class="btn btn-danger" onclick="window.open('/m_bookDeducted','_blank','width=600,height=400,scrollbars=yes');">재고 차감</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

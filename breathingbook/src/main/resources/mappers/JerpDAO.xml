@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.book.erp.dao.JerpDAO">
+
+	<insert id="newnotice" parameterType="noticeDTO">
+		INSERT INTO notice ( nuser, ntitle, ncontent, ndate, 
+		
+		<if test="nfilereal != null and nfilereal != ''">
+		nfilereal, nfilefake, 
+		</if>
+		<if test="npicturereal != null and npicturereal != ''">
+		npicturereal, npicturefake, 
+		</if>
+		
+		nclass, nstartdate, nenddate)
+		
+		VALUES (#{nuser}, #{ntitle},#{ncontent}, NOW(), 
+		<if test="nfilereal != null and nfilereal != ''">
+		#{nfilereal}, #{nfilefake}, 
+		</if>
+		<if test="npicturereal != null and npicturereal != ''">
+		#{npicturereal},#{npicturefake},
+		</if>
+		
+		#{nclass},
+		
+		
+		<if test="nenddate != null and nenddate != '' ">
+		#{nstartdate},
+		#{nenddate}
+		</if>
+		<if test="nenddate == null or nenddate == '' ">
+		NOW(),null
+		</if>
+		
+		
+		
+		);
+	
+	</insert>
+	
+	
+	<insert id="newpopup" parameterType="noticeDTO">
+	
+		INSERT INTO notice ( nuser, ntitle, ncontent, ndate, nlength, nwidth,
+		
+		<if test="npicturereal != null and npicturereal != ''">
+		npicturereal, npicturefake,
+		</if>
+		
+		nclass, nstartdate, nenddate)
+		
+		VALUES (#{nuser}, #{ntitle},
+		
+		<if test="ncontent != null and ncontent != ''">
+		#{ncontent},
+		</if>
+		<if test="ncontent == null or ncontent == ''">
+		null,
+		</if>
+		
+		
+		 NOW(), #{nlength}, #{nwidth},
+		
+		<if test="npicturereal != null and npicturereal != ''">
+		#{npicturereal},#{npicturefake},
+		</if>
+		
+		0,#{nstartdate},#{nenddate});
+	</insert>
+	
+	<update id="upnotice" parameterType="noticeDTO">
+		update notice
+		set 
+		nuser = #{nuser},
+		ntitle = #{ntitle},
+		ncontent = #{ncontent}, 
+		
+		<if test="npicturereal != null and npicturereal != ''">
+		nfilereal = #{nfilereal},
+		nfilefake = #{nfilefake},
+		</if>
+		
+		<if test="npicturereal != null and npicturereal != ''">
+		npicturereal = #{npicturereal},
+		npicturefake = #{npicturefake},
+		</if>
+		
+		
+		nstartdate = #{nstartdate}
+		
+		<if test="nenddate != null and nenddate != '' ">
+		,nenddate = #{nenddate}
+		</if>
+		
+		where nnum  = #{nnum};
+	</update>
+	
+	<update id="uppopup" parameterType="noticeDTO">
+		update notice 
+		set 
+		nuser = #{nuser},
+		ntitle = #{ntitle},
+		
+		<if test="ncontent != null and ncontent != ''">
+		ncontent = #{ncontent}, 
+		</if>
+		
+		nlength= #{nlength}, 
+		nwidth= #{nwidth},
+		
+		<if test="npicturereal != null and npicturereal != ''">
+		npicturereal = #{npicturereal},
+		npicturefake = #{npicturefake},
+		</if>
+		
+		nstartdate = #{nstartdate},
+		nenddate = #{nenddate}
+		
+		where nnum  = #{nnum};
+	</update>
+   
+   <!-- 회원 정보 상세 -->
+   <select id="viewMem2" parameterType="java.lang.String" resultType="memberDTO">
+        SELECT
+              m.mid,
+              m.mname,
+              m.memail,
+              m.magency,
+              m.mphone,
+              m.mrequired,
+              c1.codename as coptional,
+              m.mjoindate,
+              m.msecessiondate,
+              m.mreport,
+              c2.codename as mstate,
+              m.mpoint,
+              c3.codename as mclass,
+              m.mbuy
+         FROM
+            member m
+         JOIN
+            codetable c1 ON c1.pid = m.moptional
+         JOIN
+            codetable c2 ON c2.pid = m.mstate
+         JOIN
+            codetable c3 ON c3.pid = m.mclass
+         WHERE
+               m.mid=#{mid}
+   </select>
+
+</mapper>

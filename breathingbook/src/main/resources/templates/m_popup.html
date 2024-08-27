@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+  
+    <title>PopUp List</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+	<link href="./erp/plugins/sweetalert/css/sweetalert.css" rel="stylesheet">
+	<link href="./erp/plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="erp/css/style.css" rel="stylesheet">
+
+
+    
+	<style>
+		.right-align {
+			padding: 0rem 1.875rem;
+			text-align: right; /* 텍스트를 우측으로 정렬 */
+		}
+		.msgbt {
+			margin: 30px 0 0 30px;
+		}
+		
+		.img {
+		    width: 100%; /* 원하는 너비 */
+		}
+
+	</style>
+</head>
+
+<body>
+
+    <!-- Preloader start -->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!-- Preloader end -->
+    
+    <!-- Main wrapper start -->
+    <div id="main-wrapper">
+		<th:block th:insert="~{m_fragments::header('erp Main')}"></th:block>
+ 		<th:block th:insert="~{m_fragments::topbar}"></th:block>
+		<th:block th:insert="~{m_fragments::sidebar}"></th:block>
+		<!-- Content body start -->
+		<div class="content-body">
+			
+			<div class="row">
+				<div class="col">
+				    <div th:if="${msg}" class="alert alert-success alert-dismissible fade show msgbt">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<th:block th:text="${msg}"></th:block>
+				    </div>
+				</div>
+				<div class="col-md-2">
+					<div class="row page-titles mx-0">
+						<div class="col p-md-0">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item">
+								<a href="/m">Main</a></li>
+                        		<li class="breadcrumb-item active"><a href="!#">공지사항</a></li>
+							</ol>
+						</div>
+					</div>
+			        <div class="right-align">
+			            <button type="button" class="btn mb-1 btn-success" onclick="show(1)">신규 등록</button>
+			        </div>
+			    </div>
+			</div>
+			
+			
+			<!-- div row -->
+			<div class="container-fluid">
+				<div class="row">
+					<div id="firstColumn" class="col">
+						<div class="card">
+							<div class="card-body">
+							<h4 class="card-title">팝업 리스트</h4>
+								<div class="table-responsive">
+									<table class="table table-hover table-bordered hb-orderdesc">
+										<thead>
+											<tr align="center">
+												<th style="width: 10%;">no</th>
+												<th style="width: 10%;">구분</th>
+												<th style="width: 10%;">작성일자</th>
+												<th style="width: 20%;">제목</th>
+												<th style="width: 10%;">작성자</th>
+												<th style="width: 11%;">시작일</th>
+												<th style="width: 11%;">종료일</th>
+												<th style="width: 8%;">취소여부</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="dto : ${dtolist}" class="record" align="center" th:onclick="ditail([[${dto.nnum}]])">
+												<td th:text="${dto.nnum}"></td>
+												<td th:text="${dto.nclass}"></td>
+												<td th:text="${dto.ndate}"></td>
+												<td th:text="${dto.ntitle}" style="text-align: left;"></td>
+												<td th:text="${dto.nuser}"></td>
+												<td th:text="${dto.nstartdate}"></td>
+												<td th:text="${dto.nenddate}"></td>
+												<td th:text="${dto.ndel} == '1' ? '취소완료' : '취소가능'"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- first column end -->
+					
+					<div class="col-md-6" id="comView" style="display: none;">
+					
+							<div class="card">
+								<div class="card-body">
+									
+									
+									<!-- 작성창 -->
+									
+									<div class="form-view" id="View1" style="display: none;">
+									<div class="row">
+										<div class="col">
+											<div class="card-title">신규등록하기</div>
+										</div>
+										<div class="col right-align">
+											<button type="button" class="btn btn-info" onclick="hide()">닫기</button>
+										</div>
+										<br><br>
+									</div>
+										
+										<div class="form-validation">
+		                                    <form class="form-valide" th:action="@{/m_newnotice}" method="post" onsubmit="return formcheck();" enctype="multipart/form-data">
+		                                    
+		                                         <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="val-username">제목 <span class="text-danger">*</span>
+		                                            </label>
+		                                            <div class="col-lg-8">
+		                                                <input type="text" class="form-control" id="ntitle" name="ntitle">
+		                                                <input type="hidden" name="nclass" value="0">
+		                                            </div>
+		                                        </div>
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="val-username">작성자 <span class="text-danger">*</span>
+		                                            </label>
+		                                            <div class="col-lg-8">
+		                                                <input type="text" class="form-control" id="nuser" name="nuser">
+		                                            </div>
+		                                        </div>
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="">팝업 기간 <span class="text-danger">*</span>
+		                                            </label>
+		                                            <div class="col-lg-8">
+		                                                <input type="datetime-local" class="form-control" id="nstartdate" name="nstartdate" style="width: 40%; display: inline-block;"> ~
+		                                                <input type="datetime-local" class="form-control" id="nenddate" name="nenddate" style="width: 40%; display: inline-block;">
+		                                            </div>
+		                                        </div>
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="">팝업 크기 <span class="text-danger">*</span>
+		                                            </label>
+		                                            <div class="col-lg-8">
+		                                            <p>기본 크기 500*500 권장 / px 기준 기입</p>
+		                                                가로길이:<input type="number" class="form-control" id="nwidth" name="nwidth" style="width: 30%; display: inline-block;"> 세로길이:
+		                                                <input type="number" class="form-control" id="nlength" name="nlength" style="width: 30%; display: inline-block;">
+		                                            </div>
+		                                        </div>
+		                                        
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="val-password">이미지첨부</span>
+		                                            </label>
+		                                            <div class="col-lg-8">
+		                                                <input type="file" name="img" id="img" style="display: inline-block;">
+		                                            </div>
+		                                        </div>
+		                                        
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="val-suggestions">내용 <span class="text-danger">*</span>
+		                                            </label>
+		                                                <textarea class="form-control" id="ncontent" name="ncontent" rows="5" placeholder="100자 내 작성"></textarea>
+		                                            
+		                                        </div>
+		                                        
+		                                        <!-- Basic Modal-->
+												<div class="modal fade" id="basicModal" tabindex="-1">
+												  <div class="modal-dialog">
+												    <div class="modal-content">
+												      <div class="modal-header">
+												        <h3 class="modal-title">팝업등록</h3>
+												      </div>
+												      <div class="modal-body">
+														정말로 팝업을 등록하시겠습니까?
+												      </div>
+												      <div class="modal-footer">
+												        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+												        <button type="submit" class="btn btn-primary">네</button>
+												      </div>
+												    </div>
+												  </div>
+												</div>
+												<!-- End Basic Modal-->	
+												
+		                                    </form>
+										</div>
+										
+										
+										<div class="form-group">
+											<div align="center">
+												<button type="button" class="btn btn-info" data-toggle="modal"  data-target="#basicModal" >등록</button>
+											</div>
+										</div>
+									</div>
+									<!-- 작성창 끝 -->
+									
+									<!-- 상세창 -->
+									<div class="form-view" id="View2" style="display: none;">
+									<div class="row">
+										<div class="col">
+											<div class="card-title">팝업상세</div>
+										</div>
+										<div class="col right-align">
+											<button type="button" class="btn btn-info" onclick="hide()">닫기</button>
+										</div>
+										<br><br>
+									</div>
+										
+										<div class="form-validation">
+		                                    <form class="form-valide" th:action="@{/m_upnotice}" method="post" onsubmit="return formcheck1();" enctype="multipart/form-data"> 
+		                                    	<div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="val-username">팝업번호<span class="text-danger">*</span>
+		                                            </label>
+		                                            <div class="col-lg-8">
+		                                               	<input type="text" class="form-control" id="data-no" name="nnum" readonly="readonly">
+		                                            </div>
+		                                        </div>
+		                                         <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="ntitle">제목 <span class="text-danger">*</span>
+		                                            <input type="hidden" name="nclass1" value="0">
+		                                            </label>
+		                                            <div class="col-lg-8">
+		                                                <input type="text" class="form-control" id="ntitle1" name="ntitle">
+		                                                <input type="hidden" name="nclass" value="0">
+		                                            </div>
+		                                        </div>
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="username">작성자 <span class="text-danger">*</span>
+		                                            </label>
+		                                            <div class="col-lg-8">
+		                                                <input type="text" class="form-control" id="username1" name="nuser">
+		                                            </div>
+		                                        </div>
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="">팝업 기간 <span class="text-danger">*</span>
+		                                            </label>
+		                                            <div class="col-lg-8">
+		                                                <input type="datetime-local" class="form-control" id="nstartdate1" name="nstartdate" style="width: 40%; display: inline-block;"> ~
+		                                                <input type="datetime-local" class="form-control" id="nenddate1" name="nenddate" style="width: 40%; display: inline-block;">
+		                                            </div>
+		                                        </div>
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="">팝업 크기 <span class="text-danger">*</span>
+		                                            </label>
+		                                            <div class="col-lg-8">
+		                                            <p>기본 크기 500*500 권장 / px 기준 기입</p>
+		                                                가로길이:<input type="number" class="form-control" id="nwidth1" name="nwidth" style="width: 30%; display: inline-block;"> 세로길이:
+		                                                <input type="number" class="form-control" id="nlength1" name="nlength" style="width: 30%; display: inline-block;">
+		                                            </div>
+		                                        </div>
+		                                        
+		                                        
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label">이미지
+		                                            </label>
+		                                            <label for="img1">
+                                           			  <div class="btn btn-info">이미지변경</div>
+                                           			</label>
+                                           			<input type="file" name="img" id="img1" style="display: none;">
+		                                            
+		                                            <div class="col-lg-8">
+		                                                <div id="imgs">
+														</div>
+		                                            </div>
+		                                        </div>
+		                                        <div id="data-container">
+												</div>
+		                                        <div class="form-group row">
+		                                            <label class="col-lg-2 col-form-label" for="ncontent">내용 <span class="text-danger">*</span>
+		                                            </label>
+		                                                <textarea class="form-control" id="ncontent1" name="ncontent" rows="10" style="width: 100%;" placeholder="100자 내 작성"></textarea>
+		                                        </div>
+		                                        
+		                                        <!-- Basic Modal-->
+												<div class="modal fade" id="basicModal1" tabindex="-1">
+												  <div class="modal-dialog">
+												    <div class="modal-content">
+												      <div class="modal-header">
+												        <h3 class="modal-title">팝업수정</h3>
+												      </div>
+												      <div class="modal-body">
+														정말로 공지를 수정하시겠습니까?
+												      </div>
+												      <div class="modal-footer">
+												        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+												        <button type="submit" class="btn btn-primary">네</button>
+												      </div>
+												    </div>
+												  </div>
+												</div>
+												<!-- End Basic Modal-->	
+												
+		                                    </form>
+										</div>
+										
+										
+										<div class="form-group">
+											<div align="center">
+												<button type="button" class="btn btn-info" data-toggle="modal" data-target="#basicModal1" >수정</button>
+												<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#basicModal2">등록취소</button>
+												<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#basicModal3">삭제</button>
+												
+											</div>
+											
+											
+										</div>
+									</div>
+									<!-- 작성창 끝 -->
+									
+									<!-- Basic Modal-->
+									<div class="modal fade" id="basicModal2" tabindex="-1">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <h3 class="modal-title">공지취소</h3>
+									      </div>
+									      <div class="modal-body">
+											정말로 팝업 등록을 취소하시겠습니까?
+									      </div>
+									      <div class="modal-footer">
+									        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+									        <button type="button" class="btn btn-primary" onclick="delnotice();">네</button>
+									      </div>
+									    </div>
+									  </div>
+									</div>
+									<!-- End Basic Modal-->	
+									
+									
+									<!-- Basic Modal-->
+									<div class="modal fade" id="basicModal3" tabindex="-1">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <h3 class="modal-title">팝업삭제</h3>
+									      </div>
+									      <div class="modal-body">
+											정말로 팝업을 영구 삭제하시겠습니까?
+											되돌릴 수 없습니다.
+									      </div>
+									      <div class="modal-footer">
+									        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">아니오</button>
+									        <button type="button" class="btn btn-primary" onclick="delno();">네</button>
+									      </div>
+									    </div>
+									  </div>
+									</div>
+									<!-- End Basic Modal-->	
+									
+									
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				<!-- row end -->
+				
+				
+				
+			</div>
+			<!-- #/ container -->   
+		</div>
+		<!-- Content body end -->
+		<th:block th:insert="~{m_fragments::footer}"></th:block>
+    </div>
+    <!-- Main wrapper end -->
+	<script src="./erp/plugins/sweetalert/js/sweetalert.min.js"></script>
+	<script src="./erp/plugins/sweetalert/js/sweetalert.init.js"></script>
+	<script src="erp/plugins/common/common.min.js"></script>
+    <script src="erp/js/custom.min.js"></script>
+    <script src="erp/js/settings.js"></script>
+    <script src="erp/js/gleek.js"></script>
+    <script src="erp/js/styleSwitcher.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="./erp/plugins/tables/js/jquery.dataTables.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+
+
+	
+	<!-- Bootstrap 3.1 -->
+    <script src="./e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script th:inline="javascript">
+	
+	function show(num) {
+		
+		var comView = document.getElementById('comView');
+		var View1 = document.getElementById('View1');
+		var View2 = document.getElementById('View2');
+		
+		if (num == 1) {
+			
+				comView.style.display = 'block';
+				View1.style.display = 'block';
+				View2.style.display = 'none';
+			
+		} else {
+				comView.style.display = 'block';
+				View1.style.display = 'none';
+				View2.style.display = 'block';
+		}
+		
+	}
+	
+	function hide() {
+		comView.style.display = 'none';
+		View1.style.display = 'none';
+		View2.style.display = 'none';
+	}
+	
+	
+	
+	function ditail(nnum) {
+		
+		var ele = document.getElementsByName('nclass1');
+		
+		$.ajax({
+	        type: 'GET',
+	        url: '/m_noticeditail',
+	        data: {nnum:nnum},
+	        dataType: 'json',
+	        
+	        //컨트롤러 성공 시 
+	        success: function(response) {
+	        	
+	        	$('#nnum').val(response.nnum);
+	        	$('#ntitle1').val(response.ntitle);
+	        	$('#ncontent1').val(response.ncontent);
+	        	$('#username1').val(response.nuser);
+	        	$('#data-no').val(response.nnum);
+	        	$('#nstartdate1').val(response.nstartdate);
+	        	$('#nlength1').val(response.nlength);
+	        	$('#nwidth1').val(response.nwidth);
+	        	
+	        	if(response.nenddate != null && response.nenddate != ''){
+	        		$('#nenddate1').val(response.nenddate);	
+	        	}
+	        	
+	        	if(response.npicturefake != null && response.npicturefake != ''){
+	        		var imageUrl = './files/' + response.npicturefake;
+	                
+	                // 이미지 태그 생성
+	                var imgTag = $('<img>').addClass('img').attr('src', imageUrl);
+	                
+	                
+	                // 이미지를 #data-container에 추가
+	                $('#imgs').empty();
+	                $('#data-container').empty().append(imgTag);
+	        	} else  {
+	        		$('#data-container').empty();
+	        		$('#imgs').html("이미지파일없음");
+	        	}
+	        	
+        		show(2);   	
+	        },
+	
+	        // 컨트롤러 실패 시
+	        error: function() {
+	            alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+	            
+	        }
+	    });
+	
+	}
+	
+	  
+	  function formcheck() {
+		  
+		  
+		//작성자
+		let nuser = document.getElementById("nuser").value;
+		//제목
+		let ntitle = document.getElementById("ntitle").value;
+		//내용
+		let fileInput = document.getElementById('img');
+		let ncontent = document.getElementById("ncontent").value;
+		
+		let nstartdate = document.getElementById("nstartdate").value;
+		let nenddate = document.getElementById("nenddate").value;
+		
+		let nlength = document.getElementById("nlength").value;
+		let nwidth = document.getElementById("nwidth").value;
+		
+		if(ntitle === '') {
+			  alert("제목을 작성해주세요.");
+			  
+			  return false;
+		  }
+		
+		if(nuser === '') {
+			  alert("작성자를 작성해주세요.");
+			  
+			  return false;
+		  }
+
+		if(nstartdate === '') {
+			  alert("팝업 시작일을 작성해주세요.");
+			  
+			  return false;
+		  }
+		
+		if(nenddate === '') {
+			  alert("팝업 종료일을 작성해주세요.");
+			  
+			  return false;
+		  }
+		
+		if(nlength === '' || nwidth === '' || nlength === '0' || nwidth === '0' || nlength === 0 || nwidth === 0) {
+			  alert("팝업 크기를 작성해주세요.");
+			  
+			  return false;
+		  }
+		
+		if (fileInput.files.length === 0  && ncontent === '') {
+			
+			alert("이미지파일 또는 내용을 작성해주세요.");
+			  
+			  return false;
+		}
+		
+		if(ntitle === '') {
+			  alert("제목을 작성해주세요.");
+			  
+			  return false;
+		  }
+		
+		return true;
+	  }
+
+
+	  function formcheck1() {
+		  
+		  
+			//작성자
+			let nuser = document.getElementById("username1").value;
+			//제목
+			let ntitle = document.getElementById("ntitle1").value;
+			//내용
+			let ncontent = document.getElementById("ncontent1").value;
+			
+			let nstartdate = document.getElementById("nstartdate1").value;
+			let nenddate = document.getElementById("nenddate1").value;
+			
+			let nlength = document.getElementById("nlength1").value;
+			let nwidth = document.getElementById("nwidth1").value;
+			
+			if(ntitle === '') {
+				  alert("제목을 작성해주세요.");
+				  
+				  return false;
+			  }
+			
+			if(nuser === '') {
+				  alert("작성자를 작성해주세요.");
+				  
+				  return false;
+			  }
+			
+			if(nstartdate === '') {
+				  alert("팝업 시작일을 작성해주세요.");
+				  
+				  return false;
+			  }
+			
+			if(nenddate === '') {
+				  alert("팝업 종료일을 작성해주세요.");
+				  
+				  return false;
+			  }
+			
+			
+			if(nlength === '' || nwidth === '' || nlength === '0' || nwidth === '0' || nlength === 0 || nwidth === 0) {
+				
+				  alert("팝업 크기를 작성해주세요.");
+				  
+				  return false;
+			  }
+			
+			return true;
+		  }
+	
+	  
+	 
+	  
+		function delnotice() {
+			
+			var nnum = document.getElementById('data-no').value;
+			
+			$.ajax({
+		        type: 'POST',
+		        url: '/m_delnotice',
+		        data: {nnum:nnum},
+		        
+		        //컨트롤러 성공 시 
+		        success: function(msg) { 
+		        	
+		        	if(msg == "Y") {
+		        		alert('공지가 정상적으로 등록 취소 되었습니다.');
+		        		location.reload();
+		        	} else {
+		        		alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+		        	}
+		        	
+		        },
+		
+		        // 컨트롤러 실패 시
+		        error: function() {
+		            alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+		            
+		        }
+		    });
+		
+		}
+		
+		function delno() {
+			var nnum = document.getElementById('data-no').value;
+			
+			$.ajax({
+		        type: 'POST',
+		        url: '/m_delno',
+		        data: {nnum:nnum},
+		        
+		        //컨트롤러 성공 시 
+		        success: function(msg) { 
+		        	
+		        	if(msg == "Y") {
+		        		alert('공지가 정상적으로 삭제 되었습니다.');
+		        		location.reload();
+		        	} else {
+		        		alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+		        	}
+		        	
+		        },
+		
+		        // 컨트롤러 실패 시
+		        error: function() {
+		            alert('처리 중 오류가 발생했습니다. 고객센터에 문의바랍니다.');
+		            
+		        }
+		    });
+		
+		}
+	</script>
+
+</body>
+
+</html>

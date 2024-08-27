@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+  
+    <title>Company List</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+	<link href="./erp/plugins/sweetalert/css/sweetalert.css" rel="stylesheet">
+	<link href="./erp/plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="erp/css/style.css" rel="stylesheet">
+
+
+    
+	<style>
+		.right-align {
+			padding: 0rem 1.875rem;
+			text-align: right; /* 텍스트를 우측으로 정렬 */
+		}
+		.msgbt {
+			margin: 30px 0 0 30px;
+		}
+	</style>
+</head>
+
+<body>
+
+    <!-- Preloader start -->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!-- Preloader end -->
+    
+    <!-- Main wrapper start -->
+    <div id="main-wrapper">
+		<th:block th:insert="~{m_fragments::header('erp Main')}"></th:block>
+ 		<th:block th:insert="~{m_fragments::topbar}"></th:block>
+		<th:block th:insert="~{m_fragments::sidebar}"></th:block>
+		<!-- Content body start -->
+		<div class="content-body">
+			
+			<div class="row">
+				<div class="col">
+				    <div th:if="${msg}" class="alert alert-success alert-dismissible fade show msgbt">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<th:block th:text="${msg}"></th:block>
+				    </div>
+				</div>
+				<div class="col-md-2">
+					<div class="row page-titles mx-0">
+						<div class="col p-md-0">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="/m">Main</a></li>
+								<th:block th:if="${source eq 'branch'}">
+									<li class="breadcrumb-item active"><a href="/m_comList?source=branch">가맹점 목록</a></li>
+								</th:block>
+								<th:block th:if="${source eq 'vendor'}">
+									<li class="breadcrumb-item active"><a href="/m_comList?source=vendor">출판사 목록</a></li>
+								</th:block>
+							</ol>
+						</div>
+					</div>
+			        <div class="right-align">
+			            <button type="button" class="btn mb-1 btn-success" onclick="showSecondColumn()">신규 등록</button>
+			        </div>
+			    </div>
+			</div>
+			<!-- div row -->
+			<div class="container-fluid">
+				<div class="row">
+					<div id="firstColumn" class="col">
+						<div class="card">
+							<div class="card-body">
+								<h4 th:if="${source == 'branch'}" class="card-title">Branch List</h4>
+								<h4 th:if="${source == 'vendor'}" class="card-title">Vendor List</h4>
+								<div class="table-responsive">
+									<table class="table table-hover table-bordered hb-orderdesc">
+										<thead>
+											<tr style="text-align: center;">
+												<th>관리번호</th>
+												<th>회사명</th>
+												<th>대표명</th>
+												<th>사업자등록번호</th>
+												<th>주소</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="com : ${comList}" class="record"
+												th:brno="${com.brno}"
+												th:source="${source}"
+												th:onclick="showComView(this.getAttribute('brno'), this.getAttribute('source'))">
+												<td style="text-align: center;" th:text="${com.brno}"></td>
+												<td style="text-align: center;" th:text="${com.brname}"></td>
+												<td style="text-align: center;" th:text="${com.brdelegate}"></td>
+												<td style="text-align: center;" th:text="${com.formatbno}"></td>
+												<td th:text="${com.braddress}"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- first column end -->
+					<div class="col-md-6" id="secondColumn" style="display: none;">
+						<th:block th:insert="~{m_comInsert::insertcom}"></th:block>
+					</div>
+					<div class="col-md-6" id="comView" style="display: none;">
+						<th:block th:insert="~{m_View::viewcom}"></th:block>
+					</div>
+					<div class="col-md-6" id="comEdit" style="display: none;">
+						<th:block th:insert="~{m_comUpdate::editcom}"></th:block>
+					</div>
+				</div>
+				<!-- row end -->
+			</div>
+			<!-- #/ container -->   
+		</div>
+		<!-- Content body end -->
+		<th:block th:insert="~{m_fragments::footer}"></th:block>
+    </div>
+    <!-- Main wrapper end -->
+	<script src="./erp/plugins/sweetalert/js/sweetalert.min.js"></script>
+	<script src="./erp/plugins/sweetalert/js/sweetalert.init.js"></script>
+	<script src="erp/plugins/common/common.min.js"></script>
+    <script src="erp/js/custom.min.js"></script>
+    <script src="erp/js/settings.js"></script>
+    <script src="erp/js/gleek.js"></script>
+    <script src="erp/js/styleSwitcher.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="./erp/plugins/tables/js/jquery.dataTables.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+
+	<th:block th:insert="~{m_fragments::scList}"></th:block>
+	<th:block th:insert="~{m_fragments::scInsert}"></th:block>
+	<th:block th:insert="~{m_fragments::scUpdate}"></th:block>
+
+</body>
+
+</html>

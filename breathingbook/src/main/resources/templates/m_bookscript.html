@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<div th:fragment="bookList" class="script-bar">
+   <script>
+      function showSecondColumn(source,brno) {
+         var secondColumn = document.getElementById('secondColumn');
+         var comView = document.getElementById('comView');
+         if (secondColumn.style.display === 'none') {
+            if(comEdit.style.display === 'block') {
+               alert("정보 수정창을 닫아주세요.");
+               secondColumn.style.display = 'none';
+            } else {
+               secondColumn.style.display = 'block';
+               comView.style.display = 'none';
+            }
+         }
+      }
+      
+      function showComView(pno) {
+         var comView = document.getElementById('comView');
+         var secondColumn = document.getElementById('secondColumn');
+         var comEdit = document.getElementById('comEdit');
+         if (comView.style.display === 'none') {
+            if(secondColumn.style.display === 'block') {
+               alert("신규 등록창을 닫아주세요.");
+               return;
+            } else if(comEdit.style.display === 'block') {
+               alert("정보 수정창을 닫아주세요.");
+               return;
+            } 
+         }
+         
+         $.ajax({
+               type: "GET",
+               url: "/m_rBookView?pno="+pno ,
+               
+               success: function(response) {
+                  comView.style.display = 'block';
+                  $('#comView').html(response);
+               },
+               error: function(xhr, status, error) {
+                  console.error(error);
+               }
+         });
+      }
+	  
+	  function showBookView(bono) {
+  			var comView = document.getElementById('comView');
+  			var secondColumn = document.getElementById('secondColumn');
+  			var comEdit = document.getElementById('comEdit');
+  			if (comView.style.display === 'none') {
+  				if(secondColumn.style.display === 'block') {
+  					alert("신규 등록창을 닫아주세요.");
+  					return;
+  				} else if(comEdit.style.display === 'block') {
+  					alert("정보 수정창을 닫아주세요.");
+  					return;
+  				} 
+  			}
+  			
+  			$.ajax({
+  					type: "GET",
+  					url: "/m_bookSelect?bono="+bono ,
+  					
+  					success: function(response) {
+  						comView.style.display = 'block';
+  						$('#comView').html(response);
+  					},
+  					error: function(xhr, status, error) {
+  						console.error(error);
+  					}
+  			});
+  		}
+      
+      function showStockView(pno) {
+               var comView = document.getElementById('comView');
+               var secondColumn = document.getElementById('secondColumn');
+               var comEdit = document.getElementById('comEdit');
+               if (comView.style.display === 'none') {
+                  if(secondColumn.style.display === 'block') {
+                     alert("신규 등록창을 닫아주세요.");
+                     return;
+                  } else if(comEdit.style.display === 'block') {
+                     alert("정보 수정창을 닫아주세요.");
+                     return;
+                  } 
+               }
+               
+               $.ajax({
+                     type: "GET",
+                     url: "/m_bookmStock?pno="+pno ,
+                     
+                     success: function(response) {
+                        comView.style.display = 'block';
+                        $('#comView').html(response);
+                     },
+                     error: function(xhr, status, error) {
+                        console.error(error);
+                     }
+               });
+            }
+      
+      function showEditCom(){
+         var comEdit = document.getElementById('comEdit');
+         var comView = document.getElementById('comView');
+         if (comEdit.style.display === 'none') {
+            comEdit.style.display = 'block';
+            comView.style.display = 'none';
+         }
+      }
+      
+      function hideColumn() {
+          var secondColumn = document.getElementById('secondColumn');
+         var comView = document.getElementById('comView');
+         var comEdit = document.getElementById('comEdit');
+          secondColumn.style.display = 'none';
+         comView.style.display = 'none';
+         comEdit.style.display = 'none';
+      }
+      
+      function sample6_execDaumPostcode() {
+          new daum.Postcode({
+              oncomplete: function(data) {
+                  // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                  // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                  // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                  let addr = ''; // 주소 변수
+                  let extraAddr = ''; // 참고항목 변수
+
+                  //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                  if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                      addr = data.roadAddress;
+                  } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                      addr = data.jibunAddress;
+                  }
+
+                  // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                  if(data.userSelectedType === 'R'){
+                      // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                      // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                      if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                          extraAddr += data.bname;
+                      }
+                      // 건물명이 있고, 공동주택일 경우 추가한다.
+                      if(data.buildingName !== '' && data.apartment === 'Y'){
+                          extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                      }
+                      // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                      if(extraAddr !== ''){
+                          extraAddr = ' (' + extraAddr + ')';
+                      }
+                      
+                      // 조합된 참고항목을 해당 필드에 넣는다.
+                      document.getElementById("sample6_extraAddress").value = extraAddr;
+                  
+                  } else {
+                      document.getElementById("sample6_extraAddress").value = '';
+                  }
+
+                  // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                  document.getElementById("sample6_postcode").value = data.zonecode;
+                  document.getElementById("sample6_address").value = addr;
+                  // 커서를 상세주소 필드로 이동한다.
+                  document.getElementById("sample6_detailAddress").focus();
+              }
+          }).open();
+      }
+
+      function bankselect() {
+          var select = document.getElementById('bank2');
+          var option = select.options[select.selectedIndex];
+
+         if(option.value == '직접입력'){
+            document.getElementById('bank').removeAttribute('readonly');
+            document.getElementById('bank').value = "";            
+         } else {
+            document.getElementById('bank').setAttribute('readonly', true);
+            document.getElementById('bank').value = option.value;
+         }
+      }
+      function validation() {
+          var regNum = /^[0-9]*$/;
+          var numvali = document.getElementById('numvali').value;
+
+          // 숫자가 아닌 경우를 체크
+          if (!regNum.test(numvali)) {
+              alert("숫자만 입력해주세요.");
+              return false;
+          }
+
+          // sample6_detailAddress, sample6_extraAddress 값을 조합하여 brdetailaddress 값 생성
+          var sample6_detailAddress = document.getElementById('sample6_detailAddress').value;
+          var sample6_extraAddress = document.getElementById('sample6_extraAddress').value;
+          var brdetailaddress = sample6_detailAddress + ", " + sample6_extraAddress;
+
+          // 생성된 ADR 값을 hidden 필드에 설정
+          document.getElementById('brdetailaddress').value = brdetailaddress;
+      }
+      
+      function showOrderView(buyno, variable) {
+         var comView = document.getElementById('comView');
+         var secondColumn = document.getElementById('secondColumn');
+         var comEdit = document.getElementById('comEdit');
+         
+         if (comView.style.display === 'none') {
+            if(secondColumn.style.display === 'block') {
+               alert("신규 등록창을 닫아주세요.");
+               return;
+            } else if(comEdit.style.display === 'block') {
+               alert("정보 수정창을 닫아주세요.");
+               return;
+            } 
+         }
+         
+         $.ajax({
+               type: "GET",
+               url: "/m_orderSelect?buyno="+buyno + "&variable=" + variable ,
+               
+               success: function(response) {
+                  comView.style.display = 'block';
+                  $('#comView').html(response);
+               },
+               error: function(xhr, status, error) {
+                  console.error(error);
+               }
+         });
+      }
+      
+   </script>
+   <script th:inline = "javascript">
+      function returnwindow(){
+            var pno = /*[[${rBookView?.pno}]]*/ 'defaultPno';
+            var source = /*[[${source}]]*/ 'defaultSource';
+            var url =  '/m_retrun?pno=' + encodeURIComponent(pno) + '&source=' + encodeURIComponent(source);
+            window.open(url, '_blank', 'width=600,height=400,scrollbars=yes');
+            
+         }
+   </script>
+<div>

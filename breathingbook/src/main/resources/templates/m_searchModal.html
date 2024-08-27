@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="searchCom">
+	<table id="searchComTable" class="table table-hover table-bordered hb-orderdesc">
+		<thead>
+			<tr>
+				<th>관리번호</th>
+				<th>회사명</th>
+				<th>대표명</th>
+			</tr>
+		</thead>
+		<tbody id="updatetbody">
+		    <tr th:each="com : ${comList}"
+				th:brno="${com.brno}"
+				th:brname="${com.brname}"
+				onclick="updateSelectedValues(this.getAttribute('brno'), this.getAttribute('brname'))"
+				data-dismiss="modal">
+		        <td th:text="${com.brno}"></td>
+		        <td th:text="${com.brname}"></td>
+		        <td th:text="${com.brdelegate}"></td>
+		    </tr>
+		</tbody>
+	</table>
+</div>
+
+<div th:fragment="searchCom2">
+	<table id="searchComTable2" class="table table-hover table-bordered hb-orderdesc">
+		<thead>
+			<tr>
+				<th>관리번호</th>
+				<th>회사</th>
+				<th>대표</th>
+			</tr>
+		</thead>
+		<tbody id="updatetbody2">
+		    <tr th:each="com : ${comList}"
+				th:brno="${com.brno}"
+				th:brname="${com.brname}"
+				onclick="updateSelectedValues2(this.getAttribute('brno'), this.getAttribute('brname'))"
+				data-dismiss="modal">
+		        <td th:text="${com.brno}"></td>
+		        <td th:text="${com.brname}"></td>
+		        <td th:text="${com.brdelegate}"></td>
+		    </tr>
+		</tbody>
+	</table>
+</div>
+
+<div th:fragment="searchVen">
+	<table id="searchVenTable" class="table table-hover table-bordered hb-orderdesc">
+		<thead>
+			<tr>
+				<th>관리번호</th>
+				<th>회사명</th>
+				<th>대표명</th>
+			</tr>
+		</thead>
+		<tbody id="updateVentbody">
+		    <tr th:each="com : ${comList}"
+				th:brno="${com.brno}"
+				th:brname="${com.brname}"
+				th:if="${com.brclass == 2}"
+				onclick="updateVenSelectedValues(this.getAttribute('brno'), this.getAttribute('brname'))"
+				data-dismiss="modal">
+		        <td th:text="${com.brno}"></td>
+		        <td th:text="${com.brname}"></td>
+		        <td th:text="${com.brdelegate}"></td>
+		    </tr>
+		</tbody>
+	</table>
+</div>
+
+<div th:fragment="searchBook">
+	<table id="searchBookTable" class="table table-hover table-bordered hb-orderdesc" style="width: 100%;">
+		<thead>
+			<tr>
+				<td>관리번호</td>
+				<td>도서</td>
+				<td>저자</td>
+				<td>출판사</td>
+			</tr>
+		</thead>
+		<tbody>
+		    <tr th:each="book : ${bookList}"
+				th:bono="${book.bono}"
+				th:boname="${book.boname}"
+				onclick="updatebook(this.getAttribute('bono'), this.getAttribute('boname'))"
+				data-dismiss="modal">
+		        <td th:text="${book.bono}"></td>
+		        <td th:text="${book.boname}"></td>
+		        <td th:text="${book.bowriter}"></td>
+		        <td th:text="${book.bocompany}"></td>
+		    </tr>
+		</tbody>
+	</table>
+</div>
+
+<div th:fragment="searchBook2">
+	<table id="searchBookTable2" class="table table-hover table-bordered hb-orderdesc" style="width: 100%;">
+		<thead>
+			<tr>
+				<td>관리번호</td>
+				<td>도서</td>
+				<td>저자</td>
+				<td>출판사</td>
+			</tr>
+		</thead>
+		<tbody>
+		    <tr th:each="book : ${bookList}"
+				th:bono="${book.bono}"
+				th:boname="${book.boname}"
+				onclick="updatebook2(this.getAttribute('bono'), this.getAttribute('boname'))"
+				data-dismiss="modal">
+		        <td th:text="${book.bono}"></td>
+		        <td th:text="${book.boname}"></td>
+		        <td th:text="${book.bowriter}"></td>
+		        <td th:text="${book.bocompany}"></td>
+		    </tr>
+		</tbody>
+	</table>
+</div>
+</html>

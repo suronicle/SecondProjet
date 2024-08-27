@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.book.erp.dao.PurchaseDAO">
+
+
+	<!-- 도서 검색 전체 목록 -->
+	<select id="searchBook" resultType="BookDTO">
+		  SELECT *
+			FROM book
+		   WHERE bodel = 0
+		ORDER BY bono desc
+	</select>
+	
+	<!-- 누락 매입 / 매출 등록 -->
+	<insert id="purAdd" parameterType="BookDTO">
+		INSERT INTO purchase (pno, brno, brreqnum, pdate, pclass, pbookno)
+		VALUES (#{pno}, #{brno}, #{brreqnum}, #{pdate}, #{pclass}, #{pbookno})
+	</insert>
+	
+	<!-- 도서 등록시 최초 매입 / 매출 등록 -->
+	<insert id="purInsert" parameterType="BookDTO">
+		INSERT INTO purchase (pno, brno, brreqnum, pdate, pclass, pbookno)
+		VALUES (#{pno}, #{brno}, #{bostock}, #{bodate}, 1, #{bono})
+	</insert>
+	<!-- 도서 재고 업뎃 시 매입 / 매출 등록 -->
+	<insert id="purUpdate" parameterType="BookDTO">
+		INSERT INTO purchase (brno, pstock, pdate, pclass, pbookno)
+		VALUES (#{brno},#{pstock} + #{brreqnum}, now(), 1, #{bono})
+	</insert>
+	
+	<!-- 도서 등록 매입 취소   -->
+	<insert id="purCancle" parameterType="BookDTO">
+		INSERT INTO purchase (pno, brno, brreqnum, pdate, pclass, pbookno)
+		VALUES (#{pno}, #{brno}, #{deducted}, #{bodate}, 3, #{bono})
+	</insert>
+    
+    	<!-- 매입/매출 정보 수정-->
+	<update id="purEdit" parameterType="BookDTO">
+		UPDATE purchase
+		SET brno=#{brno},
+			brreqnum=#{brreqnum},
+			pdate=#{pdate},
+			pclass=#{pclass},
+			pbookno=#{pbookno}
+		WHERE pno=#{pno}
+	</update>
+    
+    <!-- 매입 매출 전체 목록 -->
+	<select id="purList" resultType="BookDTO">
+		SELECT
+			  p.pno,
+			  DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			  p.pclass,
+			  p.brno,
+			  br.brname,
+			  p.pbookno,
+			  b.boname,
+			  b.booriginal,
+			  b.boprice,
+			  p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales
+		  FROM
+			  purchase p
+		  JOIN
+			  book b ON p.pbookno = b.bono
+		  JOIN
+		  	  branch br ON p.brno = br.brno
+		 WHERE
+		 	  p.brreqnum IS NOT NULL AND Year(p.pdate) = '2024'
+	</select>
+
+	<!-- 매입 매출 년별 목록 -->
+	<select id="sumyeartotal" resultType="BookDTO">
+		SELECT
+			  p.pno,
+			  DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			  p.pclass,
+			  p.brno,
+			  br.brname,
+			  p.pbookno,
+			  b.boname,
+			  b.booriginal,
+			  b.boprice,
+			  p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales
+		  FROM
+			  purchase p
+		  JOIN
+			  book b ON p.pbookno = b.bono
+		  JOIN
+		  	  branch br ON p.brno = br.brno
+		 WHERE
+		 	  p.brreqnum IS NOT NULL AND Year(p.pdate) = #{year};
+	</select>
+	   <!-- 매입 매출 월별 목록 -->
+	<select id="summonthtotal" resultType="BookDTO">
+		SELECT
+			  p.pno,
+			  DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			  p.pclass,
+			  p.brno,
+			  br.brname,
+			  p.pbookno,
+			  b.boname,
+			  b.booriginal,
+			  b.boprice,
+			  p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales
+		  FROM
+			  purchase p
+		  JOIN
+			  book b ON p.pbookno = b.bono
+		  JOIN
+		  	  branch br ON p.brno = br.brno
+		 WHERE
+		 	  p.brreqnum IS NOT NULL AND MONTH(p.pdate) = #{month};
+	</select>
+	<!-- 매입 매출 일별 합계-->
+	<select id="sumdaytotal" resultType="BookDTO">
+		SELECT
+			   p.pno,
+			   DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			   p.pclass,
+			   p.brno,
+			   br.brname,
+			   p.pbookno,
+			   b.boname,
+			   b.booriginal,
+			   b.boprice,
+			   p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales,
+			  SUM(p.brreqnum * b.booriginal) OVER(PARTITION BY p.pdate) AS daypultotal,
+			  SUM(p.brreqnum * b.boprice) OVER(PARTITION BY p.pdate) AS daysalestotal
+		  FROM
+			  purchase p
+		  JOIN
+			  book b ON p.pbookno = b.bono
+		  JOIN branch br
+			ON p.brno = br.brno
+		 WHERE p.brreqnum IS NOT NULL AND DAY(p.pdate) = #{day};
+	</select>
+	<select id="mSalesList" resultType="BookDTO">
+		SELECT
+			  p.pno,
+			  DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			  p.pclass,
+			  p.brno,
+			  p.buyno,
+			  bu.buyid,
+			  m.mname,
+			  br.brname,
+			  p.pbookno,
+			  b.boname,
+			  b.booriginal,
+			  b.boprice,
+			  p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales
+		  FROM
+		  	  purchase p
+		  JOIN
+		  	  book b ON p.pbookno = b.bono
+		  JOIN
+		      branch br ON p.brno = br.brno
+		  JOIN
+		  	  buy bu ON p.buyno = bu.buyno
+		  JOIN
+		  	  member m ON m.mid = bu.buyid
+		 WHERE
+		  	  p.brreqnum IS NOT NULL AND Year(p.pdate) = '2024'
+	</select>
+	
+		<select id="myeartotal" resultType="BookDTO">
+		SELECT
+			  p.pno,
+			  DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			  p.pclass,
+			  p.brno,
+			  p.buyno,
+			  bu.buyid,
+			  m.mname,
+			  br.brname,
+			  p.pbookno,
+			  b.boname,
+			  b.booriginal,
+			  b.boprice,
+			  p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales
+		  FROM
+		  	  purchase p
+		  JOIN
+		  	  book b ON p.pbookno = b.bono
+		  JOIN
+		      branch br ON p.brno = br.brno
+		  JOIN
+		  	  buy bu ON p.buyno = bu.buyno
+		  JOIN
+		  	  member m ON m.mid = bu.buyid
+		 WHERE
+		  	  p.brreqnum IS NOT NULL AND Year(p.pdate) = #{year}
+	</select>
+	
+		<select id="mmonthtotal" resultType="BookDTO">
+		SELECT
+			  p.pno,
+			  DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			  p.pclass,
+			  p.brno,
+			  p.buyno,
+			  bu.buyid,
+			  m.mname,
+			  br.brname,
+			  p.pbookno,
+			  b.boname,
+			  b.booriginal,
+			  b.boprice,
+			  p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales
+		  FROM
+		  	  purchase p
+		  JOIN
+		  	  book b ON p.pbookno = b.bono
+		  JOIN
+		      branch br ON p.brno = br.brno
+		  JOIN
+		  	  buy bu ON p.buyno = bu.buyno
+		  JOIN
+		  	  member m ON m.mid = bu.buyid
+		 WHERE
+		  	  p.brreqnum IS NOT NULL AND MONTH(p.pdate) = #{month}
+	</select>
+	
+		<select id="mdaytotal" resultType="BookDTO">
+		SELECT
+			  p.pno,
+			  DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			  p.pclass,
+			  p.brno,
+			  p.buyno,
+			  bu.buyid,
+			  m.mname,
+			  br.brname,
+			  p.pbookno,
+			  b.boname,
+			  b.booriginal,
+			  b.boprice,
+			  p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales
+		  FROM
+		  	  purchase p
+		  JOIN
+		  	  book b ON p.pbookno = b.bono
+		  JOIN
+		      branch br ON p.brno = br.brno
+		  JOIN
+		  	  buy bu ON p.buyno = bu.buyno
+		  JOIN
+		  	  member m ON m.mid = bu.buyid
+		 WHERE
+		  	  p.brreqnum IS NOT NULL AND DAY(p.pdate) = #{day}
+	</select>
+	
+	<!-- 한건보기 -->
+	<select id="purView" resultType="BookDTO">
+		SELECT p.pno,
+			   DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			   p.pclass,
+			   p.brno,
+			   br.brname,
+			   p.pbookno,
+			   b.boname,
+			   b.booriginal,
+			   b.boprice,
+			   p.brreqnum
+		  FROM purchase p
+		  JOIN book b
+			ON p.pbookno = b.bono
+		  JOIN branch br
+			ON p.brno = br.brno
+		 WHERE p.pno=#{pno}
+	</select>
+	
+	<!-- 매입/매출 내역 삭제 -->
+	<delete id="purDelete" parameterType="java.lang.Integer">
+		DELETE FROM purchase WHERE pno = #{pno}
+	</delete>
+	
+    <!-- 가맹점 -->
+    <!-- 매입 매출 전체 목록 -->
+	<select id="purList1" resultType="BookDTO">
+		SELECT
+			  p.pno,
+			  DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			  p.pclass,
+			  p.brno,
+			  br.brname,
+			  p.pbookno,
+			  b.boname,
+			  b.booriginal,
+			  b.boprice,
+			  p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales
+		  FROM
+			  purchase p
+		  JOIN
+			  book b ON p.pbookno = b.bono
+		  JOIN
+		  	  branch br ON p.brno = br.brno
+		 WHERE
+		 	  p.brreqnum IS NOT NULL AND p.brno=#{brno} AND Year(p.pdate) = '2024';
+	</select>
+	<!-- 매입 매출 년별 목록 -->
+	<select id="sumyeartotal1" resultType="BookDTO">
+		SELECT
+			  p.pno,
+			  DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			  p.pclass,
+			  p.brno,
+			  br.brname,
+			  p.pbookno,
+			  b.boname,
+			  b.booriginal,
+			  b.boprice,
+			  p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales
+		  FROM
+			  purchase p
+		  JOIN
+			  book b ON p.pbookno = b.bono
+		  JOIN
+		  	  branch br ON p.brno = br.brno
+		 WHERE
+		 	  p.brreqnum IS NOT NULL AND p.brno=#{brno} AND Year(p.pdate) = #{year};
+	</select>
+	   <!-- 매입 매출 월별 목록 -->
+	<select id="summonthtotal1" resultType="BookDTO">
+		SELECT
+			  p.pno,
+			  DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			  p.pclass,
+			  p.brno,
+			  br.brname,
+			  p.pbookno,
+			  b.boname,
+			  b.booriginal,
+			  b.boprice,
+			  p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales
+		  FROM
+			  purchase p
+		  JOIN
+			  book b ON p.pbookno = b.bono
+		  JOIN
+		  	  branch br ON p.brno = br.brno
+		 WHERE
+		 	  p.brreqnum IS NOT NULL AND p.brno=#{brno} AND MONTH(p.pdate) = #{month};
+	</select>
+	<!-- 매입 매출 일별 합계-->
+	<select id="sumdaytotal1" resultType="BookDTO">
+		SELECT
+			   p.pno,
+			   DATE_FORMAT(p.pdate, '%Y-%m-%d') AS formatpdate,
+			   p.pclass,
+			   p.brno,
+			   br.brname,
+			   p.pbookno,
+			   b.boname,
+			   b.booriginal,
+			   b.boprice,
+			   p.brreqnum,
+			  (p.brreqnum * b.booriginal) AS totalpurchase,
+			  (p.brreqnum * b.boprice) AS totalsales,
+			  SUM(p.brreqnum * b.booriginal) OVER(PARTITION BY p.pdate) AS daypultotal,
+			  SUM(p.brreqnum * b.boprice) OVER(PARTITION BY p.pdate) AS daysalestotal
+		  FROM
+			  purchase p
+		  JOIN
+			  book b ON p.pbookno = b.bono
+		  JOIN branch br
+			ON p.brno = br.brno
+		 WHERE p.brreqnum IS NOT NULL AND p.brno=#{brno} AND DAY(p.pdate) = #{day};
+	</select>
+
+</mapper>

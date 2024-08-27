@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.book.erp.dao.HmainDAO">
+
+   	<!-- 거래처 수 -->
+   	<select id="countVen" resultType="int">
+		SELECT COUNT(*) AS count
+		  FROM branch
+		 WHERE brno LIKE 'V%'
+    </select>
+    
+    <!-- 최다 거래 거래처 -->
+   	<select id="bestVen" resultType="BookDTO">
+   	    <![CDATA[
+		  SELECT
+				br.brname,
+				SUM(p.brreqnum) AS total_pstock
+			 FROM
+				purchase p
+			JOIN
+				book b ON p.pbookno = b.bono
+			JOIN
+				branch br ON b.bocompany = br.brname
+		   WHERE
+				p.pclass = 1
+		 		AND p.pdate >= DATE_SUB(CURDATE(), INTERVAL DAY(CURDATE()) - 1 DAY) - INTERVAL 1 MONTH
+				AND p.pdate < DATE_SUB(CURDATE(), INTERVAL DAY(CURDATE()) - 1 DAY)
+		GROUP BY
+				p.pbookno
+		ORDER BY
+				total_pstock DESC
+		   LIMIT
+				1
+		    ]]>
+    </select>
+    
+    <!-- 가맹점 수 -->
+   	<select id="countBra" resultType="int">
+		SELECT COUNT(*) AS count
+		  FROM branch
+		 WHERE brno LIKE 'B%'
+    </select>
+    
+    <!-- 판매 1등 가맹점 -->
+   	<select id="bestBra" resultType="BookDTO">
+   	    <![CDATA[
+		  SELECT
+				br.brname,
+				SUBSTRING_INDEX(br.brname, '_', -1) AS cutbrname,
+				SUM(p.brreqnum) AS total_pstock,
+				SUM(p.brreqnum * b.boprice) AS totalsales,
+				DATE_SUB(CURDATE(), INTERVAL DAY(CURDATE()) - 1 DAY) - INTERVAL 1 MONTH AS start_date,
+				LAST_DAY(DATE_SUB(CURDATE(), INTERVAL DAY(CURDATE()) - 1 DAY) - INTERVAL 1 MONTH) AS end_date
+			 FROM
+				purchase p
+		 	JOIN
+				branch br ON p.brno = br.brno
+			JOIN
+				book b ON p.pbookno = b.bono
+		   WHERE
+				p.brno LIKE 'B%'
+				AND p.pclass = 2
+		 		AND p.pdate >= DATE_SUB(CURDATE(), INTERVAL DAY(CURDATE()) - 1 DAY) - INTERVAL 1 MONTH
+				AND p.pdate < DATE_SUB(CURDATE(), INTERVAL DAY(CURDATE()) - 1 DAY)
+		GROUP BY
+				p.brno
+		ORDER BY
+				totalsales DESC
+		   LIMIT
+				1
+		    ]]>
+    </select>
+    
+    <!-- 도서 수 -->
+   	<select id="countBook" resultType="int">
+		SELECT COUNT(*) AS count
+		  FROM book
+    </select>
+    <!-- 판매 1등 도서 -->
+   	<select id="bestBook" resultType="BookDTO">
+   	    <![CDATA[
+		  SELECT
+				b.boname,
+				SUBSTRING(b.boname, 1, 10) AS cutboname,
+				b.bono,
+				SUM(p.brreqnum) AS total_pstock,
+				SUM(p.brreqnum * b.boprice) AS totalsales
+			 FROM
+				purchase p
+			JOIN
+				book b ON p.pbookno = b.bono
+		   WHERE
+				p.brno LIKE 'B%'
+				AND p.pclass = 2
+		 		AND p.pdate >= DATE_SUB(CURDATE(), INTERVAL DAY(CURDATE()) - 1 DAY) - INTERVAL 1 MONTH
+				AND p.pdate < DATE_SUB(CURDATE(), INTERVAL DAY(CURDATE()) - 1 DAY)
+		GROUP BY
+				b.boname, b.bono
+		ORDER BY
+				totalsales DESC
+		   LIMIT
+				1
+		    ]]>
+    </select>
+    
+    <!-- 지난 달 매출 -->
+   	<select id="lastmonth" resultType="BookDTO">
+   	    <![CDATA[
+		  SELECT
+				SUM(p.brreqnum * b.boprice) AS totalsales,
+				SUM(p.brreqnum) AS total_pstock
+			 FROM
+				purchase p
+			JOIN
+				book b ON p.pbookno = b.bono
+		   WHERE
+				p.pclass = 2
+		 		AND p.pdate >= DATE_SUB(CURDATE(), INTERVAL DAY(CURDATE()) - 1 DAY) - INTERVAL 1 MONTH
+				AND p.pdate < DATE_SUB(CURDATE(), INTERVAL DAY(CURDATE()) - 1 DAY)
+		    ]]>
+    </select>
+    
+        
+    <!-- 이번 달 매출 -->
+   	<select id="curmonth" resultType="BookDTO">
+   	    <![CDATA[
+		  SELECT
+				SUM(p.brreqnum * b.boprice) AS totalsales,
+				SUM(p.brreqnum) AS total_pstock
+			 FROM
+				purchase p
+			JOIN
+				book b ON p.pbookno = b.bono
+		   WHERE
+				p.pclass = 2
+				AND p.pdate >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+				AND p.pdate < CURDATE()
+		    ]]>
+    </select>
+    
+    <!-- 월별 매출 -->
+   	<select id="getMonthlySales" resultType="BookDTO">
+   	    <![CDATA[
+			SELECT
+			    DATE_FORMAT(p.pdate, '%Y-%m') AS month,
+			    SUM(p.brreqnum * b.boprice) AS totalsales,
+			    SUM(p.brreqnum) AS total_pstock
+			FROM
+			    purchase p
+			JOIN
+			    book b ON p.pbookno = b.bono
+			WHERE
+			    p.pclass = 2
+			    AND p.pdate >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+			GROUP BY
+			    DATE_FORMAT(p.pdate, '%Y-%m')
+			ORDER BY
+			    DATE_FORMAT(p.pdate, '%Y-%m') ASC
+
+		]]>
+    </select>
+    
+    <!-- 월별 매입 -->
+   	<select id="getMonthlyBuy" resultType="BookDTO">
+   	    <![CDATA[
+			SELECT
+			    DATE_FORMAT(p.pdate, '%Y-%m') AS month,
+			    SUM(p.brreqnum * b.booriginal) AS totalpurchase,
+			    SUM(p.brreqnum) AS total_pstock
+			FROM
+			    purchase p
+			JOIN
+			    book b ON p.pbookno = b.bono
+			WHERE
+			    p.pclass = 1
+			    AND p.pdate >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+			GROUP BY
+			    DATE_FORMAT(p.pdate, '%Y-%m')
+			ORDER BY
+			    DATE_FORMAT(p.pdate, '%Y-%m') ASC
+		]]>
+    </select>
+ 
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.book.erp.dao.FileDAO">
+
+   <!-- 파일 업로드 -->
+   <insert id="saveAll" parameterType="list">
+      insert into 
+      file(filepostno,filerealname,filesavename,filesize,filedelete,filesavedate,filepath)
+      values 
+      <foreach item="file" collection="list" separator=",">
+     (#{file.filepostno}, #{file.filerealname}, #{file.filesavename}, #{file.filesize}, 0, NOW(), 
+        CASE 
+            WHEN LENGTH(#{file.filepath}) > 48 THEN SUBSTRING(SUBSTRING(#{file.filepath}, 58), 1, 100)
+            ELSE #{file.filepath}
+        END)
+      </foreach>
+   </insert>
+   
+   
+</mapper>

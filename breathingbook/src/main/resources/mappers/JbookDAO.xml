@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.book.ecom.dao.JbookDAO">
+
+	<insert id="enewmaber" parameterType="memberDTO">
+		INSERT INTO member (mid, mpw, mname, memail, magency, mphone, mrequired, moptional, mjoindate)
+		VALUES (#{mid}, #{mpw}, #{mname},#{memail}, #{magency}, #{mphone}, #{mrequired}, #{moptional},NOW());
+	</insert>
+	
+	<insert id="newadress" parameterType="adressDTO">
+		INSERT INTO adress (ano, aid, apostal, aadress, adong, adetail)
+		VALUES (#{ano}, #{aid}, #{apostal}, #{aadress}, #{adong}, #{adetail});
+	</insert>
+	
+	<select id="reviewcont" parameterType="java.lang.String" resultType="java.lang.Integer">
+	select sum(CNT) from
+	(select count(*) as CNT from comments where cid = #{mid}
+	UNION ALL
+	select count(*) as CNT from review where rid = #{mid}) AS CNT;
+	</select>
+	
+	
+	
+	<update id="msetting" parameterType="memberDTO">
+		update member 
+		set 
+		mpw = #{mpw},
+		memail = #{memail},
+		magency = #{magency}, 
+		mphone = #{mphone}, 
+		moptional = #{moptional} 
+		
+		where mid = #{mid};
+	</update>
+	
+	
+	
+
+	<insert id="newreview" parameterType="reviewDTO">
+		INSERT INTO review (rbookno, rno, rid, rcontents, rrating, rspoiler, rdate, rdel)
+		VALUES (#{rbookno}, #{rno}, #{rid}, #{rcontents}, #{rrating}, #{rspoiler}, NOW(), 0);
+	</insert>
+	
+	<update id="upreview" parameterType="reviewDTO">
+		update review 
+		set rcontents = #{rcontents},
+		rrating = #{rrating},
+		rspoiler = #{rspoiler}
+		where rno = #{rno};
+	</update>
+	
+	<insert id="newcom" parameterType="commentsDTO">
+		INSERT INTO comments (rno, cid, ccontents, cspoiler, cdate, cdel)
+		VALUES (#{rno}, #{cid}, #{ccontents}, #{cspoiler}, NOW(), 0);
+	</insert>
+	
+	<insert id="upcom" parameterType="commentsDTO">
+		update comments
+		set ccontents = #{ccontents},
+		cspoiler = #{cspoiler}
+		where cno = #{cno};
+	</insert>
+	
+	<select id="reviewList" parameterType="java.lang.String" resultType="reviewDTO">
+	
+		SELECT r.*, IFNULL(s.sympathy_count, 0) AS rsympathy
+		FROM 
+		
+	    review r
+	    
+			LEFT JOIN (
+		    SELECT sno, COUNT(*) AS sympathy_count
+		    FROM sympathy s
+		    GROUP BY s.sno
+		     
+			) s ON r.rno = s.sno
+			
+		where r.rbookno = #{rbookno} and r.rdel = 0 ORDER BY r.rdate DESC;
+	
+	</select>
+	
+	<select id="comList" parameterType="java.lang.String" resultType="commentsDTO">
+		SELECT c.*, COUNT(s.sno) AS csympathy
+		FROM comments c
+		LEFT JOIN sympathy s ON c.cno = s.sno
+		WHERE c.rno = #{rno} AND c.cdel = 0
+		GROUP BY c.cno
+		ORDER BY c.cdate DESC;
+	
+	</select>
+	
+	<insert id="pointgame" parameterType="pointgameDTO">
+		insert into pointgame (gno, gid, gdate, gpoint)
+		values (#{gno},#{gid},NOW(),#{gpoint}); 
+	</insert>
+	
+	<insert id="newinquiry" parameterType="inquiryDTO">
+		insert into inquiry (iid, ititle, icontent, ipw, idiv, idate, iname, iemail)
+		values(#{iid}, #{ititle}, #{icontent}, #{ipw},#{idiv}, now(), #{iname}, #{iemail});
+	</insert>
+	
+	<select id="mybuylist" parameterType="java.lang.String" resultType="buyDTO">
+		SELECT b.*, c.codename, k.boname
+		FROM buy b
+		INNER JOIN codetable c ON b.buycode = c.pid
+		INNER JOIN book k ON b.buybooknum = k.bono
+		WHERE b.buyid = #{mid};
+	</select>
+	<select id="mybuyditail" parameterType="buyDTO" resultType="buyDTO">
+		SELECT b.*, c.codename, k.boname, k.boprice, k.boshipping, d.codename AS wayname, f.filepath, y.dtransport
+		FROM buy b
+		INNER JOIN codetable c ON b.buycode = c.pid
+		INNER JOIN book k ON b.buybooknum = k.bono
+		INNER JOIN codetable d ON b.buyway = d.pid
+        INNER JOIN file f ON f.filepostno = k.bono
+        LEFT JOIN delivery y ON y.dno = b.buyno
+		WHERE b.buyid = #{buyid} and b.buydate = #{buydate};
+	</select>
+	
+	<select id="buyallok" resultType="buyDTO">
+	 select b.* from buy b
+     join delivery d on d.dno = b.buyno
+     where buycode ='B4' or buycode = 'B7'
+     and buydate &lt; DATE_SUB(CURDATE(), INTERVAL 1 MONTH);
+	</select>
+	
+	<select id="myreviewList" parameterType="java.lang.String" resultType="reviewDTO">
+		select *, null AS 'cno' from review
+		where rid = #{mid}
+		UNION
+		SELECT r.rbookno AS 'rbookno', r.rno AS 'rno', c.cid AS 'rid', c.ccontents AS 'rcontents'
+		, 0 AS 'rrating', c.cspoiler AS 'rspoiler', c.cdate AS 'rdate', c.cdel AS 'rdel', c.cno AS 'cno'
+		FROM comments c
+		INNER JOIN review r ON r.rno = c.rno
+		where cid = #{mid};
+	</select>
+	
+	
+</mapper>

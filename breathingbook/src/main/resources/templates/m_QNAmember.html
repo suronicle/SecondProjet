@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+  
+    <title>member view</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+	<link href="./erp/plugins/sweetalert/css/sweetalert.css" rel="stylesheet">
+	<link href="./erp/plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="erp/css/style.css" rel="stylesheet">
+
+</head>
+<body>
+ 	<div id="main-wrapper">
+			
+				<div class="card">
+					<div class="card-body">
+					
+						<!-- 상세창 -->
+						<div class="form-view" id="View2">
+							<div class="row">
+								<div class="col">
+									<div class="card-title">회원 상세 정보</div>
+								</div>
+								<br><br>
+							</div>
+							
+							<div class="form-validation">
+								<form class="form-valide"> 
+									<div class="form-group row">
+								       <label class="col-form-label" style=" width: 300px;">아이디 
+								       	&nbsp;&nbsp;&nbsp; <small style="font-size: 15px; color: black;" th:text="${dto.mid}"></small>
+								       </label>
+								       <label class=" col-form-label" style="width: 300px;">성명
+								       	&nbsp;&nbsp;&nbsp; <small style="font-size: 15px; color: black;" th:text="${dto.mname}"></small>
+								       </label>
+								   </div>
+									<div class="form-group row">
+								       <label class="col-form-label" style="width: 300px;">이메일 
+								       	&nbsp;&nbsp;&nbsp; <small style="font-size: 15px; color: black;" th:text="${dto.memail}"></small>
+								       </label>
+								       <label class="col-form-label" style="width: 300px;">연락처
+								       	&nbsp;&nbsp;&nbsp; <small style="font-size: 15px; color: black;" th:text="'(' + ${dto.magency} + ') ' + ${dto.mphone}"></small>
+								       </label>
+								   </div>
+								   </div>
+									<div class="form-group row">
+								       <label class="col-form-label" style="width: 300px;">등급 
+								       	&nbsp;&nbsp;&nbsp; <small style="font-size: 15px; color: black;" th:text="${dto.mclass}"></small>
+								       </label>
+								       <label class="col-form-label" style="width: 300px;">유저상태
+								       	&nbsp;&nbsp;&nbsp; <small style="font-size: 15px; color: black;" th:text="${dto.mstate}"></small>
+								       </label>
+								   </div>
+								   </div>
+									<div class="form-group row">
+								       <label class="col-form-label" style="width: 300px;">포인트 
+								       	&nbsp;&nbsp;&nbsp; <small style="font-size: 15px;color: black;" th:text="${dto.mpoint}"></small>
+								       </label>
+								       <label class="col-form-label" style="width: 300px;">신고누적
+								       	&nbsp;&nbsp;&nbsp; <small style="font-size: 15px; color: black;" th:text="${dto.mreport}"></small>
+								       </label>
+								   </div>
+								   <div class="form-group row">
+								       <label class="col-form-label" style="width: 300px;">가입일 
+								       	&nbsp;&nbsp;&nbsp; <small style="font-size: 15px; color: black;" th:text="${dto.mjoindate}"></small>
+								       </label>
+								       <label class="col-form-label" style="width: 300px;">탈퇴일
+								       	&nbsp;&nbsp;&nbsp; <small style="font-size: 15px; color: black;" th:text="${dto.msecessiondate}"></small>
+								       </label>
+								   </div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+
+</body>
+	
+	<!-- Main wrapper end -->
+	<script src="./erp/plugins/sweetalert/js/sweetalert.min.js"></script>
+	<script src="./erp/plugins/sweetalert/js/sweetalert.init.js"></script>
+	<script src="erp/plugins/common/common.min.js"></script>
+    <script src="erp/js/custom.min.js"></script>
+    <script src="erp/js/settings.js"></script>
+    <script src="erp/js/gleek.js"></script>
+    <script src="erp/js/styleSwitcher.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="./erp/plugins/tables/js/jquery.dataTables.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+
+
+	
+	<!-- Bootstrap 3.1 -->
+    <script src="./e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script th:inline="javascript">
+</html>

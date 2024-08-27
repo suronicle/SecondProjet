@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="purEdit">
+	<form class="form-valide" action="m_calcEdit" method="post" onsubmit="return validateForm2()">
+		<input type="hidden" name="source" th:value="${source}">
+		<input type="hidden" name="pno" th:value="${book?.pno}">
+		<table class="table table-bordered">
+			<thead>
+				<tr style="text-align : center">
+					<th>기간</th>
+					<th>구분</th>
+					<th>업체</th>
+					<th>도서</th>
+					<th>단가</th>
+					<th>판매가</th>
+					<th>수량</th>
+					<th>금액</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr align="center">
+					<td>
+						<input type="date" class="hb-form" id="dateInput" name="pdate" th:value="${book?.formatpdate}" required>
+					</td>
+					<td>
+						<select name="pclass" id="pclass2" class="hb-form">
+							<option value="0" th:selected="${book?.pclass == 0}">선택</option>
+							<option value="1" th:selected="${book?.pclass == 1}">매입</option>
+							<option value="2" th:selected="${book?.pclass == 2}">매출</option>
+							<option value="3" th:selected="${book?.pclass == 3}">취소</option>
+						</select>
+					</td>
+					<td>
+						<div class="hb-group">
+							<input type="text" class="hb-form" id="brnoInput2"
+							name="brno" placeholder="업체 관리코드" th:value="${book?.brno}" required>
+							<input type="text" class="hb-form" id="brnameInput2" th:value="${book?.brname}" placeholder="업체 명" readonly>
+							<button type="button" class="btn btn-sm btnbrno2" data-toggle="modal" data-target=".searchCom2">
+								<i class="mdi mdi-magnify"></i>검색
+							</button>
+							<input type="hidden" id="selectedBrno2">
+							<input type="hidden" id="selectedBrname2">
+						</div>
+					</td>
+					<td>
+					    <div class="hb-group">
+					        <input type="text" name="pbookno" id="bonoInput2" class="hb-form" th:value="${book?.pbookno}" placeholder="책 관리코드" required>
+					        <input type="text" class="hb-form" id="bonameInput2" th:value="${book?.boname}" placeholder="도서 명" readonly>
+					        <button type="button" class="btn btn-sm btnbook2" data-toggle="modal" data-target=".searchBook2">
+					            <i class="mdi mdi-magnify"></i>검색
+					        </button>
+					        <input type="hidden" id="selectedBono2">
+							<input type="hidden" id="selectedBoname2">
+					    </div>
+					</td>
+					<td>-</td>
+					<td>-</td>
+					<td><input type="text" class="hb-form" name="brreqnum" th:value="${book?.brreqnum}" placeholder="수량" required></td>
+					<td>-</td>
+					<td>
+					    <button type="submit" class="btn mb-1 btn-rounded btn-warning btn-sm">
+					        <span class="btn-icon-left"><i class="fa fa-pencil color-info"></i></span>Edit
+					    </button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+	<div class="col right-align">
+		<button type="button" class="btn btn-info btn-xs" onclick="hideEdit()">닫기</button>
+	</div>
+</div>
+

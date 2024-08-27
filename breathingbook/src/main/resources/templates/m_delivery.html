@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+  
+    <title>Book List</title>
+	<!-- Favicon icon -->
+	    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+	    <!-- Pignose Calender -->
+	    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+	    <!-- Chartist -->
+	    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+	    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+	    <!-- Custom Stylesheet -->
+		<link href="./erp/plugins/sweetalert/css/sweetalert.css" rel="stylesheet">
+		<link href="./erp/plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
+		<link href="erp/css/style.css" rel="stylesheet">
+		
+		<style>
+				.right-align {
+					padding: 0rem 1.875rem;
+					text-align: right; /* 텍스트를 우측으로 정렬 */
+				}
+				.msgbt {
+					margin: 30px 0 0 30px;
+				}
+		</style>
+</head>
+
+<body>
+
+	<!-- Preloader start -->
+	<div id="preloader">
+		<div class="loader">
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+			</svg>
+		</div>
+   </div>
+	<!-- Preloader end -->
+
+    <!-- Main wrapper start -->
+    <div id="main-wrapper">
+		<th:block th:insert="~{m_fragments::header('erp Main')}"></th:block>
+ 		<th:block th:insert="~{m_fragments::topbar}"></th:block>
+		<th:block th:insert="~{m_fragments::sidebar}"></th:block>
+		<!-- Content body start -->
+		<div class="content-body">
+			<div class="row">
+				<div class="col">
+				    <div th:if="${msg}" class="alert alert-success alert-dismissible fade show msgbt">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<th:block th:text="${msg}"></th:block>
+				    </div>
+				</div>
+				<div class="col-md-2">
+					<div class="row page-titles mx-0">
+						<div class="col p-md-0">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="/m">Main</a></li>
+								<th:block>
+									<li class="breadcrumb-item active"><a href="/m_bookList">deliveryList</a></li>
+								</th:block>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- div row -->
+			<div class="container-fluid">
+				<div class="row">
+					<div id="firstColumn" class="col">
+						<div class="card">
+							<div class="card-body">
+								<div>배송 리스트</div>
+								<div class="table-responsive">
+									<table class="table table-hover table-bordered zero-configuration">
+										<thead>
+											<tr>
+												<th>주문 번호</th>
+												<th>구매자 아이디</th>
+												<th>책 번호</th>
+												<th>제목</th>
+												<th>배송 상태</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="delivery : ${delivery}" class="record" 
+											 th:buyno="${delivery.buyno}" 
+											 th:variable="'delivery'"
+											 th:onclick="showOrderView(this.getAttribute('buyno'),this.getAttribute('variable'))">
+												<td th:text="${delivery.buyno}"> </td>
+												<td th:if = "${delivery.buyid != 'none'}" th:text="${delivery.buyid}"> </td>
+												<td th:if = "${delivery.buyid == 'none'}" th:text="비회원"> </td>
+												<td th:text="${delivery.bono}"></td>
+												<td th:text="${delivery.boname}"></td>
+												<td th:text="${delivery.codename}"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-6" id="secondColumn" style="display: none;">
+						<th:block th:insert="~{m_bookInsert::insertcom}"></th:block>
+					</div>
+					<div class="col-md-6" id="comView" style="display: none;">
+						<th:block th:insert="~{m_orderSelect::delivery}"></th:block>
+					</div>
+					<div class="col-md-6" id="comEdit" style="display: none;">
+						<th:block th:insert="~{m_comUpdate::editcom}"></th:block>
+					</div>
+				</div>	
+				
+			</div>
+			<!-- #/ container -->
+		</div>
+		<!-- Content body end -->
+        
+		<th:block th:insert="~{m_fragments::footer}"></th:block>
+    </div>
+	
+
+	<!-- Main wrapper end -->
+	<script src="./erp/plugins/sweetalert/js/sweetalert.min.js"></script>
+	<script src="./erp/plugins/sweetalert/js/sweetalert.init.js"></script>
+	<script src="erp/plugins/common/common.min.js"></script>
+	<script src="erp/js/custom.min.js"></script>
+	<script src="erp/js/settings.js"></script>
+	<script src="erp/js/gleek.js"></script>
+	<script src="erp/js/styleSwitcher.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="./erp/plugins/tables/js/jquery.dataTables.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+	<script src="./erp/plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+
+	<th:block th:insert="~{m_bookscript::bookList}"></th:block>
+		
+
+</body>
+
+</html>

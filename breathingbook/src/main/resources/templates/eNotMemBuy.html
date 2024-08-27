@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<!--
+ // WEBSITE: https://themefisher.com
+ // TWITTER: https://twitter.com/themefisher
+ // FACEBOOK: https://www.facebook.com/themefisher
+ // GITHUB: https://github.com/themefisher/
+-->
+
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>숨쉬는 서재 | 비회원 구매</title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="e-comm/image/x-icon" href="e-comm/images/titlelogo.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="e-comm/css/style.css">
+
+<style>
+	
+	.page-header{
+		margin-top:-20px;
+	}
+	
+	.page-wrapper{
+		margin-top:-60px;
+	}
+	
+</style>
+  
+<style>
+     .flex-container {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+		
+     }
+     .flex-container .form-group {
+         flex: 1;
+         margin-right: 5px; 
+	
+     }
+     .flex-container .form-group:last-child {
+         margin-right: 0;
+     }
+
+ </style>
+  
+</head>
+
+
+<body id="body">
+
+<!-- Start Top Header Bar -->
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+
+<!-- menu -->
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+
+<section class="page-header" style="background-color:#ffffff;">
+	<div class="container" >
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name" >비회원 구매</h1>
+					<ol class="breadcrumb">
+						<li><a href="/">Home</a></li>
+						<li class="active">Non-mem buy</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<form action="/enotmembuy" method ="post">
+<div class="page-wrapper">
+   <div class="checkout shopping">
+      <div class="container">
+         <div class="row">
+			
+            <div class="col-md-8">
+			
+               <div class="block billing-details">
+                  <h4 class="widget-title">배송 정보</h4>
+                  
+				  <div class="checkout-form">
+					<div class="form-group">
+					
+					 <label for="user_post_code">우편 번호</label>
+					<input type="text" class="form-control" id="sample6_postcode" name="nonpostal"  readonly>
+					</div>
+						<div class="form-group" >
+						<label for="user_city">동</label>
+						<input type="text" class="form-control" id="sample6_extraAddress" name="nondong" readonly>
+						 </div>						
+						 <div class="form-group">
+						 <label for="user_country">주소</label>
+						 <div style="display: flex; align-items: center;">
+						 <input type="text" class="form-control" id="sample6_address" name="nonaddress" readonly style="width: 600px; margin-right: 10px;">
+						 <button type="button" class="btn btn-main" onclick="sample6_execDaumPostcode();" style="background-color: white; border: 2px solid #A1DD70; color: #A1DD70;">주소 선택</button>
+						 </div>
+						 </div>
+						<div class="form-group">
+						<label for="user_country">상세 주소</label>
+						<input type="text" class="form-control" id="sample6_detailAddress" name="nondetail" required>
+						</div>	 
+
+                 </div>
+               </div>
+			   
+			   <div class="block">
+				<div class="checkout-form">
+			                     <h4 class="widget-title">비회원 비밀번호</h4>
+			                     <p>Password</p>
+			                     <div class="checkout-product-details">
+			                        <div class="payment">
+			                           <div class="card-details">
+			                             
+			                                 <div class="form-group">
+			                                    <label for="card-number">Non-member<span class="required">*</span></label>
+			                                    <input type = "password" id="card-number" class="form-control"  placeholder="password" name="buypassword" required>
+			                                 </div>
+
+			                             
+			                           </div>
+			                        </div>
+			                     </div>
+			                  </div>
+               </div>
+			   
+			     <div class="block">
+			       <h4 class="widget-title">결제</h4>
+			       <p>Select payment</p>
+			       <div class="checkout-product-details">
+			         <div class="payment">
+			           <div class="card-details">
+			             <div class="checkout-form">
+			               <div class="flex-container">
+			                 <div class="form-group">
+			                   <label for="card-payment">카드 결제</label>
+			                   <input id="card-payment" class="form-control" type="button" data-payment="카드 결제" onclick="return selectpay(this, '/eCard')">
+			                 </div>
+			                 <div class="form-group">
+			                   <label for="simple-payment">간편 결제</label>
+			                   <input id="simple-payment" class="form-control" type="button" data-payment="간편 결제" onclick="return selectpay(this, '/ePayment')">
+			                 </div>
+			                 <div class="form-group">
+			                   <label for="bank-transfer">무통장 입금</label>
+			                   <input id="bank-transfer" class="form-control" type="button" data-payment="무통장 입금" onclick="return selectpay(this, '/eBank')">
+			                 </div>
+			               </div>
+			                <input type="hidden" id="payment-method" name="payment_method">
+			   		  		<input type="hidden" name="buyway" id= "buyway">   
+			   		  		<input type="hidden" name="buyaccount" id= "buyaccount"> 
+			                <input type="submit" id="submit-button" class="btn btn-main mt-20" style="background-color:#A1DD70;" value="결제 하기" disabled> 
+			             </div>
+			           </div>
+			         </div>
+			       </div>
+			     </div>
+			   </div>
+			   
+			   <div class="col-md-4">
+			     <div class="product-checkout-details">
+			       <div class="block">
+			         <h4 class="widget-title">주문 내역</h4>
+			         <!-- 각 책의 정보를 출력 -->
+			         <div class="media product-card" th:each="cart, stat : ${cartlist}">
+			           <a class="pull-left" th:href="@{/eBookDetail(bono=${cart.bono})}">
+			             <img class="media-object" width="80" th:src="${cart.filepath}" alt="Image" />
+			           </a>
+			           <div class="media-body">
+						<h4 class="media-heading" th:if="${cart.bostock>4}" th:text="${cart.boname}"></h4>
+						<h4 class="media-heading" th:if="${cart.bostock==0}" th:text="${'[품절] '+cart.boname}" style="color:#FF0000;"></h4>
+						<h4 class="media-heading" th:if="${cart.bostock<4 || bostock>0}" th:text="${'[품절 임박] '+cart.boname}" style="color:#FF7F00;"></h4>
+			             <p class="price"  th:text="${#strings.length(cart.boprice.toString()) > 3 ? (#strings.substring(cart.boprice.toString(), 0, #strings.length(cart.boprice.toString()) - 3) + ',' + #strings.substring(cart.boprice.toString(), #strings.length(cart.boprice.toString()) - 3)) : cart.boprice.toString()} + ' X ' + ${cart.cbuynum}"></p>
+						
+			   		
+			             <span class="remove" style="color:#ff0000;"><a th:href="@{/eBuyDel(mid=${mid},cno=${cart.cno})}" style="color:#FF0000;">삭제</a></span>
+			             <span class="item-total" th:text="${cart.cbuynum * cart.boprice}" style="display: none;"></span>
+			           </div>
+			           <!-- Hidden Inputs for each cart item -->
+			          <input type="hidden" name="cbookno" id= "cbookno" th:value="${cart.cbookno}">
+			   	 <input type="hidden" name="cbuynum" id= "cbuynum" th:value="${cart.cbuynum}">
+			   	 <input type="hidden" name="buyprice" id= "buyprice" th:value="${cart.boprice*cart.cbuynum+cart.boshipping}">
+
+			    </div>
+			 
+				<!-- 할인 코드 입력 -->
+				<div class="discount-code">
+				  <p>할인 쿠폰 있으십니까?
+				    <a data-toggle="modal" data-target="#coupon-modal" href="#!" onclick="return selectpay('/ePayment')">입력하기</a>
+				  </p>
+				</div>
+
+				<ul class="summary-prices">
+				  <li th:each="list : ${list}">
+				    <span th:text="${#strings.length(list.boname) &lt;= 20 ? list.boname : #strings.substring(list.boname, 0, 20) + '...'}"></span>					
+				    <span class="book-price" th:text="${list.boprice * list.cbuynum}"></span>
+				  </li>
+				  <li>
+				    <span style="color:#0000FF;">배송비</span>
+				    <span class="shipping-price" style="color:#0000FF;">2500</span>
+				  </li>
+				</ul>
+				<!-- 총 결제 금액 -->
+				<div class="summary-total" id="total-with-discount">
+				  <span>총 결제 금액 <span style="font-size: smaller; color:#FF0000;">(배송비 -2,500)</span></span>
+				  <span id="final-price2"></span>
+				</div>
+				<div class="summary-total" id="total-without-discount">
+				  <span>총 결제 금액</span>
+				  <span id="final-price1"></span>
+				</div>
+				<div class="verified-icon">
+				  <img src="e-comm/images/shop/verified.png">
+				</div>
+				
+					 
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+</form>
+
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+    <!-- Main jQuery -->
+    <script src="e-comm/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.1 -->
+    <script src="e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="e-comm/plugins/slick/slick.min.js"></script>
+    <script src="e-comm/plugins/slick/slick-animation.min.js"></script>
+
+	<!-- 카카오api -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <!-- Main Js File -->
+    <script src="e-comm/js/script.js"></script>
+	<script src="e-comm/js/buy.js"></script>
+
+	<script>
+	  function calculateTotal() {
+	    const bookPrices = document.querySelectorAll('.book-price');
+	    let totalBookPrice = 0;
+	    bookPrices.forEach(price => {
+	      totalBookPrice += parseFloat(price.textContent) || 0;
+	    });
+
+	    const shippingPrices = document.querySelectorAll('.shipping-price');
+	    let totalShippingPrice = 0;
+	    shippingPrices.forEach(price => {
+	      totalShippingPrice += parseFloat(price.textContent) || 0;
+	    });
+
+	    let finalPrice = totalBookPrice + totalShippingPrice;
+
+	    if (finalPrice > 30000) {
+	      finalPrice -= 2500;
+	      document.getElementById('final-price2').textContent = finalPrice;
+	      document.getElementById('total-with-discount').style.display = 'block';
+	      document.getElementById('total-without-discount').style.display = 'none';
+	    } else {
+	      document.getElementById('final-price1').textContent = finalPrice;
+	      document.getElementById('total-with-discount').style.display = 'none';
+	      document.getElementById('total-without-discount').style.display = 'block';
+	    }
+	  }
+
+	  document.addEventListener('DOMContentLoaded', calculateTotal);
+	</script>
+	
+  </body>
+  </html>

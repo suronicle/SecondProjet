@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title> 숨쉬는서재 | 아이디찾기 </title>
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Construction Html5 Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="aviato" />
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.png" />
+  
+  <!-- Themefisher Icon font -->
+  <link rel="stylesheet" href="./e-comm/plugins/themefisher-font/style.css">
+  <!-- bootstrap.min css -->
+  <link rel="stylesheet" href="./e-comm/plugins/bootstrap/css/bootstrap.min.css">
+  
+  <!-- Animate css -->
+  <link rel="stylesheet" href="./e-comm/plugins/animate/animate.css">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick.css">
+  <link rel="stylesheet" href="./e-comm/plugins/slick/slick-theme.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="./e-comm/css/style.css">
+  
+  
+
+
+</head>
+
+<body id="body">
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+let m = [[${msg}]];
+  if(m != null){
+      alert(m);
+  }
+
+</script>
+
+<th:block th:insert="~{ecom_fragments::header}"></th:block>
+<th:block th:insert="~{ecom_fragments::menu}"></th:block>
+
+
+<section class="signin-page account">
+  <div class="container" id="find">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="block text-center">
+          <a class="logo" href="index.html">
+          	<table>
+          		<tr style="margin: 0;">
+          			<td>
+          				<img src="./e-comm/images/titlelogo.png" alt="로고" style="width:40px; height:40px;">
+          			</td>
+          			<td>
+          				<h1 style="color: #A1DD70; font-size:20px; margin: 0;">Breathing Books
+          				 <br> <h6 style="float: right; margin: 0;">숨쉬는 서재</h6></h1>
+          			</td>
+          		</tr>
+            </table>
+          </a>
+          <h3>아이디 찾기</h3>
+          <form class="text-left clearfix" onsubmit="return logincheck();">
+            <div class="form-group">
+              <input type="text" class="form-control"  placeholder="이름" id="mname" name="mname">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="이메일" id="email" name="email">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" style="width: 30%; display: inline-block;" placeholder="인증번호" id="codepw" name="codepw">
+              <button type="button" class="btn btn-main text-center" style="font-size: 15px; background-color: #A1DD70;" onclick="mailsend()">인증번호받기</button>
+              <button type="button" onclick="codeck();" class="btn btn-main text-center" style="font-size: 15px; background-color: #A1DD70;">인증확인</button>
+            </div>
+            <div class="text-center">
+                          <small>네이버가 발송한 메일이 스팸 메일로 분류된 것은 아닌지 확인해 주세요.
+                          <br> 스팸 메일함에도 메일이 없다면, 다시 한 번 '인증번호 받기'를 눌러주세요.
+                          </small>
+                          <br><br>
+
+              <button type="button" onclick="location.href='/elogin'" class="btn btn-main text-center" style="font-size: 15px; background-color: #A1DD70;">로그인 페이지로 이동</button>
+            </div>
+          </form>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" id="findok" style="display: none;">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="block text-center">
+          <a class="logo" href="index.html">
+          	<table>
+          		<tr style="margin: 0;">
+          			<td>
+          				<img src="./e-comm/images/titlelogo.png" alt="로고" style="width:40px; height:40px;">
+          			</td>
+          			<td>
+          				<h1 style="color: #A1DD70; font-size:20px; margin: 0;">Breathing Books
+          				 <br> <h6 style="float: right; margin: 0;">숨쉬는 서재</h6></h1>
+          			</td>
+          		</tr>
+            </table>
+          </a>
+          <h3>아이디 찾기</h3>
+          <form class="text-left clearfix">
+            <div class="form-group">
+              <input type="text" class="form-control" id="findid" name="findid" style="text-align: center; color: red;" disabled="disabled">
+            </div>
+            <div class="form-group" align="center">
+              <button type="button" onclick="location.href='/elogin'" class="btn btn-main text-center" style="font-size: 15px; background-color: #A1DD70;">로그인 페이지로 이동</button>
+            </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<th:block th:insert="~{ecom_fragments::footer}"></th:block>
+    <!-- 
+    Essential Scripts
+    =====================================-->
+    
+
+    <!-- Bootstrap 3.1 -->
+    <script src="./e-comm/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Touchpin -->
+    <script src="./e-comm/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <!-- Instagram Feed Js -->
+    <script src="./e-comm/plugins/instafeed/instafeed.min.js"></script>
+    <!-- Video Lightbox Plugin -->
+    <script src="./e-comm/plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <!-- Count Down Js -->
+    <script src="./e-comm/plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+    <!-- slick Carousel -->
+    <script src="./e-comm/plugins/slick/slick.min.js"></script>
+    <script src="./e-comm/plugins/slick/slick-animation.min.js"></script>
+
+    <!-- Google Mapl -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+    <script type="text/javascript" src="./e-comm/plugins/google-map/gmap.js"></script>
+
+    <!-- Main Js File -->
+    <script src="js/script.js"></script>
+    
+
+	<!-- Main jQuery -->
+	<script src="./e-comm/plugins/jquery/dist/jquery.min.js"></script>
+
+
+
+<script th:inline="javascript">
+	
+	var code = '';
+	
+	function mailsend() {
+		
+	    var mname = document.getElementById('mname').value;
+	    var email = document.getElementById('email').value;
+	    	
+	    	
+	    	if(mname === '') {
+	    		  alert("이름을 작성해주세요.");
+	    		  
+	    		  return false;
+	    	  }
+	    	
+	    	if(email === '') {
+	    		  alert("이메일을 작성해주세요.");
+	    		  
+	    		  return false;
+	    	  }
+	    	
+	    	if (mname !== '' && email !== '') {
+	    		
+	    		 $.ajax({
+	    		        type: 'POST',
+	    		        url: '/emailsid',
+	    		        data: {mname : mname, email : email},
+	    		        
+	    		        //컨트롤러 성공 시 
+	    		        success: function(response) {
+	    		        	
+	    		        	if(response === 'N') {
+	    		        		
+	    		        		alert('해당 이름과 이메일로된 정보를 찾을 수 없습니다.');
+	    		        		
+	    		        	} else if (response === 'E') {
+	    		        		
+	    		        		alert('처리 중 오류가 발생했습니다. 아이디 찾기를 재시도 하시거나, 문의 게시판에 글을 남겨주세요.');
+	    		        		
+	    		        	} else {
+	    		        		code = response;
+	    		        		alert('이메일로 코드를 전송했습니다. 확인 후 코드번호를 입력해주세요.');
+	    		        	}
+	    		        },
+	    		
+	    		        // 컨트롤러 실패 시
+	    		        error: function() {
+	    		            alert('오류가 발생했습니다. 아이디 찾기를 재시도 하시거나, 문의 게시판에 글을 남겨주세요.');
+	    		            
+	    		        }
+	    		    });
+	    		
+	    	}
+	   
+	}
+	
+	
+	function find() {
+		
+	    var mname = document.getElementById('mname').value;
+	    var email = document.getElementById('email').value;
+	    var findid = document.getElementById('findid');
+	 	
+	    $.ajax({
+	        type: 'POST',
+	        url: '/eidfind',
+	        data: {mname : mname, email : email},
+	        
+	        //컨트롤러 성공 시 
+	        success: function(response) {
+	        	findid.value = "찾으신 아이디는 ["+response+"]입니다.";
+	        	$("#find").hide();
+	        	$("#findok").show();
+	        },
+	
+	        // 컨트롤러 실패 시
+	        error: function() {
+	            alert('오류가 발생했습니다. 아이디 찾기를 재시도 하시거나, 문의 게시판에 글을 남겨주세요.');
+	            
+	        }
+	    });
+	}
+	
+</script>
+	
+<script th:inline="javascript">
+
+  	
+  
+  function codeck() {
+		//코드
+		let codepw = document.getElementById("codepw").value;
+		
+		
+		if(code === '') {
+			  alert("인증번호를 먼저 전송해주세요.");
+			  return false;
+		 }
+		
+		if(code != codepw) {
+			  alert("인증번호가 일치하지 않습니다.");
+			  
+			  return false;
+		 }
+		
+		if(code == codepw) {
+			find();
+		 }
+	  }
+  
+  </script>
+  </body>
+  </html>

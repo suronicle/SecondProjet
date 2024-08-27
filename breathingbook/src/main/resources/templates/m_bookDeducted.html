@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="erp/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./erp/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./erp/plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./erp/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+    <link href="erp/css/style.css" rel="stylesheet">
+	<!-- Color picker plugins css -->
+	<link href="./erp/plugins/jquery-asColorPicker-master/css/asColorPicker.css" rel="stylesheet">
+	<!-- Date picker plugins css -->
+	<link href="./erp/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet">
+	<!-- Daterange picker plugins css -->
+	<link href="./erp/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
+	<link href="./erp/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+	<style>
+		.right-align {
+			padding: 0rem 1.875rem;
+			text-align: right; /* 텍스트를 우측으로 정렬 */
+		}
+	</style>
+</head>
+
+<body>
+	<br>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="form-view">
+							<form action = "/m_bookDeducted" method = "post">
+								<input type="hidden" name="pno" th:value="${param.pno}">
+								<input type="text" name="bono" th:value="${stock.bono}">
+								<div class="form-group row">
+									<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">요청 번호</label>
+									<input type = "text" class="form-control" name = "pno" th:value = "${param.pno}" disabled>
+									<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">차감 개수</label>
+									<input type="number" class="form-control"  name = "deducted" placeholder="차감 개수">
+									<label class="col-lg-3 col-form-label" style="font-weight: bold; font-size: medium;" for="관리번호">차감 이유</label>
+									<div class="col col-form-label"></div>
+									<textarea class="form-control" name = "preason" style = "height:145px;"></textarea>
+									<div class="col col-form-label"></div>
+								</div>
+							<div class="form-group">
+								<div align="center">
+									<button type="submit"  class="btn btn-warning">차감</button>
+									<button type="button" class="btn btn-danger" onclick = "window.close();">닫기</button>
+								</div>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+	
+	
+	
+	
+</body>
+</html>
